@@ -38,5 +38,5 @@ export const SIZES ={
 
     // app dimention
 };
-const appTheme ={COLORS, SIZES};
+const appTheme ={COLOR, SIZES};
 export default appTheme;
