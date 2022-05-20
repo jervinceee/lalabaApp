@@ -4,14 +4,28 @@ import {
     Text,
     Button,
     StyleSheet,
-    Image
+    Image,
+    ScrollView
 } from "react-native";
 import bubble from "../assets/icons/bubble.png"
-
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Home = ({navigation}) => {
     return (
+     
         <View style={styles.container}>
+            <View style={styles.header}>
+                <Image source={bubble}
+                    style={{
+                        height: 50,
+                        width: 50
+                    }}
+                />
+                <Icon name='person' color={'white'} size={50}/>
+                
+            </View>
+
+            <View style={styles.body}>
                 <Image 
                     source={bubble}
                     style={{
@@ -26,7 +40,7 @@ const Home = ({navigation}) => {
                     }}>
                     This is Home
                 </Text>
-
+            </View>    
                   
                        {/* <Button title="Shop1"
                             onPress={() => navigation.navigate('Shop1')}
@@ -37,17 +51,23 @@ const Home = ({navigation}) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        backgroundColor: 'powderblue',
+    },
+    header: {
+        height: 50,
+        width: '100%',
+        backgroundColor: '#46829e',
+        flex: -1,
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        
+    },
+
+    body: {
+        flex: -1,
         justifyContent:'center',
         alignItems: 'center',
         alignContent:'center',
-        backgroundColor: 'powderblue',
-    },
-    
-    h1:{
-        alignSelf: 'center',
-        
-
     },
     profilePicture: {
         width:100,

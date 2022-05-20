@@ -2,88 +2,58 @@ import react from "react";
 import {
     View,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    StyleSheet,
+    Text
 } from 'react-native';
 import { createBottomTabNavigator, BottomTabBar} from "@react-navigation/bottom-tabs";
 import Chat from "../Screens/Chat";
 import Home from "../Screens/Home";
 import List from "../Screens/List";
-import { COLOR, icons } from "../assets/constants";
-import bubble from "../assets/icons/bubble.png"
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 
 const Tab = createBottomTabNavigator();
 
-const Tabs = () => {
+/*{const Tabs = () => {
     return (
-        <Tab.Navigator
-            screenOptions={{
-        headerShown: false
-      }}
-        >
-        <Tab.Screen
-                name="Home"
-                component={Home}
-                options={{
-                    tabBarIcon: ({focused}) => {
-                        <Image
-                            source={bubble}
-                            resizeMode="contain"
-                            style={{
-                               width: '100%',
-                               height:'100%',
-                               
-
-                            }}
-
-                        />
-                    }
-                }}
-            /> 
-
-        
-            <Tab.Screen
-                name="Chat"
-                component={Chat}
-                options={{
-                    tabBarIcon: ({focused}) => {
-                        <Image
-                            source={bubble}
-                            resizeMode="contain"
-                            style={{
-                               width: '100%',
-                               height:'100%',
-                               
-
-                            }}
-
-                        />
-                    }
-                }}
-            /> 
-
-            <Tab.Screen
-                name="List"
-                component={List}
-                options={{
-                    tabBarIcon: ({focused}) => {
-                        <Image
-                            source={bubble}
-                            resizeMode="contain"
-                            style={{
-                               width: '100%',
-                               height:'100%',
-                               
-
-                            }}
-
-                        />
-                    }
-                }}
-            />
-
-           
+        <Tab.Navigator>
+            <Tab.Screen name="Home" component={Home}/> 
+            <Tab.Screen name="Chat" component={Chat}/> 
+            <Tab.Screen name="List" component={List}/>
         </Tab.Navigator>
     )
-}
+}}*/
+const screenOptions = (route, color) => {
+    let iconName;
+  
+    switch (route.name) {
+      case 'Home':
+        iconName = 'home';
+        break;
+      case 'Chat':
+        iconName = 'chat';
+        break;
+      case 'List':
+        iconName = 'receipt';
+        break;
+      default:
+        break;
+    }
+  
+    return <Icon name={iconName} color={color} size={24} />;
+  };
+  
+  const Tabs = () => {
+    return (
+      <Tab.Navigator
+        screenOptions={({route}) => ({
+          tabBarIcon: ({color}) => screenOptions(route, color),
+        })}>
+            <Tab.Screen name="Home" component={Home}/> 
+            <Tab.Screen name="Chat" component={Chat}/> 
+            <Tab.Screen name="List" component={List}/>
+      </Tab.Navigator>
+    );
+  };
 export default Tabs;
