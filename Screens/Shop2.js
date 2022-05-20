@@ -11,10 +11,7 @@ const Shop2 = ({navigation}) => {
             <Text>
                 Shop2
             </Text>
-            <Button 
-                title="Home"
-                onPress={() => navigation.navigate('Home')}
-            />
+          
         </View>
         
         

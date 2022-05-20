@@ -9,11 +9,14 @@ import Shop2 from './Screens/Shop2';
 import Tabs from './navigation/tabs';
 import List from './Screens/List';
 import Chat from './Screens/Chat';
-
+import Profile from './Screens/Profile';
+import TabBar from './components/TabBar';
+import Navigator from './roots/homeStack';
 
 
 const Stack = createNativeStackNavigator();
 
+<Navigator/>
 const App = () => {
   return (
     <NavigationContainer>
@@ -29,6 +32,8 @@ const App = () => {
       <Stack.Screen name="Shop2" component={Shop2} />
       <Stack.Screen name="Chat" component={Chat}/>
       <Stack.Screen name="List" component={List} />
+      <Stack.Screen name="Profile" component={Profile} />
+      
       
     </Stack.Navigator>
   </NavigationContainer>

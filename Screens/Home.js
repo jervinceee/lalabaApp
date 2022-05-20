@@ -21,8 +21,12 @@ const Home = ({navigation}) => {
                         width: 50
                     }}
                 />
-                <Icon name='person' color={'white'} size={50}/>
-                
+                <Icon name='person' color={'white'} size={50} 
+                    onPress={() => navigation.navigate('Profile')}
+                />
+                <Button title="Shop1"
+                                onPress={() => navigation.navigate('Shop1')}
+                        />
             </View>
 
             <View style={styles.body}>
@@ -40,6 +44,9 @@ const Home = ({navigation}) => {
                     }}>
                     This is Home
                 </Text>
+                        <Button title="Shop1"
+                                onPress={() => navigation.navigate('Shop1')}
+                        />
             </View>    
                   
                        {/* <Button title="Shop1"
