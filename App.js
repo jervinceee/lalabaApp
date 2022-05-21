@@ -12,7 +12,8 @@ import Chat from './Screens/Chat';
 import Profile from './Screens/Profile';
 import TabBar from './components/TabBar';
 import Navigator from './roots/homeStack';
-
+import Shop1Menu from './Screens/Shop1Menu';
+import Shop2Menu from './Screens/Shop2Menu';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,11 +29,13 @@ const App = () => {
       initialRouteName="Home"
     >
       <Stack.Screen name="Home" component={Tabs} />
-      <Stack.Screen name="Shop1" component={Shop1} />
-      <Stack.Screen name="Shop2" component={Shop2} />
+      <Stack.Screen name="Shop1" component={Shop1} options={{ title: 'Laundry Shop 1' }}/>
+      <Stack.Screen name="Shop2" component={Shop2} options={{ title: 'Laundry Shop 2' }}/>
       <Stack.Screen name="Chat" component={Chat}/>
       <Stack.Screen name="List" component={List} />
       <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="Shop1Menu" component={Shop1Menu} options={{ title: 'Menu: Laundry Shop 1' }} />
+      <Stack.Screen name="Shop2Menu" component={Shop2Menu} options={{ title: 'Menu: Laundry Shop 2' }} />
       
       
     </Stack.Navigator>

@@ -10,6 +10,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { createBottomTabNavigator, BottomTabBar} from "@react-navigation/bottom-tabs";
 import Tabs from "../navigation/tabs";
 import { NavigationContainer, StackActions } from "@react-navigation/native";
+import Shop1Menu from "../Screens/Shop1Menu";
 
 const Stack = createStackNavigator ({
       Home:Home,
@@ -26,6 +27,8 @@ const Stack = createStackNavigator ({
       <Stack.Screen name="Chat" component={Chat}/>
       <Stack.Screen name="List" component={List} />
       <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="Shop1Menu" component={Shop1Menu} options={{ title: 'Laundry Shop 1' }}/>
+     
 
 </StackActions.Navigator>
 </NavigationContainer>
