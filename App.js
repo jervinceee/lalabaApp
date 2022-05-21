@@ -23,7 +23,7 @@ const App = () => {
     
     <Stack.Navigator 
       screenOptions={{
-        headerShown: false
+        showHeader: false,
       }}
       initialRouteName="Home"
     >

@@ -6,29 +6,29 @@ import Profile from "../Screens/Profile";
 import List from "../Screens/List";
 import Shop1 from "../Screens/Shop1";
 import Shop2 from "../Screens/Shop2";
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { createBottomTabNavigator, BottomTabBar} from "@react-navigation/bottom-tabs";
+import Tabs from "../navigation/tabs";
+import { NavigationContainer, StackActions } from "@react-navigation/native";
 
-const screens = {
+const Stack = createStackNavigator ({
+      Home:Home,
+  },
+      {
+          initialRouteName: 'Home'
+      });
 
-    Home: {
-        screen: Home
-    },
-    Chat: {
-        screen: Chat
-    },
-    Profile: {
-        screen: Profile
-    },
-    List: {
-        screen: List
-    },
-    Shop1: {
-        screen: Shop1
-    },
-    Shop2: {
-        screen: Shop2
-    }
-    
-}
-const HomeStack = createStackNavigator (screens);
-Navigator = createAppContainer(HomeStack)
+<NavigationContainer>
+<StackActions.Navigator>
+<Stack.Screen  name="Home" component={Tabs} />
+      <Stack.Screen name="Shop1" component={Shop1} />
+      <Stack.Screen name="Shop2" component={Shop2} />
+      <Stack.Screen name="Chat" component={Chat}/>
+      <Stack.Screen name="List" component={List} />
+      <Stack.Screen name="Profile" component={Profile} />
+
+</StackActions.Navigator>
+</NavigationContainer>
+
+Navigator = createAppContainer(Stack)
 export default Navigator;

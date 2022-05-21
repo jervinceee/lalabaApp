@@ -49,6 +49,7 @@ const screenOptions = (route, color) => {
       <Tab.Navigator
         screenOptions={({route}) => ({
           tabBarIcon: ({color}) => screenOptions(route, color),
+          headerShown: false
         })}>
             <Tab.Screen name="Home" component={Home}/> 
             <Tab.Screen name="Chat" component={Chat}/> 
