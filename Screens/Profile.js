@@ -12,8 +12,7 @@ const Profile = ({navigation}) => {
                 This is Profile
             </Text>
             <Button 
-                title="Home"
-                onPress={() => navigation.navigate('Home')}
+                title="Save changes"
             />
         </View>
     )
