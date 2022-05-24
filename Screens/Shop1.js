@@ -8,82 +8,133 @@ import {
     Image,
     TouchableOpacity
 } from "react-native";
-import branch1 from '../assets/image/branch1.png'
+import branch1 from '../assets/image/branch1.png';
+import bubble from '../assets/icons/bubble.png';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Shop1 = ({navigation}) => {
     return (
-        <ScrollView style={{backgroundColor: 'powderblue'}}>
+        <ScrollView style={{backgroundColor: '#01BCE4'}}>
             <View>
-                <Text style={{
-                    color: 'black',
-                    fontSize: 50,
-                }}>
-                    Laundry Shop 1
-                </Text>
-                <View style={styles.imgContainer}>
-                    <Image style={styles.img} source={branch1}/>
+                <View style={{ height: 15, backgroundColor: '#01BCE4'}}>
                 </View>
-                <View style={styles.textContainer}>
-                    <Text numberOfLines={50} style={{
-                        fontSize: 25,
-                    }}>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                    </Text>
-
-                    <Text>
-                        {"\n"}incididunt ut labore et dolore magna aliqua. Mus mauris vitae ultricies leo integer. Fusce ut placerat orci nulla pellentesque dignissim. Augue lacus viverra vitae congue eu consequat ac felis. Auctor augue mauris augue neque gravida in. Volutpat est velit egestas dui id ornare arcu. Tristique et egestas quis ipsum suspendisse ultrices gravida dictum. Sit amet dictum sit amet justo donec enim diam vulputate. Ac orci phasellus egestas tellus rutrum tellus pellentesque eu. Mi quis hendrerit dolor magna eget est lorem ipsum.
-
-                        Augue interdum velit euismod in pellentesque massa placerat duis ultricies. 
-                    </Text>
-                    <Text numberOfLines={50} style={{
-                        fontSize: 25,
-                        
-                    }}>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                    </Text>
-
-                    <Text>
-                        {"\n"}incididunt ut labore et dolore magna aliqua. Mus mauris vitae ultricies leo integer. Fusce ut placerat orci nulla pellentesque dignissim. Augue lacus viverra vitae congue eu consequat ac felis. Auctor augue mauris augue neque gravida in. Volutpat est velit egestas dui id ornare arcu. Tristique et egestas quis ipsum suspendisse ultrices gravida dictum. Sit amet dictum sit amet justo donec enim diam vulputate. Ac orci phasellus egestas tellus rutrum tellus pellentesque eu. Mi quis hendrerit dolor magna eget est lorem ipsum.
-
-                        Augue interdum velit euismod in pellentesque massa placerat duis ultricies. {"\n"}
-                        {"\n"}
-                    </Text>
-
+                <View style={styles.imgShape}>
+                        <Image style={styles.img} source={branch1}/>
                 </View>
-                <View style={[{ 
-                    width: "100%",
-                     }]}>
-                
-                    <Button
-                        fontSize="100"
-                        color="blue"
-                        title="Book"
-                        onPress={() => navigation.navigate('Shop1Menu')}
-                    />
+                <View style={{ height: 15, backgroundColor: '#01BCE4'}}>
                 </View>
-               
+                <View style={styles.mainTextContainer}>
+                    <View style={styles.shapeTextContainer}>
+                        <Text style={{
+                            color: 'black',
+                            fontSize: 50,
+                            fontWeight: '800',
+                            }}>
+                                Laundry Shop 1
+                        </Text>
+                        <View style={styles.description}>
+                            <View style={{
+                                height:80,
+                                width: 20,
+                                backgroundColor: '#01BCE4',
+                                borderRadius:20,
+                            }}>
+                            </View>
+                            <Text style={{left: 10, bottom:10 }}>
+                            Lorem ipsum dolor sit amet, consectetur adipi scing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mus mauris vitae ultricies leo integer. Fusce ut placerat orci nulla
+                            </Text>
+                        </View>
+                        <View style={{ height: 15, backgroundColor: 'white'}}>
+                        </View>
+                        <View style={styles.scheduleContainer}>
+                            <Icon name='schedule' color={'black'} size={30} />
+                                <Text style={{
+                                color: 'black',
+                                fontSize: 16,
+                                fontWeight: 'bold',
+                            }}>
+                                Opens: Mon-Sun   from 8:00 AM to: 10:00 PM
+                            </Text>
+
+                        </View>
+                        <View style={{ height: 30, backgroundColor: 'white'}}>
+                        </View>
+                        {/* For button 'book' */}
+                        <TouchableOpacity onPress={()=> navigation.navigate('Shop1Menu')}>
+                            <View style={styles.bookButton}>
+                                <Text style={{
+                                    fontSize:25,
+                                    fontWeight:'bold',
+                                    color: 'white',
+                                }}>
+                                    Book
+                                </Text>
+
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                </View>
             </View>
         </ScrollView>
     )
 }
 const styles = StyleSheet.create({
-    imgContainer:{
-        flex:1,
-        justifyContent:'space-around',
-        flexDirection: 'row',
-        alignItems: 'center',
-        alignContent:'center',
-        
-
+    imgShape: {
+        backgroundColor:'white',
+        borderRadius:20,
+        alignContent: 'center',
+        alignSelf: 'center', 
+        paddingTop:30,
+        paddingHorizontal: 20,
+        width: '95%',
+        height: 350,
     },
     img: {
-       
-        width: 300,
-        height: 300
+        height:300,
+        width: 350,
     },
-    textContainer: {
-        marginHorizontal: 15,
-    }
+    mainTextContainer: {
+        backgroundColor:'white',
+        borderRadius:20,
+        alignContent: 'center',
+        alignSelf: 'center', 
+        paddingTop:30,
+       // paddingHorizontal: 20,
+        width: '95%',
+        height: 375,
+    },
+    shapeTextContainer: {
+        alignContent: 'center',
+        paddingHorizontal: 20,
+    },
+    description: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        alignContent: 'center',
+        justifyContent:'center',
+        paddingHorizontal: 15,
+    },
+    scheduleContainer: {
+        backgroundColor:'#F6F6F6',
+        borderRadius: 20,
+        width: '100%',
+        height: 60,
+        flexDirection: 'row',
+        alignItems:'center',
+        justifyContent:'center'
+    },
+    bookButton: {
+        backgroundColor: '#01BCE4',
+        borderRadius: 20,
+        height: 60,
+        alignItems:'center',
+        alignContent:'center',
+        justifyContent: 'center',
+
+
+
+    },
+    
 
 })
 export default Shop1;
