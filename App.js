@@ -14,6 +14,7 @@ import TabBar from './components/TabBar';
 import Navigator from './roots/homeStack';
 import Shop1Menu from './Screens/Shop1Menu';
 import Shop2Menu from './Screens/Shop2Menu';
+import Edit from './Screens/Edit';
 
 const Stack = createNativeStackNavigator();
 
@@ -36,6 +37,7 @@ const App = () => {
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Shop1Menu" component={Shop1Menu} options={{ title: 'Menu: Laundry Shop 1' }} />
       <Stack.Screen name="Shop2Menu" component={Shop2Menu} options={{ title: 'Menu: Laundry Shop 2' }} />
+      <Stack.Screen name="Edit" component={Edit} />
       
       
     </Stack.Navigator>

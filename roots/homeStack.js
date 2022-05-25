@@ -9,6 +9,7 @@ import Shop2 from "../Screens/Shop2";
 import Tabs from "../navigation/tabs";
 import { NavigationContainer, StackActions } from "@react-navigation/native";
 import Shop1Menu from "../Screens/Shop1Menu";
+import Edit from "../Screens/Edit";
 
 const Stack = createStackNavigator ({
       Home:Home,
@@ -26,6 +27,7 @@ const Stack = createStackNavigator ({
       <Stack.Screen name="List" component={List}/>
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Shop1Menu" component={Shop1Menu} />
+      <Stack.Screen name="Edit" component={Edit} />
      
 
 </StackActions.Navigator>
