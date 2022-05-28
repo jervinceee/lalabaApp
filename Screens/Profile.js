@@ -37,6 +37,60 @@ const Profile = ({navigation}) => {
                                 Juan Dela Cruz
                             </Text>
                         </View>
+                        
+                        <View style={styles.addressContainer}>
+                            <View style={styles.addressTitle}>
+                                <Icon name='place' color={'#01BCE4'} size={50} />
+                                <Text style={{
+                                        fontSize: 25,
+                                        color: 'black',
+                                        fontWeight:'300',
+                                    }}>
+                                    Address
+                                    </Text>
+                            </View>
+                                <View style={styles.addressShape}>
+                                    <Text>
+                                        input na magseset ng item name or key or id para auto na ma lalagay dito
+                                    </Text>
+                                </View>
+                        </View>
+                        
+                        <View style={styles.numberContainer} >
+                            <View style={styles.numberTitle}>
+                                <Icon name='smartphone' color={'#01BCE4'} size={50} />
+                                <Text style={{
+                                        fontSize: 25,
+                                        color: 'black',
+                                        fontWeight:'300',
+                                    }}>
+                                    Number
+                                    </Text>
+                            </View>
+                            <View style={styles.numberShape}>
+                                <Text>
+                                input na magseset ng item name or key or id para auto na ma lalagay dito
+                                </Text>
+                                 </View>
+                        </View>
+                        <View style={styles.emailContainer}>
+                            <View style={styles.emailTitle}>
+                                <Icon name='mail-outline' color={'#01BCE4'} size={50} />
+                                <Text style={{
+                                        fontSize: 25,
+                                        color: 'black',
+                                        fontWeight:'300',
+                                    }}>
+                                    Email
+                                    </Text>
+                            </View>
+                            <View style={styles.emailShape}>
+                                <Text>
+                                input na magseset ng item name or key or id para auto na ma lalagay dito
+                                </Text>
+                                 </View>
+                        </View>
+
                     </View>
                 </View>
                 <View style={styles.mainShapeContainer}>
@@ -56,6 +110,8 @@ const Profile = ({navigation}) => {
 const styles = StyleSheet.create({
     headerContainer: {
        left: '85%',
+       paddingBottom: 80,
+       
     },
     mainShapeContainer:{
         height:150
@@ -86,11 +142,11 @@ const styles = StyleSheet.create({
         backgroundColor:'white',
         paddingTop: 120,
         height: 700,
-        width: '95%', 
-        alignSelf:'center',
-        borderRadius: 20,
-        alignContent:'center',
-        alignItems:'center',
+        width: '100%', 
+        //alignSelf:'center',
+        //borderRadius: 20,
+        //alignContent:'center',
+        //alignItems:'center',
         
     },
     subInfoContainer: {
@@ -98,7 +154,66 @@ const styles = StyleSheet.create({
     },
     nameContainer:{
         justifyContent:'center',
+        alignSelf:'center',
     },  
+    addressContainer:{
+        paddingTop: 50,
+       // alignItems:'center'
+    },
+    addressTitle: {
+        flexDirection:'row',
+        alignItems:'center',
+    },
+    addressShape:{
+        backgroundColor:'#F6F6F6',
+        height:70,
+        width: '95%',
+        borderRadius: 30,
+       // alignSelf:'center',
+        alignContent: 'center',
+        justifyContent:'center',
+        alignItems:'center',
+        alignSelf:'center',
+        paddingHorizontal: 15,
+    },
+    numberContainer: {
+        paddingTop: 20,
+    },
+    numberTitle: {
+        flexDirection:'row',
+        alignItems:'center',
+    },
+    numberShape: {
+        backgroundColor:'#F6F6F6',
+        height:70,
+        width: '95%',
+        borderRadius: 30,
+       // alignSelf:'center',
+        alignContent: 'center',
+        justifyContent:'center',
+        alignItems:'center',
+        alignSelf:'center',
+        paddingHorizontal:15,
+    },
+    emailContainer: {
+        paddingTop: 20,
+    },
+    emailTitle: {
+        flexDirection:'row',
+        alignItems:'center',
+    },
+    emailShape: {
+        backgroundColor:'#F6F6F6',
+        height:70,
+        width: '95%',
+        borderRadius: 30,
+       // alignSelf:'center',
+        alignContent: 'center',
+        justifyContent:'center',
+        alignItems:'center',
+        alignSelf:'center',
+        paddingHorizontal:15,
+    },
 
 })
 export default Profile;
