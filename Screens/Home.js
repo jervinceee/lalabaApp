@@ -122,6 +122,7 @@ const styles = StyleSheet.create({
         justifyContent:'space-around',
         flexDirection: 'row',
         alignContent:'center',
+        
     },
     buttonContainer1: {
         height:250,
@@ -131,6 +132,7 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         flexDirection: 'column',
         alignItems:'center',
+        
     },
     buttonContainer2: {
         height:250,
