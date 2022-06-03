@@ -15,6 +15,8 @@ import Navigator from './roots/homeStack';
 import Shop1Menu from './Screens/Shop1Menu';
 import Shop2Menu from './Screens/Shop2Menu';
 import Edit from './Screens/Edit';
+import Shop1CheckOut from './Screens/Shop1CheckOut';
+import Shop2CheckOut from './Screens/Shop2CheckOut';
 
 const Stack = createNativeStackNavigator();
 
@@ -35,9 +37,11 @@ const App = () => {
       <Stack.Screen name="Chat" component={Chat} options={{ title: 'Chat' }}/>
       <Stack.Screen name="List" component={List} options={{ title: 'List' }}/>
       <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="Edit" component={Edit} />
       <Stack.Screen name="Shop1Menu" component={Shop1Menu} options={{ title: 'Menu: Laundry Shop 1' }} />
       <Stack.Screen name="Shop2Menu" component={Shop2Menu} options={{ title: 'Menu: Laundry Shop 2' }} />
-      <Stack.Screen name="Edit" component={Edit} />
+      <Stack.Screen name="Shop1CheckOut" component={Shop1CheckOut} options={{ title: 'Checkout1' }} />
+      <Stack.Screen name="Shop2CheckOut" component={Shop2CheckOut} options={{ title: 'Checkout2' }} />
       
       
     </Stack.Navigator>

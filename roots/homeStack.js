@@ -10,6 +10,9 @@ import Tabs from "../navigation/tabs";
 import { NavigationContainer, StackActions } from "@react-navigation/native";
 import Shop1Menu from "../Screens/Shop1Menu";
 import Edit from "../Screens/Edit";
+import Shop2Menu from "../Screens/Shop2Menu";
+import Shop1CheckOut from "../Screens/Shop1CheckOut";
+import Shop2CheckOut from "../Screens/Shop2CheckOut";
 
 const Stack = createStackNavigator ({
       Home:Home,
@@ -26,8 +29,11 @@ const Stack = createStackNavigator ({
       <Stack.Screen name="Chat" component={Chat} />
       <Stack.Screen name="List" component={List}/>
       <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="Shop1Menu" component={Shop1Menu} />
       <Stack.Screen name="Edit" component={Edit} />
+      <Stack.Screen name="Shop1Menu" component={Shop1Menu} />
+      <Stack.Screen name="Shop2Menu" component={Shop2Menu} />
+      <Stack.Screen name="Shop1CheckOut" component={Shop1CheckOut} />
+      <Stack.Screen name="Shop2CheckOut" component={Shop2CheckOut} />
      
 
 </StackActions.Navigator>
