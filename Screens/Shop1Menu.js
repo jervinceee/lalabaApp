@@ -9,16 +9,11 @@ import {
 } from "react-native";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import Bubble from '../assets/icons/bubble.png'
+import Bubble from '../assets/icons/bubble.png';
 
-
-
-
-const Shop1Menu = () => {
+const Shop1Menu = ({navigation}) => {
     return (
-        <ScrollView style={{
-            backgroundColor:'white',
-        }}>
+        <ScrollView>
             <View>
                 <View style={styles.schedule}>
                     <Text style={{
@@ -443,48 +438,6 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         alignItems:'center',
         marginTop: 10,
-        
-    },
-    dropbyButton1:{
-        backgroundColor:'#F6F6F6',
-        height:30,
-        width: 80,
-        borderRadius:15,
-        alignContent:'center',
-        justifyContent:'center',
-        alignItems:'center',
-        marginTop: 10,
-        
-    },
-    calendar1:{
-        backgroundColor:'#F6F6F6',
-        alignContent:'center',
-        alignSelf:'center',
-        justifyContent:'center',
-        alignItems:'center',
-        height:70,
-        width:300,
-        marginTop:20,
-        borderRadius:35,
-        flexWrap:'wrap',
-        textAlign:'center',
-    },
-    buttonContainer2:{
-        marginHorizontal:20,
-        justifyContent:'space-between',
-        flexDirection:'row',
-        marginTop:10,
-    },
-    pickupButton2: {
-        backgroundColor:'#F6F6F6',
-        height:30,
-        width: 80,
-        borderRadius:15,
-        alignContent:'center',
-        justifyContent:'center',
-        alignItems:'center',
-        marginTop: 10,
-        
     },
     dropbyButton2:{
         backgroundColor:'#F6F6F6',
@@ -536,14 +489,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginBottom:20,
    }
-
-
-
-
-
-
-
-
 
 
 })
