@@ -11,6 +11,9 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Bubble from '../assets/icons/bubble.png';
 
+
+
+
 const Shop1Menu = ({navigation}) => {
     return (
         <ScrollView>
@@ -413,6 +416,28 @@ const Shop1Menu = ({navigation}) => {
                                 </Text>
                             </View>
                         </TouchableOpacity>
+                        <TouchableOpacity onPress={()=> navigation.navigate('Shop1CheckOut')}>
+                            <View style={styles.bookButton}>
+                                <Text style={{
+                                    fontSize:25,
+                                    fontWeight:'bold',
+                                    color: 'white',
+                                }}>
+                                    Book
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={()=> navigation.navigate('Shop1CheckOut')}>
+                            <View style={styles.bookButton}>
+                                <Text style={{
+                                    fontSize:25,
+                                    fontWeight:'bold',
+                                    color: 'white',
+                                }}>
+                                    Book
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
                 </View>
             </View>
         </ScrollView>
@@ -489,6 +514,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginBottom:20,
    }
+
+
+
+
+
+
+
+
 
 
 })
