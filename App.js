@@ -40,8 +40,8 @@ const App = () => {
       <Stack.Screen name="Edit" component={Edit} />
       <Stack.Screen name="Shop1Menu" component={Shop1Menu} options={{ title: 'Menu: Laundry Shop 1' }} />
       <Stack.Screen name="Shop2Menu" component={Shop2Menu} options={{ title: 'Menu: Laundry Shop 2' }} />
-      <Stack.Screen name="Shop1CheckOut" component={Shop1CheckOut} options={{ title: 'Checkout1' }} />
-      <Stack.Screen name="Shop2CheckOut" component={Shop2CheckOut} options={{ title: 'Checkout2' }} />
+      <Stack.Screen name="Shop1CheckOut" component={Shop1CheckOut} options={{ title: 'Summary' }} />
+      <Stack.Screen name="Shop2CheckOut" component={Shop2CheckOut} options={{ title: 'Summary' }} />
       
       
     </Stack.Navigator>
