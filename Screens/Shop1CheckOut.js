@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { color } from 'react-native-reanimated';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
+import Gcash from '../assets/icons/Gcash.png';
 
 const Shop1CheckOut = ({navigation}) => {
   return (
@@ -81,7 +81,7 @@ const Shop1CheckOut = ({navigation}) => {
                   color:'black'
                   }}
                 >
-                  presyo
+                  Presyo
                 </Text>
               </View>
               <Text style={{
@@ -140,9 +140,48 @@ const Shop1CheckOut = ({navigation}) => {
               Mode of payment:
             </Text>
             <View style={styles.logoContainer}>
+              <View style={styles.cashOnDelivery}>
+                <Text style={{
+                    color:'white',
+                    fontWeight:'800', 
+                  }}
+                >
+                    Cash On Delivery
+                </Text>
+              </View>
+                  <Image style={styles.img} source={Gcash}/>
             </View>
+        </View>
+      </View>
+      <View style={styles.codReminderShape}>
+        <View style={styles.codReminderContainer}>
+          <Text style={{
+            fontSize:20,
+            color:'black',
+            }}
+          >
+            Cash on delivery reminders:
+          </Text>
+          <Text style={{
+            fontSize:15,
+            color:'black',
+            }}
+          >
+            As much as possible please use exact amount {'\n'} 
+            If using large bills please indicate the amount here.
+          </Text>
+          <View style={styles.cashInput}>
+            <Text style={{
+              color:'black',
+              top:10,
+              left:10,
+              }}
+            > 
+              PHP |
+            </Text>
           </View>
         </View>
+      </View>
     </ScrollView>
     
   )
@@ -154,7 +193,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   shapeContainer: {
-    height:310,
+    height:350,
     width: '95%',
     alignSelf:'center',
     backgroundColor: 'red',
@@ -168,7 +207,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   paymentShape:{
-    height:200,
+    height:175,
     width:'95%',
     backgroundColor:'powderblue',
     margin:10,
@@ -176,8 +215,47 @@ const styles = StyleSheet.create({
   },
   paymentContainer:{
     margin:15,
+  },
+  logoContainer: {
+    height:100,
+    width: '95%',
+    flexDirection:'row',
+    marginTop:10,
+    justifyContent:'space-around',
 
   },
+  cashOnDelivery:{
+    height:75,
+    width:75,
+    backgroundColor: 'blue',
+    borderRadius:20,
+    alignItems:'center',
+    justifyContent:'center',
+  },
+  img: {
+    height:75,
+    width: 75,
+  },
+  codReminderShape:{
+    height:150,
+    width:'95%',
+    backgroundColor:'lightblue',
+    margin:10,
+    borderRadius:20,
+  },
+  codReminderContainer: {
+    margin:15,
+  },
+  cashInput: {
+    top:10,
+    height:40,
+    width:300,
+    borderRadius:15,
+    backgroundColor:'gray',
+    alignSelf:'center',
+    alignContent:'center'
+  },
+
 }
 )
 export default Shop1CheckOut;
