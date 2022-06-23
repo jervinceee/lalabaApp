@@ -6,12 +6,12 @@ import {
     StyleSheet,
     ScrollView,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    CheckBox,
 } from "react-native";
-import { color } from 'react-native-reanimated';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import Gcash from '../assets/icons/Gcash.png';
-
+import qr1 from '../assets/image/qr1.png';
+import CheckBox from '@react-native-community/checkbox';
 const Shop1CheckOut = ({navigation}) => {
   return (
     <ScrollView>
@@ -149,12 +149,12 @@ const Shop1CheckOut = ({navigation}) => {
                     Cash On Delivery
                 </Text>
               </View>
-                  <Image style={styles.img} source={Gcash}/>
+              <Image style={styles.img} source={Gcash}/>
             </View>
         </View>
       </View>
       <View style={styles.codReminderShape}>
-        <View style={styles.codReminderContainer}>
+        <View name='codReminder' style={styles.codReminderContainer}>
           <Text style={{
             fontSize:20,
             color:'black',
@@ -182,6 +182,52 @@ const Shop1CheckOut = ({navigation}) => {
           </View>
         </View>
       </View>
+      <View style={styles.gcashReminderShape}>
+        <View style={styles.gcashReminderContainer}>
+        <Text style={{
+            color:'black',
+            fontSize:20,
+          }}
+        >
+          gcash Reminder
+        </Text>
+        </View>
+        <View style={styles.gcashContent}>
+          <View style={styles.circle}>
+          </View>
+          <Text>
+          Please wait the laundry personel to confirm the total amount {'\n'}before sending the payment
+          </Text>
+        </View>
+        <View style={styles.gcashContent}>
+          <View style={styles.circle}>
+          </View>
+          <Text>
+            Message the screenshot of Gcash reciept before the {'\n'}delivery schedule
+          </Text>
+        </View>
+      </View>
+      <View>
+        <Image source={qr1} style={{ height:300, width:300, alignSelf:'center', marginBottom:20}} />
+      </View> 
+      <TouchableOpacity onPress={()=> navigation.navigate('Shop1CheckOut')}>
+        <View style={styles.bookButton}>
+            <Text style={{
+                fontSize:25,
+                fontWeight:'bold',
+                color: 'white',
+            }}>
+                Book
+            </Text>
+        </View>
+        </TouchableOpacity>
+        <View style={styles.termsNCondition}>
+        <CheckBox
+          value={isSelected}
+          onValueChange={setSelection}
+          style={styles.checkbox}
+        />
+        </View>
     </ScrollView>
     
   )
@@ -207,14 +253,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   paymentShape:{
+    alignSelf:'center',
     height:175,
     width:'95%',
     backgroundColor:'powderblue',
-    margin:10,
+    margin:20,
     borderRadius:20,
   },
   paymentContainer:{
-    margin:15,
+    margin:20,
   },
   logoContainer: {
     height:100,
@@ -222,7 +269,6 @@ const styles = StyleSheet.create({
     flexDirection:'row',
     marginTop:10,
     justifyContent:'space-around',
-
   },
   cashOnDelivery:{
     height:75,
@@ -239,8 +285,9 @@ const styles = StyleSheet.create({
   codReminderShape:{
     height:150,
     width:'95%',
+    alignSelf:'center',
     backgroundColor:'lightblue',
-    margin:10,
+    marginBottom:20,
     borderRadius:20,
   },
   codReminderContainer: {
@@ -255,7 +302,40 @@ const styles = StyleSheet.create({
     alignSelf:'center',
     alignContent:'center'
   },
-
+  gcashReminderShape: {
+    height:220,
+    width:'95%',
+    backgroundColor:'gray',
+    alignSelf:'center',
+    borderRadius:20,
+    marginBottom:20
+  },
+  gcashReminderContainer: {
+    margin:15,
+  },
+  gcashContent: {
+    flexDirection: 'row',
+    margin:5
+  },
+  circle: {
+    left:10,
+    height:20,
+    width:20,
+    backgroundColor:'blue',
+    borderRadius: 10,
+    marginRight:15,
+  },
+  bookButton:{
+    backgroundColor: '#01BCE4',
+    borderRadius: 20,
+    height: 60,
+    width:'95%',
+    alignItems:'center',
+    alignContent:'center',
+    justifyContent: 'center',
+    marginBottom:20,
+    alignSelf:'center',
+}
 }
 )
 export default Shop1CheckOut;
