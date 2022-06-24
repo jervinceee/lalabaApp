@@ -15,18 +15,11 @@ import qr1 from '../assets/image/qr1.png';
 
 
 const Shop1CheckOut = ({navigation}) => {
-  const [shouldShow1, setShouldShow1] = useState('');
-  const [shouldShow2, setShouldShow2] = useState('');
-  useEffect(() => {
-    if (shouldShow1 === true){
-      shouldShow2 === false
-    } else {
-      shouldShow1 === false
-    }
-  },);
-    
+  const [shouldShow1, setShouldShow1] = useState(false);
+  const [shouldShow2, setShouldShow2] = useState(false);  
+
   return (
-    <ScrollView>
+    <ScrollView style={{backgroundColor:'#01BCE4'}}>
       <View style={styles.header}>
         <Text style={{
           fontSize: 45,
@@ -154,8 +147,8 @@ const Shop1CheckOut = ({navigation}) => {
             
               <View style={styles.logoContainer}>
 
-              <TouchableOpacity onPress={() => setShouldShow1(!shouldShow1)}>
-                <View style={styles.cashOnDelivery}>
+              <TouchableOpacity onPress={() => {setShouldShow1(!shouldShow1 ), setShouldShow2(shouldShow2 === '')}}>
+                <View  style={styles.cashOnDelivery}>
                   <Text style={{
                       color:'white',
                       fontWeight:'800', 
@@ -165,19 +158,20 @@ const Shop1CheckOut = ({navigation}) => {
                   </Text>
                 </View>
                 </TouchableOpacity> 
-                <TouchableOpacity onPress={() => setShouldShow2(!shouldShow2)}>
-                <Image style={styles.img} source={Gcash}/>
+                <TouchableOpacity onPress={() => {setShouldShow2(!shouldShow2), setShouldShow1(shouldShow1 === '')}}>
+                <Image style={styles.gcashLogo} source={Gcash}/>
                 </TouchableOpacity>
               </View>
         </View>
       </View>
-      {!shouldShow1 ?
+      {shouldShow1 ?
         (
-      <View style={styles.codReminderShape}>
+      <View  name='codReminder' style={styles.codReminderShape}>
         <View style={styles.codReminderContainer}>
           <Text style={{
             fontSize:20,
             color:'black',
+            fontWeight:'bold',
             }}
           >
             Cash on delivery reminders:
@@ -190,7 +184,7 @@ const Shop1CheckOut = ({navigation}) => {
             As much as possible please use exact amount {'\n'} 
             If using large bills please indicate the amount here.
           </Text>
-          <View style={styles.cashInput}>
+          <View style={styles.cashInputShape}>
             <Text style={{
               color:'black',
               top:10,
@@ -201,26 +195,38 @@ const Shop1CheckOut = ({navigation}) => {
             </Text>
           </View>
         </View>
+        <TouchableOpacity onPress={()=> navigation.navigate('Home')}>
+            <View style={styles.bookButton}>
+              <Text style={{
+                fontSize:25,
+                fontWeight:'bold',
+                color: 'white',
+                }}
+              >
+                Book
+              </Text>
+          </View>
+        </TouchableOpacity>
       </View>
-        ):null}
-
-        {!shouldShow2 ? 
+        ) : null }
+        {shouldShow2 ? 
           (
-          <><View style={styles.gcashReminderShape}>
+          <><View name='gcashReminder' style={styles.gcashReminderShape}>
             <View style={styles.gcashReminderContainer}>
               <Text style={{
                 color: 'black',
                 fontSize: 20,
+                fontWeight:'bold',
               }}
               >
-                gcash Reminder
+                Gcash Reminder
               </Text>
             </View>
             <View style={styles.gcashContent}>
               <View style={styles.circle}>
               </View>
               <Text>
-                Please wait the laundry personel to confirm the total amount {'\n'}before sending the payment
+                Please wait the laundry personel to confirm the total  {'\n'}amount before sending the payment
               </Text>
             </View>
             <View style={styles.gcashContent}>
@@ -230,21 +236,25 @@ const Shop1CheckOut = ({navigation}) => {
                 Message the screenshot of Gcash reciept before the {'\n'}delivery schedule
               </Text>
             </View>
-          </View><View>
-              <Image source={qr1} style={{ height: 300, width: 300, alignSelf: 'center', marginBottom: 20 }} />
-            </View></> 
-      ):null}
-      <TouchableOpacity onPress={()=> navigation.navigate('Home')}>
-        <View style={styles.bookButton}>
-            <Text style={{
+            <View>
+              <Image source={qr1} style={styles.qrLogo} />
+            </View>
+            <TouchableOpacity onPress={()=> navigation.navigate('Home')}>
+            <View style={styles.bookButton}>
+              <Text style={{
                 fontSize:25,
                 fontWeight:'bold',
                 color: 'white',
-            }}>
+                }}
+              >
                 Book
-            </Text>
-        </View>
+              </Text>
+          </View>
         </TouchableOpacity>
+          </View>
+         
+            </> 
+      ): null }
         
     </ScrollView>
     
@@ -253,14 +263,16 @@ const Shop1CheckOut = ({navigation}) => {
 
 const styles = StyleSheet.create({
   header: {
+    flex:1,
     alignItems: 'center',
     marginTop: 20,
   },
   shapeContainer: {
+    flex:1,
     height:350,
     width: '95%',
     alignSelf:'center',
-    backgroundColor: 'red',
+    backgroundColor: 'white',
     borderRadius:20,
   },
   pricingContainer: {
@@ -271,10 +283,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   paymentShape:{
+    flex: 1,
     alignSelf:'center',
     height:175,
     width:'95%',
-    backgroundColor:'powderblue',
+    backgroundColor:'white',
     margin:20,
     borderRadius:20,
   },
@@ -296,34 +309,37 @@ const styles = StyleSheet.create({
     alignItems:'center',
     justifyContent:'center',
   },
-  img: {
+  gcashLogo: {
     height:75,
     width: 75,
   },
   codReminderShape:{
-    height:150,
+    flex:1,
+    height:250,
     width:'95%',
     alignSelf:'center',
-    backgroundColor:'lightblue',
+    backgroundColor:'white',
     marginBottom:20,
     borderRadius:20,
   },
   codReminderContainer: {
     margin:15,
   },
-  cashInput: {
-    top:10,
+  cashInputShape: {
+    marginTop:30,
+    marginBottom:10,
     height:40,
     width:300,
     borderRadius:15,
-    backgroundColor:'gray',
+    backgroundColor:'#F6F6F6',
     alignSelf:'center',
     alignContent:'center'
   },
   gcashReminderShape: {
-    height:220,
+    flex:1,
+    height:550,
     width:'95%',
-    backgroundColor:'gray',
+    backgroundColor:'white',
     alignSelf:'center',
     borderRadius:20,
     marginBottom:20
@@ -337,11 +353,19 @@ const styles = StyleSheet.create({
   },
   circle: {
     left:10,
-    height:20,
-    width:20,
-    backgroundColor:'blue',
-    borderRadius: 10,
+    height:30,
+    width:30,
+    backgroundColor:'#01BCE4',
+    borderRadius: 15,
     marginRight:15,
+  },
+  qrLogo: { 
+    marginTop:10,
+    height: 300,
+    width: 300,
+    alignSelf: 'center',
+    marginBottom: 20,
+    borderRadius:20,
   },
   bookButton:{
     backgroundColor: '#01BCE4',
