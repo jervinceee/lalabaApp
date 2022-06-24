@@ -1,18 +1,30 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 import {
     View,
     Text,
-    Button,
     StyleSheet,
     ScrollView,
     Image,
     TouchableOpacity,
-    CheckBox,
 } from "react-native";
 import Gcash from '../assets/icons/Gcash.png';
 import qr1 from '../assets/image/qr1.png';
-import CheckBox from '@react-native-community/checkbox';
+
+
+
+
 const Shop1CheckOut = ({navigation}) => {
+  const [shouldShow1, setShouldShow1] = useState('');
+  const [shouldShow2, setShouldShow2] = useState('');
+  useEffect(() => {
+    if (shouldShow1 === true){
+      shouldShow2 === false
+    } else {
+      shouldShow1 === false
+    }
+  },);
+    
   return (
     <ScrollView>
       <View style={styles.header}>
@@ -139,22 +151,30 @@ const Shop1CheckOut = ({navigation}) => {
             >
               Mode of payment:
             </Text>
-            <View style={styles.logoContainer}>
-              <View style={styles.cashOnDelivery}>
-                <Text style={{
-                    color:'white',
-                    fontWeight:'800', 
-                  }}
-                >
-                    Cash On Delivery
-                </Text>
+            
+              <View style={styles.logoContainer}>
+
+              <TouchableOpacity onPress={() => setShouldShow1(!shouldShow1)}>
+                <View style={styles.cashOnDelivery}>
+                  <Text style={{
+                      color:'white',
+                      fontWeight:'800', 
+                    }}
+                  >
+                      Cash On Delivery
+                  </Text>
+                </View>
+                </TouchableOpacity> 
+                <TouchableOpacity onPress={() => setShouldShow2(!shouldShow2)}>
+                <Image style={styles.img} source={Gcash}/>
+                </TouchableOpacity>
               </View>
-              <Image style={styles.img} source={Gcash}/>
-            </View>
         </View>
       </View>
+      {!shouldShow1 ?
+        (
       <View style={styles.codReminderShape}>
-        <View name='codReminder' style={styles.codReminderContainer}>
+        <View style={styles.codReminderContainer}>
           <Text style={{
             fontSize:20,
             color:'black',
@@ -182,35 +202,39 @@ const Shop1CheckOut = ({navigation}) => {
           </View>
         </View>
       </View>
-      <View style={styles.gcashReminderShape}>
-        <View style={styles.gcashReminderContainer}>
-        <Text style={{
-            color:'black',
-            fontSize:20,
-          }}
-        >
-          gcash Reminder
-        </Text>
-        </View>
-        <View style={styles.gcashContent}>
-          <View style={styles.circle}>
-          </View>
-          <Text>
-          Please wait the laundry personel to confirm the total amount {'\n'}before sending the payment
-          </Text>
-        </View>
-        <View style={styles.gcashContent}>
-          <View style={styles.circle}>
-          </View>
-          <Text>
-            Message the screenshot of Gcash reciept before the {'\n'}delivery schedule
-          </Text>
-        </View>
-      </View>
-      <View>
-        <Image source={qr1} style={{ height:300, width:300, alignSelf:'center', marginBottom:20}} />
-      </View> 
-      <TouchableOpacity onPress={()=> navigation.navigate('Shop1CheckOut')}>
+        ):null}
+
+        {!shouldShow2 ? 
+          (
+          <><View style={styles.gcashReminderShape}>
+            <View style={styles.gcashReminderContainer}>
+              <Text style={{
+                color: 'black',
+                fontSize: 20,
+              }}
+              >
+                gcash Reminder
+              </Text>
+            </View>
+            <View style={styles.gcashContent}>
+              <View style={styles.circle}>
+              </View>
+              <Text>
+                Please wait the laundry personel to confirm the total amount {'\n'}before sending the payment
+              </Text>
+            </View>
+            <View style={styles.gcashContent}>
+              <View style={styles.circle}>
+              </View>
+              <Text>
+                Message the screenshot of Gcash reciept before the {'\n'}delivery schedule
+              </Text>
+            </View>
+          </View><View>
+              <Image source={qr1} style={{ height: 300, width: 300, alignSelf: 'center', marginBottom: 20 }} />
+            </View></> 
+      ):null}
+      <TouchableOpacity onPress={()=> navigation.navigate('Home')}>
         <View style={styles.bookButton}>
             <Text style={{
                 fontSize:25,
@@ -221,13 +245,7 @@ const Shop1CheckOut = ({navigation}) => {
             </Text>
         </View>
         </TouchableOpacity>
-        <View style={styles.termsNCondition}>
-        <CheckBox
-          value={isSelected}
-          onValueChange={setSelection}
-          style={styles.checkbox}
-        />
-        </View>
+        
     </ScrollView>
     
   )
@@ -335,7 +353,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom:20,
     alignSelf:'center',
-}
+  },
+  
+
 }
 )
 export default Shop1CheckOut;
