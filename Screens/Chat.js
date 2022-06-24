@@ -1,6 +1,7 @@
 import React from 'react'
 import {
   View,
+  Button,
   Image,
   TouchableOpacity,
   Text,
@@ -16,6 +17,9 @@ const Chat = ({navigation}) => {
         }}>
         This is Chat
     </Text>
+    <Button title="Shop1"
+            onPress={() => navigation.navigate('Shop1')}
+    />
 </View>
   )
   

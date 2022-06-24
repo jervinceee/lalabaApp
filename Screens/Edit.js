@@ -8,23 +8,13 @@ import {
     ScrollView,
     TouchableOpacity
 } from "react-native";
-import bubble from "../assets/icons/bubble.png"
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const Profile = ({navigation}) => {
+const Edit = ({navigation}) => {
     return (
         <ScrollView style={{backgroundColor: '#01BCE4'}}>
            <View>
                 <View style={styles.headerContainer}>
-                    <TouchableOpacity onPress={() => navigation.navigate('Edit')}>
-                        <Text style={{
-                            color: 'white',
-                            fontSize: 25,
-                            fontWeight: '500',
-                        }}>
-                        Edit
-                        </Text>
-                    </TouchableOpacity>
                 </View>
                 <View style={styles.mainInfoContainer}>
                     <View style={styles.subInfoContainer}>
@@ -50,7 +40,10 @@ const Profile = ({navigation}) => {
                                     </Text>
                             </View>
                                 <View style={styles.addressShape}>
-                                    <Text>
+                                    <Text style={{
+                                      color:'#D3D3D3',
+                                      fontSize: 15,
+                                    }}>
                                         input na magseset ng item name or key or id para auto na ma lalagay dito
                                     </Text>
                                 </View>
@@ -68,10 +61,13 @@ const Profile = ({navigation}) => {
                                     </Text>
                             </View>
                             <View style={styles.numberShape}>
-                                <Text>
+                                <Text style={{
+                                      color:'#D3D3D3',
+                                      fontSize: 15,
+                                    }}>
                                 input na magseset ng item name or key or id para auto na ma lalagay dito
                                 </Text>
-                                 </View>
+                            </View>
                         </View>
                         <View style={styles.emailContainer}>
                             <View style={styles.emailTitle}>
@@ -85,20 +81,32 @@ const Profile = ({navigation}) => {
                                     </Text>
                             </View>
                             <View style={styles.emailShape}>
-                                <Text>
+                                <Text style={{
+                                      color:'#D3D3D3',
+                                      fontSize: 15,
+                                    }}>
                                 input na magseset ng item name or key or id para auto na ma lalagay dito
                                 </Text>
-                                 </View>
+                            </View>
                         </View>
+                        <TouchableOpacity onPress={()=> navigation.navigate('Profile')}>
+                            <View style={styles.saveButton}>
+                                <Text style={{
+                                    fontSize:25,
+                                    fontWeight:'bold',
+                                    color: 'white',
+                                }}>
+                                    Save
+                                </Text>
 
+                            </View>
+                        </TouchableOpacity>
                     </View>
                 </View>
                 <View style={styles.mainShapeContainer}>
                     <View style={styles.shapeContainer}>
                         <View style={styles.imgContainer}>
-                            <Icon name='person' color={'#01BCE4'} size={170} 
-                            onPress={() => navigation.navigate('Profile')}
-                            />
+                            <Icon name='person' color={'#01BCE4'} size={170} />
                         </View>
                     </View>
                 </View>
@@ -197,6 +205,7 @@ const styles = StyleSheet.create({
     },
     emailContainer: {
         paddingTop: 20,
+        paddingBottom: 20,
     },
     emailTitle: {
         flexDirection:'row',
@@ -214,6 +223,16 @@ const styles = StyleSheet.create({
         alignSelf:'center',
         paddingHorizontal:15,
     },
+    saveButton: {
+      backgroundColor: '#01BCE4',
+      borderRadius: 20,
+      height: 60,
+      width:'70%',
+      alignItems:'center',
+      alignContent:'center',
+      justifyContent: 'center',
+      alignSelf:'center',
+  },
 
 })
-export default Profile;
+export default Edit;
