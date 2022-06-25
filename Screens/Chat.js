@@ -1,14 +1,30 @@
-import React from 'react'
+import React from 'react';
+import { useState, useEffect } from 'react';
 import {
-  View,
-  Button,
-  Image,
-  TouchableOpacity,
-  Text,
-  StyleSheet
-} from 'react-native';
+    View,
+    Text,
+    StyleSheet,
+    ScrollView,
+    Image,
+    TouchableOpacity,
+    Dimensions,
+} from "react-native";
+
+const window = Dimensions.get("window");
+const screen = Dimensions.get("screen");
 
 const Chat = ({navigation}) => { 
+  const [dimensions, setDimensions] = useState({ window, screen });
+
+  useEffect(() => {
+    const subscription = Dimensions.addEventListener(
+      "change",
+      ({ window, screen }) => {
+        setDimensions({ window, screen });
+      }
+    );
+    return () => subscription?.remove();
+  });
   return (
     <View style={styles.container}>
     <Text style={{

@@ -1,16 +1,18 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
     View,
     Text,
-    Button,
     StyleSheet,
     ScrollView,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    Dimensions,
 } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Bubble from '../assets/icons/bubble.png';
+
+const window = Dimensions.get("window");
+const screen = Dimensions.get("screen");
 
 const data = [
     {label: "pick-up", value: "pick-up"}, 
@@ -20,11 +22,12 @@ const data = [
     const Chip = ({isSelected, label, selectedColor, defaultColor,  onPress}) => {
         return (
           <TouchableOpacity onPress={onPress} >
-            <View style={{borderRadius:5, height:35, width:100, backgroundColor : isSelected ? selectedColor : defaultColor }} > 
+            <View style={{height:35, width:100, backgroundColor : isSelected ? selectedColor : defaultColor }} > 
               <Text style={{
-                    fontSize: 30,
+                    fontSize: 25,
                     fontWeight: '800',
                     color:'black',
+                    alignSelf:'center',
                     }}
                 >
                     {label}
@@ -39,6 +42,18 @@ const Shop1Menu = ({navigation}) => {
     const switchValue = (text) => {
       setText(text);
     }
+
+    const [dimensions, setDimensions] = useState({ window, screen });
+
+  useEffect(() => {
+    const subscription = Dimensions.addEventListener(
+      "change",
+      ({ window, screen }) => {
+        setDimensions({ window, screen });
+      }
+    );
+    return () => subscription?.remove();
+  });
 
     return (
         <ScrollView style={{backgroundColor:'white',}}>
@@ -56,7 +71,7 @@ const Shop1Menu = ({navigation}) => {
                         {
                             data.map((item, index) => (
                             <React.Fragment key={index}> 
-                                <Chip label={item.label} onPress={() => switchValue(item.value)} isSelected={text === item.value} selectedColor={'#01BCE4'}  />
+                                <Chip label={item.label} onPress={() => switchValue(item.value)} isSelected={text === item.value} selectedColor={'red'} />
                             </React.Fragment>
                             ))
                         }

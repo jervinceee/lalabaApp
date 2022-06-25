@@ -7,14 +7,27 @@ import {
     ScrollView,
     Image,
     TouchableOpacity,
+    Dimensions,
 } from "react-native";
 import Gcash from '../assets/icons/Gcash.png';
 import qr1 from '../assets/image/qr1.png';
 
-
+const window = Dimensions.get("window");
+const screen = Dimensions.get("screen");
 
 
 const Shop1CheckOut = ({navigation}) => {
+  const [dimensions, setDimensions] = useState({ window, screen });
+
+  useEffect(() => {
+    const subscription = Dimensions.addEventListener(
+      "change",
+      ({ window, screen }) => {
+        setDimensions({ window, screen });
+      }
+    );
+    return () => subscription?.remove();
+  });
   const [shouldShow1, setShouldShow1] = useState(false);
   const [shouldShow2, setShouldShow2] = useState(false);  
 
@@ -263,12 +276,12 @@ const Shop1CheckOut = ({navigation}) => {
 
 const styles = StyleSheet.create({
   header: {
-    flex:1,
+    
     alignItems: 'center',
     marginTop: 20,
   },
   shapeContainer: {
-    flex:1,
+    
     height:350,
     width: '95%',
     alignSelf:'center',
@@ -283,7 +296,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   paymentShape:{
-    flex: 1,
+    
     alignSelf:'center',
     height:175,
     width:'95%',
@@ -314,7 +327,6 @@ const styles = StyleSheet.create({
     width: 75,
   },
   codReminderShape:{
-    flex:1,
     height:250,
     width:'95%',
     alignSelf:'center',
@@ -336,7 +348,7 @@ const styles = StyleSheet.create({
     alignContent:'center'
   },
   gcashReminderShape: {
-    flex:1,
+  
     height:550,
     width:'95%',
     backgroundColor:'white',
