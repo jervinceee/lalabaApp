@@ -22,7 +22,7 @@ const Stack = createNativeStackNavigator();
 
 <Navigator/>
 const App = () => {
-  return (
+  return ( 
     <NavigationContainer>
     
     <Stack.Navigator 
@@ -42,8 +42,8 @@ const App = () => {
       <Stack.Screen name="Shop2Menu" component={Shop2Menu} options={{ title: 'Menu: Laundry Shop 2' }} />
       <Stack.Screen name="Shop1CheckOut" component={Shop1CheckOut} options={{ title: 'Summary' }} />
       <Stack.Screen name="Shop2CheckOut" component={Shop2CheckOut} options={{ title: 'Summary' }} />
-      
-      
+    
+    
     </Stack.Navigator>
   </NavigationContainer>
   )
