@@ -1,5 +1,3 @@
-import { createStackNavigator } from "react-navigation-stack";
-import { createAppContainer } from "react-navigation";
 import Home  from "../Screens/Home";
 import Chat from "../Screens/Chat";
 import Profile from "../Screens/Profile";
@@ -7,37 +5,79 @@ import List from "../Screens/List";
 import Shop1 from "../Screens/Shop1";
 import Shop2 from "../Screens/Shop2";
 import Tabs from "../navigation/tabs";
-import { NavigationContainer, StackActions } from "@react-navigation/native";
-import Shop1Menu from "../Screens/Shop1Menu";
 import Edit from "../Screens/Edit";
+import Shop1Menu from "../Screens/Shop1Menu";
 import Shop2Menu from "../Screens/Shop2Menu";
 import Shop1CheckOut from "../Screens/Shop1CheckOut";
 import Shop2CheckOut from "../Screens/Shop2CheckOut";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-const Stack = createStackNavigator ({
-      Home:Home,
-  },
-      {
-          initialRouteName: 'Home'
-      });
+const homeStack = createNativeStackNavigator();
+const HomeFlow = ({navigation}) => {
+    return(
+        <homeStack.Navigator>
+            <homeStack.Screen
+                options={{headerShown:false}}
+                name="Home"
+                component={Home}
+            />
+            <homeStack.Screen
+                options={{headerShown:false}}
+                name="Chat"
+                component={Chat}
+            />
+            <homeStack.Screen
+                options={{headerShown:false}}
+                name="Profile"
+                component={Profile}
+            />
+            <homeStack.Screen
+                options={{headerShown:false}}
+                name="List"
+                component={List}
+            />
+            <homeStack.Screen
+                options={{headerShown:false}}
+                name="Shop1"
+                component={Shop1}
+            />
+            <homeStack.Screen
+                options={{headerShown:false}}
+                name="Shop2"
+                component={Shop2}
+            />
+            <homeStack.Screen
+                options={{headerShown:false}}
+                name="Tabs"
+                component={Tabs}
+            />
+            <homeStack.Screen
+                options={{headerShown:false}}
+                name="Edit"
+                component={Edit}
+            />
+            <homeStack.Screen
+                options={{headerShown:false}}
+                name="Shop1Menu"
+                component={Shop1Menu}
+            />
+            <homeStack.Screen
+                options={{headerShown:false}}
+                name="Shop2Menu"
+                component={Shop2Menu}
+            />
+            <homeStack.Screen
+                options={{headerShown:false}}
+                name="Shop1Checkout"
+                component={Shop1CheckOut}
+            />
+            <homeStack.Screen
+                options={{headerShown:false}}
+                name="Shop2Checkout"
+                component={Shop2CheckOut}
+            />
+        </homeStack.Navigator>
+    )
+}
 
-<NavigationContainer>
-<StackActions.Navigator>
-<Stack.Screen  name="Home" component={Tabs} />
-      <Stack.Screen name="Shop1" component={Shop1} />
-      <Stack.Screen name="Shop2" component={Shop2} />
-      <Stack.Screen name="Chat" component={Chat} />
-      <Stack.Screen name="List" component={List}/>
-      <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="Edit" component={Edit} />
-      <Stack.Screen name="Shop1Menu" component={Shop1Menu} />
-      <Stack.Screen name="Shop2Menu" component={Shop2Menu} />
-      <Stack.Screen name="Shop1CheckOut" component={Shop1CheckOut} />
-      <Stack.Screen name="Shop2CheckOut" component={Shop2CheckOut} />
-     
-
-</StackActions.Navigator>
-</NavigationContainer>
-
-Navigator = createAppContainer(Stack)
-export default Navigator;
+export default HomeFlow;

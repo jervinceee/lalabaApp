@@ -8,11 +8,17 @@ import {
   TouchableOpacity,
   StatusBar,
   TextInput,
+  Alert,
+  Modal,
 } from 'react-native';
 import CheckBox from 'expo-checkbox';
+import {db, auth} from '../core/config'
+import { doc, setDoc, addDoc, collection } from 'firebase/firestore';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { MaterialIcons } from '@expo/vector-icons';
 
 
-const SignUp = () => {
+const SignUp = ({navigation}) => {
 
     const [secure, setSecure] = React.useState(true);
     const [isChecked, setIsChecked] = React.useState(false);
@@ -22,9 +28,20 @@ const SignUp = () => {
     const [nameError, setNameError] = React.useState("initial");
     const [emailError, setEmailError] = React.useState("initial");
     const [passwordError, setPasswordError] = React.useState("initial");
-    const [checkError, setCheckError] = React.useState("initial")
+    const [checkError, setCheckError] = React.useState("initial");
+    const [errorMsg, setErrorMsg] = React.useState("sdadad");
+    const [errorModal, setErrorModal] = React.useState(false);
+    const [successModal, setSuccessModal] = React.useState(false);
 
-    const submitHandler = () => {
+    // const register = async () => {
+    //     try{
+            
+    //     }catch(error){
+    //         console.log(error)
+    //     }
+    // }
+
+    const submitHandler = async () => {
         const emailregex = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/; 
 
         if(name===""){
@@ -56,16 +73,26 @@ const SignUp = () => {
         }
         
         if(passwordError === "" && emailError === ""){
-            console.log("LOGIN INITIATED");
+            console.log("Registered");
             console.log(email, password);
+            createUserWithEmailAndPassword(auth, email, password).then((nUser)=>{
+                console.log(nUser.user.uid);
+                setSuccessModal(true);
+                    setDoc(doc(db,"users",nUser.user.uid),{
+                    userName:name,
+                    age:null,
+                    email:email,
+                    address:"",
+                    phoneNum:"",
+                });
+                
+            }).catch((err)=>{
+                setErrorModal(true);
+                console.log(err.message);
+                setErrorMsg(err.message.slice(22, -2));
+            });
         }
     }
-
-    // TO DO:
-    // 1 regex for email = done
-    // 2 conditions for password = done
-    // 3 login handler = done
-    // 4 regi page
 
     return(
         <View style={styles.container}>
@@ -139,16 +166,74 @@ const SignUp = () => {
                 <TouchableOpacity
                     onPress={submitHandler}
                 >
-                        <Text style={styles.loginBtn}>Log In</Text>
+                        <Text style={styles.loginBtn}>Sign Up</Text>
                 </TouchableOpacity>
 
                 <View style={styles.toRegi}>
-                    <Text>Already have an account?</Text><TouchableOpacity>
+                    <Text>Already have an account?</Text>
+                    <TouchableOpacity onPress={()=>{navigation.navigate('Login')}}>
                         <Text style={styles.toRegiBtn}>Sign In</Text>
                     </TouchableOpacity>
                     <Text style={{marginLeft:-12.5}}>instead.</Text>
                 </View>
             </View>
+
+
+
+
+            {/* MODALS */}
+            {/* error modal */}
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={errorModal}
+                onRequestClose={() => {
+                    Alert.alert("Modal has been closed.");
+                    setErrorModal(!errorModal);
+                }}
+            >
+                <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                    <MaterialIcons name="error" size={100} color="red" />
+                    <Text style={styles.modalText}>Registration failed! {errorMsg}</Text>
+                    <TouchableOpacity
+                        style={[styles.mdlErrBtn, styles.mdlErrBtnClose]}
+                        onPress={() => setErrorModal(!errorModal)}
+                        >
+                        <Text style={styles.textStyle}>Try Again</Text>
+                    </TouchableOpacity>
+                </View>
+                </View>
+            </Modal>
+
+            {/* success modal */}
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={successModal}
+                onRequestClose={() => {
+                    Alert.alert("Modal has been closed.");
+                    setSuccessModal(!successModal);
+                }}
+            >
+                <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                    <MaterialIcons name="check-circle" size={80} color="green" />
+                    <Text style={styles.modalText}>Registration Successful!</Text>
+                    <TouchableOpacity
+                            style={[styles.mdlErrBtn, styles.mdlErrBtnClose]}
+                            onPress={() => {
+                                navigation.navigate('Login')
+                                setSuccessModal(!successModal)
+                            }}
+                        >
+                        <Text style={styles.textStyle}>Proceed to Login</Text>
+                    </TouchableOpacity>
+                </View>
+                </View>
+            </Modal>
+
+
         </View>
     );
 }
@@ -158,13 +243,13 @@ const styles = StyleSheet.create({
       display:'flex',
       backgroundColor: '#fff',
       alignItems:'center',
-      justifyContent:'center'
+      justifyContent:'center',
+      height:'100%'
     },
     appLogo:{
         display:'flex',
         flexDirection:'row',
         alignItems:'center',
-        marginTop:'30%'
     },
     bubbleLeft:{
         transform: [ { scaleX: -1 }]
@@ -260,7 +345,56 @@ const styles = StyleSheet.create({
         color:'red',
         marginLeft:'8%',
         marginTop:'1%'
-    }
+    },
+
+    // modal styles
+    centeredView: {
+        flex: 1,
+        marginTop: 22,
+        justifyContent:'center'
+      },
+      modalView: {
+        height:"30%",
+        width:'80%',
+        display:'flex',
+        backgroundColor: "white",
+        borderRadius: 20,
+        alignSelf:'center',
+        alignItems: "center",
+        justifyContent:'space-evenly',
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+      },
+      mdlErrBtn: {
+        borderRadius: 20,
+        width:'80%',
+        padding: 10,
+        elevation: 2,
+      },
+      mdlErrBtnOpen: {
+        backgroundColor: "#0896B5",
+      },
+      mdlErrBtnClose: {
+        backgroundColor: "#0896B5",
+        height:'20%',
+        display:'flex',
+        justifyContent:'center'
+      },
+      textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
+      },
+      modalText: {
+        fontSize:24,
+        textAlign: "center"
+      }
   });
 
 export default SignUp;

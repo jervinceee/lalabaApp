@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import {
   View,
   Button,
@@ -7,17 +7,32 @@ import {
   StyleSheet,
   TouchableOpacity,
   StatusBar,
-  TextInput
+  TextInput,
+  Modal
 } from 'react-native';
+import { auth, db } from '../core/config';
+import { MaterialIcons } from '@expo/vector-icons';
+import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
 
-
-const Login = () => {
+const Login = ({navigation}) => {
 
     const [secure, setSecure] = React.useState(true);
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [emailError, setEmailError] = React.useState("initial");
     const [passwordError, setPasswordError] = React.useState("initial");
+    const [errorMsg, setErrorMsg] = React.useState("");
+    const [errorModal, setErrorModal] = React.useState(false);
+
+    React.useEffect(()=>{
+        const unsubscribe =  auth.onAuthStateChanged(user=>{
+            if(user){
+                navigation.navigate("HomeFlow")
+            }
+        })
+
+        return unsubscribe;
+    }, [])
 
     const submitHandler = () => {
         console.log(email, password);
@@ -40,15 +55,18 @@ const Login = () => {
         }
         
         if(passwordError === "" && emailError === ""){
-            console.log("LOGIN INITIATED")
+            signInWithEmailAndPassword(auth, email, password).then((credentials)=>{
+                const user = credentials.user;
+                console.log("Logged in with", user.email);
+            }).catch(error=>{
+                setErrorModal(true)
+                setErrorMsg(error.message.slice(22, -2));
+                console.log(error);
+            })
+            //navigation.navigate('HomeFlow')
         }
+        
     }
-
-    // TO DO:
-    // 1 regex for email = done
-    // 2 conditions for password = done
-    // 3 login handler = done
-    // 4 regi page
 
     return(
         <View style={styles.container}>
@@ -104,11 +122,36 @@ const Login = () => {
                 </TouchableOpacity>
 
                 <View style={styles.toRegi}>
-                    <Text>Don't have an account?</Text><TouchableOpacity>
+                    <Text>Don't have an account?</Text>
+                    <TouchableOpacity onPress={()=> {navigation.navigate('SignUp')}}>
                         <Text style={styles.toRegiBtn}>Sign Up</Text>
                     </TouchableOpacity>
                 </View>
             </View>
+
+            {/* error modal */}
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={errorModal}
+                onRequestClose={() => {
+                    Alert.alert("Modal has been closed.");
+                    setErrorModal(!errorModal);
+                }}
+            >
+                <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                    <MaterialIcons name="error" size={100} color="red" />
+                    <Text style={styles.modalText}>Login Failed! {errorMsg}</Text>
+                    <TouchableOpacity
+                        style={[styles.mdlErrBtn, styles.mdlErrBtnClose]}
+                        onPress={() => setErrorModal(!errorModal)}
+                        >
+                        <Text style={styles.textStyle}>Try Again</Text>
+                    </TouchableOpacity>
+                </View>
+                </View>
+            </Modal>
         </View>
     );
 }
@@ -118,13 +161,13 @@ const styles = StyleSheet.create({
       display:'flex',
       backgroundColor: '#fff',
       alignItems:'center',
-      justifyContent:'center'
+      justifyContent:'center',
+      height:'100%'
     },
     appLogo:{
         display:'flex',
         flexDirection:'row',
         alignItems:'center',
-        marginTop:'40%'
     },
     bubbleLeft:{
         transform: [ { scaleX: -1 }]
@@ -201,7 +244,57 @@ const styles = StyleSheet.create({
         color:'red',
         marginLeft:'8%',
         marginTop:'1%'
-    }
+    },
+
+    //modal styles
+    // modal styles
+    centeredView: {
+        flex: 1,
+        marginTop: 22,
+        justifyContent:'center'
+      },
+      modalView: {
+        height:"30%",
+        width:'80%',
+        display:'flex',
+        backgroundColor: "white",
+        borderRadius: 20,
+        alignSelf:'center',
+        alignItems: "center",
+        justifyContent:'space-evenly',
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+      },
+      mdlErrBtn: {
+        borderRadius: 20,
+        width:'80%',
+        padding: 10,
+        elevation: 2,
+      },
+      mdlErrBtnOpen: {
+        backgroundColor: "#0896B5",
+      },
+      mdlErrBtnClose: {
+        backgroundColor: "#0896B5",
+        height:'20%',
+        display:'flex',
+        justifyContent:'center'
+      },
+      textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
+      },
+      modalText: {
+        fontSize:24,
+        textAlign: "center"
+      }
   });
 
 export default Login;

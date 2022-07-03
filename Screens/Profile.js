@@ -10,8 +10,16 @@ import {
 } from "react-native";
 import bubble from "../assets/icons/bubble.png"
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { auth } from '../core/config';
 
 const Profile = ({navigation}) => {
+
+    const signOut = () => {
+        auth.signOut().then(()=>{
+            navigation.navigate("Login");
+        })
+    }
+
     return (
         <ScrollView style={{backgroundColor: '#01BCE4'}}>
            <View>
@@ -86,10 +94,16 @@ const Profile = ({navigation}) => {
                             </View>
                             <View style={styles.emailShape}>
                                 <Text>
-                                input na magseset ng item name or key or id para auto na ma lalagay dito
+                                {auth.currentUser?.email}
                                 </Text>
                                  </View>
                         </View>
+                        
+                        <TouchableOpacity style={styles.signOutBtn} onPress={signOut}>
+                            <Text style={{color:'white', fontSize:24}}>
+                                Sign Out
+                            </Text>
+                        </TouchableOpacity>                
 
                     </View>
                 </View>
@@ -102,6 +116,8 @@ const Profile = ({navigation}) => {
                         </View>
                     </View>
                 </View>
+
+                
             </View>
         </ScrollView>
     )   
@@ -214,6 +230,16 @@ const styles = StyleSheet.create({
         alignSelf:'center',
         paddingHorizontal:15,
     },
-
+    signOutBtn:{
+        marginTop:'5%',
+        height:'10%',
+        backgroundColor:'#0896B5',
+        width:'90%',
+        alignSelf:'center',
+        display:'flex',
+        justifyContent:'center',
+        alignItems:'center',
+        borderRadius:20
+    }
 })
 export default Profile;
