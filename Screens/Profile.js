@@ -6,29 +6,13 @@ import {
     StyleSheet,
     Image,
     ScrollView,
-    TouchableOpacity,
-    StatusBar
+    TouchableOpacity
 } from "react-native";
 import bubble from "../assets/icons/bubble.png"
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { MaterialCommunityIcons } from '@expo/vector-icons'; 
-import { db, auth } from '../core/config';
-import { getDoc, doc } from 'firebase/firestore';
+import { auth } from '../core/config';
 
 const Profile = ({navigation}) => {
-
-    // TO DO:
-    // 1. NEW PROFILE Screen
-    // 2. RENAME PROFILE.JS TO EDITPROFILE.JS
-    // 3. FUNCTIONS
-
-
-    var loggedInId = auth.currentUser.uid;
-    const myDoc = doc(db, "users", loggedInId)
-    const [userName, setUserName] = React.useState("");
-    const [address, setAddress] = React.useState("");
-    const [age, setAge] = React.useState("");
-    const [phoneNum, setPhoneNum] = React.useState("");
 
     const signOut = () => {
         auth.signOut().then(()=>{
@@ -36,24 +20,8 @@ const Profile = ({navigation}) => {
         })
     }
 
-    React.useEffect(()=>{
-
-        getDoc(myDoc).then((snapshot)=>{
-            if(snapshot.exists){
-                setAge(snapshot.data().age);
-                setAddress(snapshot.data().address);
-                setPhoneNum(snapshot.data().phoneNum);
-                setUserName(snapshot.data().userName)
-            }else{
-                console.log("NO DOC FOUND!!")
-            }
-        })
-        
-    },[])
-
     return (
         <ScrollView style={{backgroundColor: '#01BCE4'}}>
-            <StatusBar barStyle="light-content"/>
            <View>
                 <View style={styles.headerContainer}>
                     <TouchableOpacity onPress={() => navigation.navigate('Edit')}>
@@ -69,64 +37,67 @@ const Profile = ({navigation}) => {
                 <View style={styles.mainInfoContainer}>
                     <View style={styles.subInfoContainer}>
                         <View style={styles.nameContainer}>
-                            {
-                                userName != null &&
+                            <Text style={{
+                                color: 'black',
+                                fontSize: 30,
+                                fontWeight: '500',
+                            }}>
+                                Juan Dela Cruz
+                            </Text>
+                        </View>
+                        
+                        <View style={styles.addressContainer}>
+                            <View style={styles.addressTitle}>
+                                <Icon name='place' color={'#01BCE4'} size={50} />
                                 <Text style={{
-                                    color: 'black',
-                                    fontSize: 30,
-                                    fontWeight: '500',
-                                    marginBottom:'5%'
-                                }}>
-                                    {userName}
+                                        fontSize: 25,
+                                        color: 'black',
+                                        fontWeight:'300',
+                                    }}>
+                                    Address
+                                    </Text>
+                            </View>
+                                <View style={styles.addressShape}>
+                                    <Text>
+                                        input na magseset ng item name or key or id para auto na ma lalagay dito
+                                    </Text>
+                                </View>
+                        </View>
+                        
+                        <View style={styles.numberContainer} >
+                            <View style={styles.numberTitle}>
+                                <Icon name='smartphone' color={'#01BCE4'} size={50} />
+                                <Text style={{
+                                        fontSize: 25,
+                                        color: 'black',
+                                        fontWeight:'300',
+                                    }}>
+                                    Number
+                                    </Text>
+                            </View>
+                            <View style={styles.numberShape}>
+                                <Text>
+                                input na magseset ng item name or key or id para auto na ma lalagay dito
                                 </Text>
-                            }
+                                 </View>
                         </View>
-                        
-                        <View style={styles.infoRow}>
-                        <Icon name='place' color={'#01BCE4'} size={50} />
-                            <View style={styles.infoContainer}>
-                                <Text style={styles.infoTitle}>Address</Text>
-                                    {address != null && address != "" ?
-                                        <Text style={styles.infoContent}>{phoneNum}</Text> : 
-                                        <Text style={styles.infoContent}>LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOONG TEXT</Text>
-                                    }
+                        <View style={styles.emailContainer}>
+                            <View style={styles.emailTitle}>
+                                <Icon name='mail-outline' color={'#01BCE4'} size={50} />
+                                <Text style={{
+                                        fontSize: 25,
+                                        color: 'black',
+                                        fontWeight:'300',
+                                    }}>
+                                    Email
+                                    </Text>
                             </View>
+                            <View style={styles.emailShape}>
+                                <Text>
+                                {auth.currentUser?.email}
+                                </Text>
+                                 </View>
                         </View>
-                        
-                        <View style={styles.infoRow}>
-                        <Icon name='smartphone' color={'#01BCE4'} size={50} />
-                            <View style={styles.infoContainer}>
-                                <Text style={styles.infoTitle}>Phone Number</Text>
-                                    {phoneNum != null && phoneNum != "" ?
-                                        <Text style={styles.infoContent}>{phoneNum}</Text> : 
-                                        <Text style={styles.infoContent}>Phone Number not set</Text>
-                                    }
-                            </View>
-                        </View>
-
-                        <View style={styles.infoRow}>
-                        <MaterialCommunityIcons name="baby-face-outline" size={50} color={'#01BCE4'} />
-                            <View style={styles.infoContainer}>
-                                <Text style={styles.infoTitle}>Age</Text>
-                                    {phoneNum != null && phoneNum != "" ?
-                                        <Text style={styles.infoContent}>{age}</Text> : 
-                                        <Text style={styles.infoContent}>Age not set</Text>
-                                    }
-                            </View>
-                        </View>
-
-                        <View style={styles.infoRow}>
-                        <Icon name='mail-outline' color={'#01BCE4'} size={50} />
-                            <View style={styles.infoContainer}>
-                                <Text style={styles.infoTitle}>Email</Text>
-                                    {auth.currentUser.email != null ||auth.currentUser.email != "" ?
-                                        <Text style={styles.infoContent}>{auth.currentUser.email}</Text> : 
-                                        <Text style={styles.infoContent}>Phone Number not set</Text>
-                                    }
-                            </View>
-                        </View>
-
-                        
                         
                         <TouchableOpacity style={styles.signOutBtn} onPress={signOut}>
                             <Text style={{color:'white', fontSize:24}}>
@@ -155,10 +126,11 @@ const Profile = ({navigation}) => {
 const styles = StyleSheet.create({
     headerContainer: {
        left: '85%',
-       marginTop:'10%'
+       paddingBottom: 80,
+       
     },
     mainShapeContainer:{
-        height:150,
+        height:150
     },
     shapeContainer: {
         top: -700,
@@ -186,8 +158,7 @@ const styles = StyleSheet.create({
         backgroundColor:'white',
         paddingTop: 120,
         height: 700,
-        width: '100%',
-        paddingBottom:0
+        width: '100%', 
         //alignSelf:'center',
         //borderRadius: 20,
         //alignContent:'center',
@@ -200,33 +171,75 @@ const styles = StyleSheet.create({
     nameContainer:{
         justifyContent:'center',
         alignSelf:'center',
-    }, 
-    infoRow:{
-        display:'flex',
+    },  
+    addressContainer:{
+        paddingTop: 50,
+       // alignItems:'center'
+    },
+    addressTitle: {
         flexDirection:'row',
         alignItems:'center',
-        width:'85%',
-        height:100,
-        marginLeft:'5%',
-        marginVertical:1
     },
-    infoContainer:{
-        marginLeft:'1%'
-    },  
-    infoTitle:{
-        fontSize:25,
-        fontWeight:'bold'
+    addressShape:{
+        backgroundColor:'#F6F6F6',
+        height:70,
+        width: '95%',
+        borderRadius: 30,
+       // alignSelf:'center',
+        alignContent: 'center',
+        justifyContent:'center',
+        alignItems:'center',
+        alignSelf:'center',
+        paddingHorizontal: 15,
+    },
+    numberContainer: {
+        paddingTop: 20,
+    },
+    numberTitle: {
+        flexDirection:'row',
+        alignItems:'center',
+    },
+    numberShape: {
+        backgroundColor:'#F6F6F6',
+        height:70,
+        width: '95%',
+        borderRadius: 30,
+       // alignSelf:'center',
+        alignContent: 'center',
+        justifyContent:'center',
+        alignItems:'center',
+        alignSelf:'center',
+        paddingHorizontal:15,
+    },
+    emailContainer: {
+        paddingTop: 20,
+    },
+    emailTitle: {
+        flexDirection:'row',
+        alignItems:'center',
+    },
+    emailShape: {
+        backgroundColor:'#F6F6F6',
+        height:70,
+        width: '95%',
+        borderRadius: 30,
+       // alignSelf:'center',
+        alignContent: 'center',
+        justifyContent:'center',
+        alignItems:'center',
+        alignSelf:'center',
+        paddingHorizontal:15,
     },
     signOutBtn:{
         marginTop:'5%',
-        height:60,
+        height:'10%',
         backgroundColor:'#0896B5',
         width:'90%',
         alignSelf:'center',
         display:'flex',
         justifyContent:'center',
         alignItems:'center',
-        borderRadius:30
+        borderRadius:20
     }
 })
 export default Profile;

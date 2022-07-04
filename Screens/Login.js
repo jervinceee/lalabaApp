@@ -58,7 +58,6 @@ const Login = ({navigation}) => {
             signInWithEmailAndPassword(auth, email, password).then((credentials)=>{
                 const user = credentials.user;
                 console.log("Logged in with", user.email);
-                navigation.navigate('HomeFlow')
             }).catch(error=>{
                 setErrorModal(true)
                 setErrorMsg(error.message.slice(22, -2));
@@ -106,9 +105,7 @@ const Login = ({navigation}) => {
                     <TouchableOpacity
                         onPress={(e)=>{setSecure(!secure)}}
                     >
-                        {
-                            secure?<Text style={styles.showHideBtn}>SHOW</Text>:<Text style={styles.showHideBtn}>HIDE</Text>
-                        }
+                        <Text style={styles.showHideBtn}>SHOW</Text>
                     </TouchableOpacity>
                 </View>
 
