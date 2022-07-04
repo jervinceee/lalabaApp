@@ -11,7 +11,7 @@ import Shop2Menu from "../Screens/Shop2Menu";
 import Shop1CheckOut from "../Screens/Shop1CheckOut";
 import Shop2CheckOut from "../Screens/Shop2CheckOut";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
+import AHome from "../AdminScreens/AHome";
 const homeStack = createNativeStackNavigator();
 const HomeFlow = ({navigation}) => {
     return(
@@ -19,7 +19,7 @@ const HomeFlow = ({navigation}) => {
             <homeStack.Screen
                 options={{headerShown:false}}
                 name="Home"
-                component={Home}
+                component={AHome}
             />
             <homeStack.Screen
                 options={{headerShown:false}}
@@ -48,11 +48,6 @@ const HomeFlow = ({navigation}) => {
             />
             <homeStack.Screen
                 options={{headerShown:false}}
-                name="Tabs"
-                component={Tabs}
-            />
-            <homeStack.Screen
-                options={{headerShown:false}}
                 name="Edit"
                 component={Edit}
             />
@@ -68,12 +63,12 @@ const HomeFlow = ({navigation}) => {
             />
             <homeStack.Screen
                 options={{headerShown:false}}
-                name="Shop1Checkout"
+                name="Shop1CheckOut"
                 component={Shop1CheckOut}
             />
             <homeStack.Screen
                 options={{headerShown:false}}
-                name="Shop2Checkout"
+                name="Shop2CheckOut"
                 component={Shop2CheckOut}
             />
         </homeStack.Navigator>

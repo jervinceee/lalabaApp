@@ -252,6 +252,19 @@ const Shop1CheckOut = ({navigation}) => {
             <View>
               <Image source={qr1} style={styles.qrLogo} />
             </View>
+            <View style={{ alignSelf:'center', top:-50,alignItems:'center'}}>
+            <Text style={{
+                fontSize:20,
+                fontWeight:'800',
+              }}>
+                09123456789
+              </Text><Text style={{
+                fontSize:20,
+                fontWeight:'800',
+              }}>
+                Juan dela Owner
+              </Text>
+            </View>
             <TouchableOpacity onPress={()=> navigation.navigate('Home')}>
             <View style={styles.bookButton}>
               <Text style={{
@@ -349,7 +362,7 @@ const styles = StyleSheet.create({
   },
   gcashReminderShape: {
   
-    height:550,
+    height:600,
     width:'95%',
     backgroundColor:'white',
     alignSelf:'center',

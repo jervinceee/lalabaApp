@@ -482,24 +482,24 @@ const styles = StyleSheet.create({
     },
     mainContainer:{
         marginHorizontal:10,
-        height:850,
+        height:700,
     },
    itemContainer1:{
-       height:200,
-       width:170,
+       height:150,
+       width:120,
        alignContent:'center',
        alignItems:'center',
    },
    imageContainer1:{
         backgroundColor:'#f6f6f6',
         borderRadius:20,
-        height:150,
-        width:150,
+        height:100,
+        width:100,
         justifyContent:'center',
    }, 
    itemImage: {
-    height:100,
-    width: 100,
+    height:80,
+    width: 80,
     alignSelf:'center'
    },
    bookButton:{
