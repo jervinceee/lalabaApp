@@ -26,7 +26,6 @@ const App = () => {
       </NavigationContainer>
       <StatusBar barStyle="light-content"/>
     </View>
-    
   )
 };
 export default App;

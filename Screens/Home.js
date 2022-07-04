@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import {
     View,
     Text,
-    Button,
+    Dimensions,
     StyleSheet,
     Image,
     ScrollView,
@@ -10,8 +10,21 @@ import {
 } from "react-native";
 import bubble from "../assets/icons/bubble.png"
 import Icon from 'react-native-vector-icons/MaterialIcons';
+const window = Dimensions.get("window");
+const screen = Dimensions.get("screen");
 
 const Home = ({navigation}) => {
+    const [dimensions, setDimensions] = useState({ window, screen });
+
+    useEffect(() => {
+      const subscription = Dimensions.addEventListener(
+        "change",
+        ({ window, screen }) => {
+          setDimensions({ window, screen });
+        }
+      );
+      return () => subscription?.remove();
+    });
     return (
         <ScrollView style={{backgroundColor: 'white'}}>
             <View>
@@ -88,11 +101,9 @@ const Home = ({navigation}) => {
                     </View>    
                 </View>
             </View>
-            
         </ScrollView>
     )
 }
-
 const styles = StyleSheet.create({
     header: {
         height: 50,
@@ -146,16 +157,6 @@ const styles = StyleSheet.create({
         height:100
         
     }
-
-
-
-
-
-
-
-
-
-
 })
 
 export default Home;

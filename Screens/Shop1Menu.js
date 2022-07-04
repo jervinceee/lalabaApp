@@ -1,22 +1,62 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import {
     View,
     Text,
-    Button,
     StyleSheet,
     ScrollView,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    Dimensions,
 } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Bubble from '../assets/icons/bubble.png';
 
+const window = Dimensions.get("window");
+const screen = Dimensions.get("screen");
 
+const data = [
+    {label: "pick-up", value: "pick-up"}, 
+    {label: "drop-by", value: "drop-by" }
+    ];
 
-
+    const Chip = ({isSelected, label, selectedColor, defaultColor,  onPress}) => {
+        return (
+          <TouchableOpacity onPress={onPress} >
+            <View style={{height:35, width:100, backgroundColor : isSelected ? selectedColor : defaultColor }} > 
+              <Text style={{
+                    fontSize: 25,
+                    fontWeight: '800',
+                    color:'black',
+                    alignSelf:'center',
+                    }}
+                >
+                    {label}
+                </Text>
+            </View>
+          </TouchableOpacity>
+        )
+      }
 const Shop1Menu = ({navigation}) => {
+    const [text, setText] = React.useState("")
+  
+    const switchValue = (text) => {
+      setText(text);
+    }
+
+    const [dimensions, setDimensions] = useState({ window, screen });
+
+  useEffect(() => {
+    const subscription = Dimensions.addEventListener(
+      "change",
+      ({ window, screen }) => {
+        setDimensions({ window, screen });
+      }
+    );
+    return () => subscription?.remove();
+  });
+
     return (
-        <ScrollView>
+        <ScrollView style={{backgroundColor:'white',}}>
             <View>
                 <View style={styles.schedule}>
                     <Text style={{
@@ -26,32 +66,17 @@ const Shop1Menu = ({navigation}) => {
                     }}>
                     Schedule:
                     </Text>
-                    {/* for the buttons pick up or drop by */}
-                    <View style={styles.buttonContainer1}>
-                        <TouchableOpacity>
-                            <View style={styles.pickupButton1}>
-                                <Text style={{
-                                    fontSize:20,
-                                    fontWeight:'500',
-                                    color:'black',
-                                }}>
-                                    Pick-up
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity>
-                            <View style={styles.dropbyButton1}>
-                                <Text style={{
-                                    fontSize:20,
-                                    fontWeight:'500',
-                                    color:'black',
-                                }}>
-                                    Drop-by
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
+{/* for the buttons pick up or drop by */}
+                    <View style={styles.schedButtonContainer}>
+                        {
+                            data.map((item, index) => (
+                            <React.Fragment key={index}> 
+                                <Chip label={item.label} onPress={() => switchValue(item.value)} isSelected={text === item.value} selectedColor={'red'} />
+                            </React.Fragment>
+                            ))
+                        }
                     </View>
-                <View style={styles.calendar1}>
+                <View style={styles.calendar}>
                     <Icon name='event' color={'#01BCE4'} size={50} />
                     <Text style={{
                         fontSize:20,
@@ -63,7 +88,18 @@ const Shop1Menu = ({navigation}) => {
                         Dito lalagay yung calendar
                     </Text>
                 </View>
-                <View style={styles.buttonContainer2}>
+                <View style={styles.schedButtonContainer}>
+                        <TouchableOpacity>
+                            <View style={styles.deliverButton}>
+                                <Text style={{
+                                    fontSize:20,
+                                    fontWeight:'500',
+                                    color:'black',
+                                }}>
+                                    Deliver
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
                         <TouchableOpacity>
                             <View style={styles.pickupButton2}>
                                 <Text style={{
@@ -75,20 +111,9 @@ const Shop1Menu = ({navigation}) => {
                                 </Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity>
-                            <View style={styles.dropbyButton2}>
-                                <Text style={{
-                                    fontSize:20,
-                                    fontWeight:'500',
-                                    color:'black',
-                                }}>
-                                    Drop-by
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
                     </View>
                 </View>
-                <View style={styles.calendar2}>
+                <View style={styles.calendar}>
                     <Icon name='event' color={'#01BCE4'} size={50} />
                     <Text style={{
                         fontSize:20,
@@ -113,15 +138,11 @@ const Shop1Menu = ({navigation}) => {
                             flexDirection:'row'
                             }}
                         >
-                        {/* items ng mga services */}
+{/* items ng mga services */}
+
                             <View style={styles.itemContainer1}>
                                 <View style={styles.imageContainer1}>
-                                    <Image source={Bubble}
-                                        style={{
-                                            height:150,
-                                            width: 150,
-                                        }}
-                                    />
+                                    <Image source={Bubble} style={styles.itemImage}/>
                                 </View>
                                 <Text style={{
                                     fontSize:20,
@@ -145,12 +166,7 @@ const Shop1Menu = ({navigation}) => {
 
                             <View style={styles.itemContainer1}>
                                 <View style={styles.imageContainer1}>
-                                    <Image source={Bubble}
-                                        style={{
-                                            height:150,
-                                            width: 150,
-                                        }}
-                                    />
+                                    <Image source={Bubble} style={styles.itemImage}/>
                                 </View>
                                 <Text style={{
                                     fontSize:20,
@@ -174,12 +190,7 @@ const Shop1Menu = ({navigation}) => {
 
                             <View style={styles.itemContainer1}>
                                 <View style={styles.imageContainer1}>
-                                    <Image source={Bubble}
-                                        style={{
-                                            height:150,
-                                            width: 150,
-                                        }}
-                                    />
+                                    <Image source={Bubble} style={styles.itemImage}/>
                                 </View>
                                 <Text style={{
                                     fontSize:20,
@@ -214,15 +225,10 @@ const Shop1Menu = ({navigation}) => {
                             flexDirection:'row'
                             }}
                         >
-                        {/* items ng mga services */}
+ {/* items ng mga detergent */}
                             <View style={styles.itemContainer1}>
                                 <View style={styles.imageContainer1}>
-                                    <Image source={Bubble}
-                                        style={{
-                                            height:150,
-                                            width: 150,
-                                        }}
-                                    />
+                                    <Image source={Bubble} style={styles.itemImage}/>
                                 </View>
                                 <Text style={{
                                     fontSize:20,
@@ -230,7 +236,7 @@ const Shop1Menu = ({navigation}) => {
                                     color:'black',
                                     }}
                                 > 
-                                Wash and Dry
+                                Ariel
                                 </Text>
                                 <Text style={{
                                     fontSize:20,
@@ -246,12 +252,7 @@ const Shop1Menu = ({navigation}) => {
 
                             <View style={styles.itemContainer1}>
                                 <View style={styles.imageContainer1}>
-                                    <Image source={Bubble}
-                                        style={{
-                                            height:150,
-                                            width: 150,
-                                        }}
-                                    />
+                                    <Image source={Bubble} style={styles.itemImage}/>
                                 </View>
                                 <Text style={{
                                     fontSize:20,
@@ -259,7 +260,7 @@ const Shop1Menu = ({navigation}) => {
                                     color:'black',
                                     }}
                                 > 
-                                Dry Clean
+                                Tide
                                 </Text>
                                 <Text style={{
                                     fontSize:20,
@@ -275,12 +276,7 @@ const Shop1Menu = ({navigation}) => {
 
                             <View style={styles.itemContainer1}>
                                 <View style={styles.imageContainer1}>
-                                    <Image source={Bubble}
-                                        style={{
-                                            height:150,
-                                            width: 150,
-                                        }}
-                                    />
+                                    <Image source={Bubble} style={styles.itemImage}/>
                                 </View>
                                 <Text style={{
                                     fontSize:20,
@@ -288,7 +284,7 @@ const Shop1Menu = ({navigation}) => {
                                     color:'black',
                                     }}
                                 > 
-                                Beddings
+                                Surf
                                 </Text>
                                 <Text style={{
                                     fontSize:20,
@@ -316,15 +312,10 @@ const Shop1Menu = ({navigation}) => {
                             height:200,
                             }}
                         >
-                        {/* items ng mga services */}
+{/* items ng mga services */}
                             <View style={styles.itemContainer1}>
                                 <View style={styles.imageContainer1}>
-                                    <Image source={Bubble}
-                                        style={{
-                                            height:150,
-                                            width: 150,
-                                        }}
-                                    />
+                                    <Image source={Bubble} style={styles.itemImage}/>
                                 </View>
                                 <Text style={{
                                     fontSize:20,
@@ -332,7 +323,7 @@ const Shop1Menu = ({navigation}) => {
                                     color:'black',
                                     }}
                                 > 
-                                Wash and Dry
+                                Downey
                                 </Text>
                                 <Text style={{
                                     fontSize:20,
@@ -348,12 +339,7 @@ const Shop1Menu = ({navigation}) => {
 
                             <View style={styles.itemContainer1}>
                                 <View style={styles.imageContainer1}>
-                                    <Image source={Bubble}
-                                        style={{
-                                            height:150,
-                                            width: 150,
-                                        }}
-                                    />
+                                    <Image source={Bubble} style={styles.itemImage}/>
                                 </View>
                                 <Text style={{
                                     fontSize:20,
@@ -361,7 +347,7 @@ const Shop1Menu = ({navigation}) => {
                                     color:'black',
                                     }}
                                 > 
-                                Dry Clean
+                                Surf
                                 </Text>
                                 <Text style={{
                                     fontSize:20,
@@ -377,12 +363,7 @@ const Shop1Menu = ({navigation}) => {
 
                             <View style={styles.itemContainer1}>
                                 <View style={styles.imageContainer1}>
-                                    <Image source={Bubble}
-                                        style={{
-                                            height:150,
-                                            width: 150,
-                                        }}
-                                    />
+                                    <Image source={Bubble} style={styles.itemImage}/>
                                 </View>
                                 <Text style={{
                                     fontSize:20,
@@ -390,7 +371,7 @@ const Shop1Menu = ({navigation}) => {
                                     color:'black',
                                     }}
                                 > 
-                                Beddings
+                                Dell
                                 </Text>
                                 <Text style={{
                                     fontSize:20,
@@ -426,13 +407,30 @@ const styles = StyleSheet.create({
         marginHorizontal:10,
 
     },
-    buttonContainer1:{
-        marginHorizontal:20,
-        justifyContent:'space-between',
+    schedButtonContainer:{
+        justifyContent:'space-around',
         flexDirection:'row',
-        marginTop:10,
+        borderRadius:10,
     },
-    pickupButton1: {
+    pickupButton1a: {
+        backgroundColor:'white',
+        height:30,
+        width: 80,
+        borderRadius:15,
+        alignContent:'center',
+        justifyContent:'center',
+        alignItems:'center',
+    },
+    pickupButton1b: {
+        backgroundColor:'blue',
+        height:30,
+        width: 80,
+        borderRadius:15,
+        alignContent:'center',
+        justifyContent:'center',
+        alignItems:'center',
+    },
+    pickupButton2: {
         backgroundColor:'#F6F6F6',
         height:30,
         width: 80,
@@ -440,9 +438,8 @@ const styles = StyleSheet.create({
         alignContent:'center',
         justifyContent:'center',
         alignItems:'center',
-        marginTop: 10,
     },
-    dropbyButton2:{
+    dropbyButton1b:{
         backgroundColor:'#F6F6F6',
         height:30,
         width: 80,
@@ -450,10 +447,26 @@ const styles = StyleSheet.create({
         alignContent:'center',
         justifyContent:'center',
         alignItems:'center',
-        marginTop: 10,
-        
     },
-    calendar2:{
+    dropbyButton1a:{
+        backgroundColor:'blue',
+        height:30,
+        width: 80,
+        borderRadius:15,
+        alignContent:'center',
+        justifyContent:'center',
+        alignItems:'center',
+    },
+    deliverButton:{
+        backgroundColor:'#F6F6F6',
+        height:30,
+        width: 80,
+        borderRadius:15,
+        alignContent:'center',
+        justifyContent:'center',
+        alignItems:'center',
+    },
+    calendar:{
         backgroundColor:'#F6F6F6',
         alignContent:'center',
         alignSelf:'center',
@@ -465,6 +478,7 @@ const styles = StyleSheet.create({
         borderRadius:35,
         flexWrap:'wrap',
         textAlign:'center',
+        marginBottom:20,
     },
     mainContainer:{
         marginHorizontal:10,
@@ -475,14 +489,19 @@ const styles = StyleSheet.create({
        width:170,
        alignContent:'center',
        alignItems:'center',
-       justifyContent:'center',
    },
    imageContainer1:{
         backgroundColor:'#f6f6f6',
         borderRadius:20,
         height:150,
         width:150,
+        justifyContent:'center',
    }, 
+   itemImage: {
+    height:100,
+    width: 100,
+    alignSelf:'center'
+   },
    bookButton:{
         backgroundColor: '#01BCE4',
         borderRadius: 20,
