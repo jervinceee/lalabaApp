@@ -69,12 +69,12 @@ const HomeFlow = ({navigation}) => {
             />
             <homeStack.Screen
                 options={{headerShown:false}}
-                name="Shop1Checkout"
+                name="Shop1CheckOut"
                 component={Shop1CheckOut}
             />
             <homeStack.Screen
                 options={{headerShown:false}}
-                name="Shop2Checkout"
+                name="Shop2CheckOut"
                 component={Shop2CheckOut}
             />
         </homeStack.Navigator>

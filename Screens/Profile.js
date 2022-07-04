@@ -27,7 +27,7 @@ const Profile = ({navigation}) => {
     const myDoc = doc(db, "users", loggedInId)
     const [userName, setUserName] = React.useState("");
     const [address, setAddress] = React.useState("");
-    const [age, setAge] = React.useState("");
+    const [age, setAge] = React.useState(0);
     const [phoneNum, setPhoneNum] = React.useState("");
 
     const signOut = () => {
@@ -87,7 +87,7 @@ const Profile = ({navigation}) => {
                             <View style={styles.infoContainer}>
                                 <Text style={styles.infoTitle}>Address</Text>
                                     {address != null && address != "" ?
-                                        <Text style={styles.infoContent}>{phoneNum}</Text> : 
+                                        <Text style={styles.infoContent}>{address}</Text> : 
                                         <Text style={styles.infoContent}>LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOONG TEXT</Text>
                                     }
                             </View>

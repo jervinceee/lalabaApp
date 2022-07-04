@@ -403,9 +403,8 @@ const Shop1Menu = ({navigation}) => {
 )}
 const styles = StyleSheet.create({
     schedule: {
-        marginTop:10,
         marginHorizontal:10,
-
+        marginTop:'10%',
     },
     schedButtonContainer:{
         justifyContent:'space-around',

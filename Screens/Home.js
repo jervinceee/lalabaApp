@@ -6,7 +6,7 @@ import {
     StyleSheet,
     Image,
     ScrollView,
-    TouchableOpacity
+    TouchableOpacity,
 } from "react-native";
 import bubble from "../assets/icons/bubble.png"
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -107,6 +107,7 @@ const Home = ({navigation}) => {
 const styles = StyleSheet.create({
     header: {
         height: 50,
+        marginTop:'10%',
         width: '100%',
         backgroundColor: '#01BCE4',
         justifyContent: 'space-between',

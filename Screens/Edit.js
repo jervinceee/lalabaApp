@@ -7,13 +7,13 @@ import {
     Image,
     ScrollView,
     TouchableOpacity,
-    TextInput
+    TextInput,
+    Modal
 } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'; 
 import { db, auth } from '../core/config';
-import { getDoc, doc } from 'firebase/firestore';
-import { add } from 'react-native-reanimated';
+import { getDoc, doc, setDoc } from 'firebase/firestore';
 
 const Edit = ({navigation}) => {
 
@@ -23,9 +23,11 @@ const Edit = ({navigation}) => {
     const [address, setAddress] = React.useState("");
     const [age, setAge] = React.useState("");
     const [phoneNum, setPhoneNum] = React.useState("");
+
+    //new variables
     const [newName, setNewName] = React.useState("");
     const [newAddress, setNewAddress] = React.useState("");
-    const [newAge, setNewAge] = React.useState("");
+    const [newAge, setNewAge] = React.useState(0);
     const [newNum, setNewNum] = React.useState("");
 
     // error handlers
@@ -33,6 +35,8 @@ const Edit = ({navigation}) => {
     const [ageError, setAgeError] = React.useState("initial");
     const [addressError, setAddressError] = React.useState("initial");
     const [phoneError, setPhoneError] = React.useState("initial");
+    const [modalVisible, setModalVisible] = React.useState(false);
+    const [modalMsg, setModalMsg] = React.useState("");
 
     React.useEffect(()=>{
         getDoc(myDoc).then((snapshot)=>{
@@ -47,11 +51,61 @@ const Edit = ({navigation}) => {
         })
     },[])
 
+    const Update = (value, merge) =>{
+        setDoc(myDoc, value, {merge:merge}).then(()=>{
+            console.log("Success");
+        }).catch((error)=>{
+            console.log(error);
+        })
+    }
+
     const saveChanges = () => { 
         const phoneregex = /^(09|\+639)\d{9}$/; 
+        
+        if(newAddress!="" && newAddress.length < 8){
+            setAddressError("Address must have at least 8 characters.")
+        }else{
+            setAddressError("")
+        }
+
+        if(newAge!="" && newAge < 0){
+            setAgeError("Invalid Age Input.")
+        }else{
+            setAgeError("")
+        }
+
+        if(newName!= "" && newName.length < 8){
+            setNameError("Username must have at least 8 characters.")
+        }else{
+            setNameError("")
+        }
+
+        if(newNum!="" && !phoneregex.test(newNum)){
+            setPhoneError("Invalid Phone Number Format.")
+        }else{
+            setPhoneError("")
+        }
 
         if ((userName === newName) && (address === newAddress) && (phoneNum === newNum) && (age === newAge)){
             console.log("NOTHING CHANGED");
+            setModalMsg("Input data were same as previous data.");
+            setModalVisible(true)
+        }else if(newAddress==="" && newAge === 0 && newName==="" && newNum===""){
+            console.log("WALANG NAGBAGO BIATCH")
+            setModalMsg("No changes has been made.");
+            setModalVisible(true)
+        }else if(nameError==="" && ageError==="" && addressError==="" && phoneError===""){
+            console.log("NO ERRORS");
+            setModalMsg("Changes will take effect on relogin.")
+            setModalVisible(true)
+            //dito yung modal para isubmit yung changes
+            // Update({
+            //     "userName": `${newName===null || newName===""? userName : newName}`,
+            //     "age":`${newAge===null || newAge===0? age : newAge}`,
+            //     "phoneNum": `${newNum===null || newNum===""? phoneNum : newNum}`,
+            //     "address":`${newAddress===null || newAddress==="" ? address : newAddress}`,
+            //     "email" : auth.currentUser.email
+            // })
         }
     }
 
@@ -78,14 +132,17 @@ const Edit = ({navigation}) => {
                                 <Text style={styles.infoTitle}>Address</Text>
                                 <TextInput 
                                     style={styles.infoInput}
-                                    placeholder={address!=null && address!= ""? phoneNum : "Address"}
+                                    placeholder={address!=null && address!= ""? address : "Address"}
                                     placeholderTextColor={"#BDBDBD"}
                                     onChangeText={(val)=>{setNewAddress(val)}}
                                 />
                             </View>
                         </View>
 
-                        <Text style={styles.errorText}>ERROR TEXT</Text>
+                        {
+                            addressError === "initial" || addressError === ""?
+                            null: <Text style={styles.errorText}>{addressError}</Text>
+                        }
 
                         <View style={styles.infoRow}>
                         <Icon name='smartphone' color={'#01BCE4'} size={50} />
@@ -101,7 +158,10 @@ const Edit = ({navigation}) => {
                             </View>
                         </View>
 
-                        <Text style={styles.errorText}>ERROR TEXT</Text>
+                        {
+                            phoneError === "initial" || phoneError === ""?
+                            null: <Text style={styles.errorText}>{phoneError}</Text>
+                        }
 
                         <View style={styles.infoRow}>
                         <MaterialCommunityIcons name="baby-face-outline" size={50} color={'#01BCE4'} />
@@ -117,7 +177,10 @@ const Edit = ({navigation}) => {
                             </View>
                         </View>
 
-                        <Text style={styles.errorText}>ERROR TEXT</Text>
+                        {
+                            ageError === "initial" || ageError === ""?
+                            null: <Text style={styles.errorText}>{ageError}</Text>
+                        }
 
                         <View style={styles.infoRow}>
                         <Icon name='person' color={'#01BCE4'} size={50} />
@@ -132,7 +195,10 @@ const Edit = ({navigation}) => {
                             </View>
                         </View>
 
-                        <Text style={styles.errorText}>ERROR TEXT</Text>
+                        {
+                            nameError === "initial" || nameError === ""?
+                            null: <Text style={styles.errorText}>{nameError}</Text>
+                        }
 
                         <TouchableOpacity onPress={saveChanges}>
                             <View style={styles.saveButton}>
@@ -156,6 +222,49 @@ const Edit = ({navigation}) => {
                     </View>
                 </View>
             </View>
+            
+            {/* MODALS */}
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    Alert.alert("Modal has been closed.");
+                    setModalVisible(!modalVisible);
+                }}
+            >
+                <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                    <MaterialIcons name="error" size={100} color="red" />
+                    <Text style={styles.modalText}>{modalMsg}</Text>
+                    {
+                        modalMsg==="Changes will take effect on relogin."?
+                        <TouchableOpacity
+                            style={[styles.mdlErrBtn, styles.mdlErrBtnClose]}
+                            onPress={() => {
+                                Update({
+                                    "userName": `${newName===null || newName===""? userName : newName}`,
+                                    "age":`${newAge===null || newAge===0? age : newAge}`,
+                                    "phoneNum": `${newNum===null || newNum===""? phoneNum : newNum}`,
+                                    "address":`${newAddress===null || newAddress==="" ? address : newAddress}`,
+                                    "email" : auth.currentUser.email
+                                })
+                                setModalVisible(!modalVisible);
+                                navigation.navigate("Login");
+                            }}
+                            >
+                            <Text style={styles.textStyle}>OK</Text>
+                        </TouchableOpacity>:
+                        <TouchableOpacity
+                            style={[styles.mdlErrBtn, styles.mdlErrBtnClose]}
+                            onPress={() => setModalVisible(!modalVisible)}
+                            >
+                            <Text style={styles.textStyle}>Try Again</Text>
+                        </TouchableOpacity>
+                    }
+                </View>
+                </View>
+            </Modal>
         </ScrollView>
     )   
 }
@@ -163,6 +272,7 @@ const Edit = ({navigation}) => {
 const styles = StyleSheet.create({
     headerContainer: {
        left: '85%',
+       marginTop:'10%'
     },
     mainShapeContainer:{
         height:150,
@@ -246,6 +356,55 @@ infoInput:{
 errorText:{
     color:'red',
     marginLeft:'20%'
-}
+},
+
+//modal styles
+centeredView: {
+    flex: 1,
+    marginTop: 22,
+    justifyContent:'center'
+  },
+  modalView: {
+    height:"30%",
+    width:'80%',
+    display:'flex',
+    backgroundColor: "white",
+    borderRadius: 20,
+    alignSelf:'center',
+    alignItems: "center",
+    justifyContent:'space-evenly',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  mdlErrBtn: {
+    borderRadius: 20,
+    width:'80%',
+    padding: 10,
+    elevation: 2,
+  },
+  mdlErrBtnOpen: {
+    backgroundColor: "#0896B5",
+  },
+  mdlErrBtnClose: {
+    backgroundColor: "#0896B5",
+    height:'20%',
+    display:'flex',
+    justifyContent:'center'
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  modalText: {
+    fontSize:24,
+    textAlign: "center"
+  }
 })
 export default Edit;
