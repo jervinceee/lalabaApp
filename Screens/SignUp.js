@@ -140,7 +140,9 @@ const SignUp = ({navigation}) => {
                     <TouchableOpacity
                         onPress={(e)=>{setSecure(!secure)}}
                     >
-                        <Text style={styles.showHideBtn}>SHOW</Text>
+                        {
+                            secure?<Text style={styles.showHideBtn}>SHOW</Text>:<Text style={styles.showHideBtn}>HIDE</Text>
+                        }
                     </TouchableOpacity>
                 </View>
 

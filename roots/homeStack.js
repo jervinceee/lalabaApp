@@ -17,9 +17,10 @@ const HomeFlow = ({navigation}) => {
     return(
         <homeStack.Navigator>
             <homeStack.Screen
-                options={{headerShown:false}}
-                name="Home"
-                component={Home}
+                options={{headerShown:false,gestureEnabled:false}}
+                index={0}
+                name="HomeTabs"
+                component={Tabs}
             />
             <homeStack.Screen
                 options={{headerShown:false}}
