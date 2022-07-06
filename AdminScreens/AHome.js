@@ -26,7 +26,7 @@ const AHome = ({navigation}) => {
       return () => subscription?.remove();
     });
     return (
-        <ScrollView style={{backgroundColor: 'white'}}>
+        <ScrollView style={{backgroundColor: 'white', paddingTop:50}}>
             <View>
                 <View style={styles.header}>
                         <Image source={bubble}
@@ -36,7 +36,7 @@ const AHome = ({navigation}) => {
                             }}
                         />
                         
-                        <Icon name='person' color={'white'} size={50}  
+                        <Icon name='shopping-cart' color={'white'} size={50}  
                             onPress={() => navigation.navigate('Profile')}
                         />
                 </View>
@@ -121,7 +121,7 @@ const AHome = ({navigation}) => {
                 
                 <View style={styles.container}>
                     <View style={styles.body}>
-                        <TouchableOpacity onPress={()=> navigation.navigate('Shop1')}>
+                        <TouchableOpacity onPress={()=> navigation.navigate('ActiveOrders')}>
                             <View style={styles.buttonContainer1}>
                                 <Text style={{
                                         fontSize: 25,

@@ -12,6 +12,7 @@ import Shop1CheckOut from "../Screens/Shop1CheckOut";
 import Shop2CheckOut from "../Screens/Shop2CheckOut";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AHome from "../AdminScreens/AHome";
+import ActiveOrders from "../AdminScreens/ActiveOrders";
 const homeStack = createNativeStackNavigator();
 const HomeFlow = ({navigation}) => {
     return(
@@ -19,7 +20,7 @@ const HomeFlow = ({navigation}) => {
             <homeStack.Screen
                 options={{headerShown:false}}
                 name="Home"
-                component={AHome}
+                component={ActiveOrders}
             />
             <homeStack.Screen
                 options={{headerShown:false}}
