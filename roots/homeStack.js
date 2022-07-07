@@ -20,7 +20,7 @@ const HomeFlow = ({navigation}) => {
             <homeStack.Screen
                 options={{headerShown:false}}
                 name="Home"
-                component={ActiveOrders}
+                component={Home}
             />
             <homeStack.Screen
                 options={{headerShown:false}}

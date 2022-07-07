@@ -32,7 +32,7 @@ const Shop1CheckOut = ({navigation}) => {
   const [shouldShow2, setShouldShow2] = useState(false);  
 
   return (
-    <ScrollView style={{backgroundColor:'#01BCE4'}}>
+    <ScrollView style={{backgroundColor:'#01BCE4',marginTop:45}}>
       <View style={styles.header}>
         <Text style={{
           fontSize: 45,

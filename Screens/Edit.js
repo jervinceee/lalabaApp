@@ -12,7 +12,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Edit = ({navigation}) => {
     return (
-        <ScrollView style={{backgroundColor: '#01BCE4'}}>
+        <ScrollView style={{backgroundColor: '#01BCE4',marginTop:45}}>
            <View>
                 <View style={styles.headerContainer}>
                 </View>

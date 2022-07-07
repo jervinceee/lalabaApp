@@ -26,7 +26,7 @@ const Home = ({navigation}) => {
       return () => subscription?.remove();
     });
     return (
-        <ScrollView style={{backgroundColor: 'white'}}>
+        <ScrollView style={{backgroundColor: 'white', marginTop:45}}>
             <View>
                 <View style={styles.header}>
                         <Image source={bubble}

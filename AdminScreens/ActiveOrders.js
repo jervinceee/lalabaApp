@@ -10,7 +10,6 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
-
 const ActiveOrders = ({navigation}) => {
     const [dimensions, setDimensions] = useState({ window, screen });
 
@@ -24,7 +23,7 @@ const ActiveOrders = ({navigation}) => {
       return () => subscription?.remove();
     });
     return (
-        <ScrollView style={{backgroundColor: 'white',paddingTop:50 }}>
+        <ScrollView style={{backgroundColor: 'white', marginTop:50 }}>
             <View>
                 <View style={styles.titleHolder}>
                     <Text style={{
@@ -342,6 +341,7 @@ const styles = StyleSheet.create({
         marginVertical:10,
     },
     orderContainer: {
+        height:290,
         flexDirection:'column',
     },  
     orderName: {

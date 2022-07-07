@@ -10,7 +10,10 @@ import {
 } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Bubble from '../assets/icons/bubble.png';
-
+import clothes from '../assets/icons/clothes.png';
+import clothesW from '../assets/icons/clothes washing.png';
+import beddings from '../assets/icons/warmMachine.png';
+import IonIcon from 'react-native-ionicons'
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
 
@@ -56,7 +59,7 @@ const Shop1Menu = ({navigation}) => {
   });
 
     return (
-        <ScrollView style={{backgroundColor:'white',}}>
+        <ScrollView style={{backgroundColor:'white',marginTop:45}}>
             <View>
                 <View style={styles.schedule}>
                     <Text style={{
@@ -142,7 +145,7 @@ const Shop1Menu = ({navigation}) => {
 
                             <View style={styles.itemContainer1}>
                                 <View style={styles.imageContainer1}>
-                                    <Image source={Bubble} style={styles.itemImage}/>
+                                    <IonIcon name='shirt-outline' style={styles.itemImage}/>
                                 </View>
                                 <Text style={{
                                     fontSize:20,
@@ -166,7 +169,7 @@ const Shop1Menu = ({navigation}) => {
 
                             <View style={styles.itemContainer1}>
                                 <View style={styles.imageContainer1}>
-                                    <Image source={Bubble} style={styles.itemImage}/>
+                                    <Icon name="checkroom" size={80} color={'#1ea1e4'} style={styles.itemImage}/>
                                 </View>
                                 <Text style={{
                                     fontSize:20,
@@ -190,7 +193,7 @@ const Shop1Menu = ({navigation}) => {
 
                             <View style={styles.itemContainer1}>
                                 <View style={styles.imageContainer1}>
-                                    <Image source={Bubble} style={styles.itemImage}/>
+                                    <Icon name='king-bed' size={80} color={'#1ea1e4'} style={styles.itemImage}/>
                                 </View>
                                 <Text style={{
                                     fontSize:20,
