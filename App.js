@@ -4,12 +4,20 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeStack from './roots/homeStack';
-import AuthFlow from './roots/AuthFlow'
+import AuthFlow from './roots/AuthFlow';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+// import ServiceButton from './components/ServiceComponent'
+// import ProductButton from './components/DetergentComponent'
 
 const Stack = createNativeStackNavigator();
 const App = () => {
+  AsyncStorage.clear();
   return (
     <View style={styles.container}>
+      <StatusBar barStyle="light-content"/>
+      {/* <ProductButton cost={30} number={1} buttonName={"Wash, Dry, and Fold"} path={require('./assets/icons/clotheswashing.png')}/>
+      <ProductButton cost={25} number={2} buttonName={"Dry Clean"} path={require('./assets/icons/clothes.png')}/>
+      <ProductButton cost={30} number={2} buttonName={"Beddings"} path={require('./assets/icons/warmmachine.png')}/> */}
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen
@@ -24,7 +32,7 @@ const App = () => {
           />
         </Stack.Navigator>
       </NavigationContainer>
-      <StatusBar barStyle="light-content"/>
+      
     </View>
   )
 };
