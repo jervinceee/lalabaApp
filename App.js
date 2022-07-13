@@ -5,6 +5,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeStack from './roots/homeStack';
 import AuthFlow from './roots/AuthFlow'
+import AdminFlow from './roots/AdminFlow';
+import PendingOrders from './AdminScreens/PendingOrders';
+import ActiveOrders from './AdminScreens/ActiveOrders';
 
 const Stack = createNativeStackNavigator();
 const App = () => {
@@ -15,12 +18,17 @@ const App = () => {
           <Stack.Screen
             options={{headerShown:false,}}
             name="Auth"
-            component={AuthFlow}
+            component={ActiveOrders}
           />
           <Stack.Screen
             options={{headerShown:false,}}
             name="HomeFlow"
             component={HomeStack}
+          />
+          <Stack.Screen
+            options={{headerShown:false,}}
+            name="AdminFLow"
+            component={AdminFlow}
           />
         </Stack.Navigator>
       </NavigationContainer>

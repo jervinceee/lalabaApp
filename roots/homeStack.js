@@ -13,6 +13,7 @@ import Shop2CheckOut from "../Screens/Shop2CheckOut";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AHome from "../AdminScreens/AHome";
 import ActiveOrders from "../AdminScreens/ActiveOrders";
+import PendingOrders from "../AdminScreens/PendingOrders";
 const homeStack = createNativeStackNavigator();
 const HomeFlow = ({navigation}) => {
     return(
