@@ -46,6 +46,9 @@ const Shop1Menu = ({navigation}) => {
             receiveDate: receiveTimestamp,
             modeOfPayment: payment,
             cashPrepared: cashAmount
+        }).then(()=>{
+            navigation.navigate("List");
+            console.log("done")
         })
     }
 
@@ -181,6 +184,9 @@ const Shop1Menu = ({navigation}) => {
         setSubmissionError("Please select payment method.");
     }else if(payment === 'cod' && cashAmount < 0){
         setSubmitDisable(true)
+    }else if(payment === 'cod' && cashAmount < totalCost){
+        setSubmitDisable(true)
+        setSubmissionError("Cash prepared must be larger than the total service cost.")
     }else{
         setSubmissionError("");
         setSubmitDisable(false)
@@ -205,19 +211,19 @@ const Shop1Menu = ({navigation}) => {
                     {/* retrieving schedule */}
                     <View style={styles.scheduleButtonsContainer}>
                         <TouchableOpacity 
-                            style={retrieveMethod === 'pickup'? styles.scheduleButtonsSelected:styles.scheduleButtons}
-                            onPress={()=>setRetrieveMethod('pickup')}    
+                            style={retrieveMethod === 'Pick-up'? styles.scheduleButtonsSelected:styles.scheduleButtons}
+                            onPress={()=>setRetrieveMethod('Pick-up')}    
                         >
                             <Text
-                                style={retrieveMethod==='pickup'?{color:'white'}:{color:'black'}}
+                                style={retrieveMethod==='Pick-up'?{color:'white'}:{color:'black'}}
                             >Pick-up</Text>
                         </TouchableOpacity>
                         <TouchableOpacity 
-                            style={retrieveMethod === 'dropby'? styles.scheduleButtonsSelected:styles.scheduleButtons}
-                            onPress={()=>setRetrieveMethod('dropby')}    
+                            style={retrieveMethod === 'Drop-by'? styles.scheduleButtonsSelected:styles.scheduleButtons}
+                            onPress={()=>setRetrieveMethod('Drop-by')}    
                         >
                             <Text
-                                style={retrieveMethod==='dropby'?{color:'white'}:{color:'black'}}
+                                style={retrieveMethod==='Drop-by'?{color:'white'}:{color:'black'}}
                             >Drop-by</Text>
                         </TouchableOpacity>
                     </View>
@@ -254,19 +260,19 @@ const Shop1Menu = ({navigation}) => {
                     {/* sending schedule */}
                     <View style={styles.scheduleButtonsContainer}>
                         <TouchableOpacity 
-                            style={receiveMethod === 'delivery'? styles.scheduleButtonsSelected:styles.scheduleButtons}
-                            onPress={()=>setReceiveMethod('delivery')}   
+                            style={receiveMethod === 'Delivery'? styles.scheduleButtonsSelected:styles.scheduleButtons}
+                            onPress={()=>setReceiveMethod('Delivery')}   
                         >
                             <Text
-                                style={receiveMethod==='delivery'?{color:'white'}:{color:'black'}}
+                                style={receiveMethod==='Delivery'?{color:'white'}:{color:'black'}}
                             >Delivery</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            style={receiveMethod === 'pickup'? styles.scheduleButtonsSelected:styles.scheduleButtons}
-                            onPress={()=>setReceiveMethod('pickup')}   
+                            style={receiveMethod === 'Pick-up'? styles.scheduleButtonsSelected:styles.scheduleButtons}
+                            onPress={()=>setReceiveMethod('Pick-up')}   
                         >
                             <Text
-                                style={receiveMethod==='pickup'?{color:'white'}:{color:'black'}}
+                                style={receiveMethod==='Pick-up'?{color:'white'}:{color:'black'}}
                             >Pick-up</Text>
                         </TouchableOpacity>
                     </View>

@@ -6,6 +6,17 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeStack from './roots/homeStack';
 import AuthFlow from './roots/AuthFlow';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LogBox } from 'react-native';
+import _ from 'lodash';
+
+LogBox.ignoreLogs(['Warning:...']); // ignore specific logs
+LogBox.ignoreAllLogs(); // ignore all logs
+const _console = _.clone(console);
+console.warn = message => {
+if (message.indexOf('Setting a timer') <= -1) {
+   _console.warn(message);
+   }
+};
 // import ServiceButton from './components/ServiceComponent'
 // import ProductButton from './components/DetergentComponent'
 

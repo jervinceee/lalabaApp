@@ -17,12 +17,6 @@ import { getDoc, doc } from 'firebase/firestore';
 
 const Profile = ({navigation}) => {
 
-    // TO DO:
-    // 1. NEW PROFILE Screen
-    // 2. RENAME PROFILE.JS TO EDITPROFILE.JS
-    // 3. FUNCTIONS
-
-
     var loggedInId = auth.currentUser.uid;
     const myDoc = doc(db, "users", loggedInId)
     const [userName, setUserName] = React.useState("");
