@@ -72,11 +72,11 @@ const Login = ({navigation}) => {
                 console.log("Logged in with", user.uid);
                 users.map(userMap=>{
                     if(user.uid === userMap.id && userMap.isAdmin === false){
-                        console.log(userMap.id);
+                        //console.log(userMap.id);
                         navigation.navigate('HomeFlow')
                     }
                     else if (user.uid === userMap.id && userMap.isAdmin === true){
-                        console.log(userMap.id);
+                        //console.log(userMap.id);
                         navigation.navigate('AdminFlow')
                     }
                 })

@@ -62,7 +62,7 @@ import { ScrollView } from 'react-native-gesture-handler';
       <View style={styles.notDoneContainer}>
       <Text style={styles.containerText}>Scheduled: </Text>
           {/* Nothing to see here... */}
-          {orders.map((order, index)=>{
+          {orders.filter(name=>name.orderby === auth.currentUser.email).map((order, index)=>{
               var minutesRetrieve = new Date(order.retrieveDate.seconds * 1000).getMinutes()
               var minutesReceive = new Date(order.receiveDate.seconds * 1000).getMinutes()
               return(
@@ -90,7 +90,6 @@ import { ScrollView } from 'react-native-gesture-handler';
                           }{
                             minutesReceive <=9 ? "0"+minutesReceive: minutesReceive
                           }</Text>
-                          <Text>{order.orderby}</Text>
                       </View>
                   </View>
               )
