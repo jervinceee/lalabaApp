@@ -289,7 +289,6 @@ const Shop1CheckOut = ({navigation}) => {
 
 const styles = StyleSheet.create({
   header: {
-    
     alignItems: 'center',
     marginTop: 20,
   },

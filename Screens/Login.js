@@ -34,7 +34,7 @@ const Login = ({navigation}) => {
         return unsubscribe;
     }, [])
 
-    const submitHandler = () => {
+    const submitHandler = async () => {
         console.log(email, password);
         const emailregex = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/; 
 
@@ -55,9 +55,10 @@ const Login = ({navigation}) => {
         }
         
         if(passwordError === "" && emailError === ""){
-            signInWithEmailAndPassword(auth, email, password).then((credentials)=>{
+            await signInWithEmailAndPassword(auth, email, password).then((credentials)=>{
                 const user = credentials.user;
                 console.log("Logged in with", user.email);
+                navigation.navigate('HomeFlow')
             }).catch(error=>{
                 setErrorModal(true)
                 setErrorMsg(error.message.slice(22, -2));
@@ -105,7 +106,9 @@ const Login = ({navigation}) => {
                     <TouchableOpacity
                         onPress={(e)=>{setSecure(!secure)}}
                     >
-                        <Text style={styles.showHideBtn}>SHOW</Text>
+                        {
+                            secure?<Text style={styles.showHideBtn}>SHOW</Text>:<Text style={styles.showHideBtn}>HIDE</Text>
+                        }
                     </TouchableOpacity>
                 </View>
 

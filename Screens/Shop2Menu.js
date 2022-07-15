@@ -403,7 +403,7 @@ const Shop2Menu = ({navigation}) => {
 )}
 const styles = StyleSheet.create({
     schedule: {
-        marginTop:10,
+        marginTop:'10%',
         marginHorizontal:10,
 
     },

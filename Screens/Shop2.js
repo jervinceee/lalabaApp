@@ -79,6 +79,7 @@ const Shop2 = ({navigation}) => {
 }
 const styles = StyleSheet.create({
     imgShape: {
+        marginTop:'10%',
         backgroundColor:'white',
         borderRadius:20,
         alignContent: 'center',
