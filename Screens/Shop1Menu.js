@@ -11,13 +11,6 @@ import {
     TextInput
 } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
-import Bubble from '../assets/icons/bubble.png';
-import clothes from '../assets/icons/clothes.png';
-import clothesW from '../assets/icons/clothes washing.png';
-import beddings from '../assets/icons/warmMachine.png';
-import IonIcon from 'react-native-ionicons'
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DateTimePicker from '@react-native-community/datetimepicker';
 

@@ -29,7 +29,7 @@ const ActiveOrders = ({navigation}) => {
                     <Text style={{
                         fontSize:40,
                         fontWeight:'800',
-                        color:'black',
+                        color:'white',
                     }}>
                         Active Orders:
                     </Text>
@@ -323,7 +323,7 @@ const ActiveOrders = ({navigation}) => {
 }
 const styles = StyleSheet.create({
     titleHolder: {
-        alignSelf:'flex-start',
+        alignSelf:'center',
         backgroundColor:'#01BCE4',
         height:60,
         width:'65%',

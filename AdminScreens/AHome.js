@@ -40,7 +40,7 @@ const AHome = ({navigation}) => {
                             onPress={() => navigation.navigate('ShopProfile')}
                         />
                 </View>
-                <View style={styles.titleContainer}>
+               {/* <View style={styles.titleContainer}>
                     <View style={styles.titleshape}>
                         <Text style={{
                             color: 'black',
@@ -56,7 +56,7 @@ const AHome = ({navigation}) => {
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mus mauris vitae ultricies leo integer. Fusce ut placerat orci nulla
                         </Text>
                     </View>
-                </View>
+                </View>*/} 
                 <Text style={{
                     fontSize:50,
                     color:'black',
@@ -73,9 +73,11 @@ const AHome = ({navigation}) => {
                         }}>
                             Pending Orders
                         </Text>
-                        <Text style={{top:3,}}>
-                            View all
-                        </Text>
+                        <TouchableOpacity onPress={()=> navigation.navigate('PendingOrders')}>
+                            <Text style={{top:3,}}>
+                                View all
+                            </Text>
+                        </TouchableOpacity>
                     </View>
                         <View style={styles.orderContent}>
                             <View style={styles.customerOrders}>
@@ -132,7 +134,7 @@ const AHome = ({navigation}) => {
                                 <Icon name="format-list-bulleted" size={80} color={'white'}/>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={()=> navigation.navigate('Shop2')}>
+                        <TouchableOpacity onPress={()=> navigation.navigate('SummarySales')}>
                             <View style={styles.buttonContainer2}>
                                 <Text style={{
                                     fontSize: 25,
@@ -145,6 +147,35 @@ const AHome = ({navigation}) => {
                                 <Icon name="donut-large" size={80} color={'white'}/>
                             </View>
                         </TouchableOpacity>
+                        
+                    </View>
+                    <View style={styles.body2}>
+                        <TouchableOpacity onPress={()=> navigation.navigate('AChat')}>
+                            <View style={styles.buttonContainer1}>
+                                <Text style={{
+                                        fontSize: 25,
+                                        fontWeight:'800',
+                                        color: 'white',
+                                    }} >
+                                    Chat
+                                </Text>
+                                <Icon name="chat" size={80} color={'white'}/>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={()=> navigation.navigate('AList')}>
+                            <View style={styles.buttonContainer2}>
+                                <Text style={{
+                                    fontSize: 25,
+                                    fontWeight: '800',
+                                    color: 'white',
+                                    alignSelf:'center'
+                                    }} >
+                                    Order History
+                                </Text>
+                                <Icon name="receipt" size={80} color={'white'}/>
+                            </View>
+                        </TouchableOpacity>
+                        
                     </View>    
                 </View>
             </View>
@@ -168,7 +199,7 @@ const styles = StyleSheet.create({
         paddingTop:30,
         paddingHorizontal: 20, 
         width: '90%',
-        height: 170,
+        height: 150,
         borderRadius:20,
         backgroundColor:'#F6F6F6',
     },
@@ -216,6 +247,13 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     body: {
+        margin:10,
+        justifyContent:'space-around',
+        flexDirection: 'row',
+        alignContent:'center',
+    },
+    body2: {
+        margin:10,
         justifyContent:'space-around',
         flexDirection: 'row',
         alignContent:'center',

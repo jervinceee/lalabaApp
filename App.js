@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeStack from './roots/homeStack';
 
-import AuthFlow from './roots/AuthFlow'
+
 import AdminFlow from './roots/AdminFlow';
 import PendingOrders from './AdminScreens/PendingOrders';
 import ActiveOrders from './AdminScreens/ActiveOrders';
@@ -14,6 +14,7 @@ import AuthFlow from './roots/AuthFlow';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LogBox } from 'react-native';
 import _ from 'lodash';
+
 
 LogBox.ignoreLogs(['Warning:...']); // ignore specific logs
 LogBox.ignoreAllLogs(); // ignore all logs
@@ -38,16 +39,16 @@ const App = () => {
       <ProductButton cost={30} number={2} buttonName={"Beddings"} path={require('./assets/icons/warmmachine.png')}/> */}
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen
+          {/*<Stack.Screen
             options={{headerShown:false,}}
             name="Auth"
-            component={ActiveOrders}
+            component={AuthFlow}
           />
           <Stack.Screen
             options={{headerShown:false,}}
             name="HomeFlow"
             component={HomeStack}
-          />
+          />*/}
           <Stack.Screen
             options={{headerShown:false,}}
             name="AdminFLow"
