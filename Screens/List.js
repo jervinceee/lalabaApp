@@ -90,6 +90,7 @@ import { ScrollView } from 'react-native-gesture-handler';
                           }{
                             minutesReceive <=9 ? "0"+minutesReceive: minutesReceive
                           }</Text>
+                          <Text>{order.orderby}</Text>
                       </View>
                   </View>
               )

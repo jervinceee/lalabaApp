@@ -13,6 +13,7 @@ import {
 import { auth, db } from '../core/config';
 import { MaterialIcons } from '@expo/vector-icons';
 import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
+import { collection, getDocs } from 'firebase/firestore';
 
 const Login = ({navigation}) => {
 
@@ -23,15 +24,26 @@ const Login = ({navigation}) => {
     const [passwordError, setPasswordError] = React.useState("initial");
     const [errorMsg, setErrorMsg] = React.useState("");
     const [errorModal, setErrorModal] = React.useState(false);
+    const [users, setUsers] = React.useState([])
+    const usersCollectionRef= collection(db, 'users');
 
     React.useEffect(()=>{
-        const unsubscribe =  auth.onAuthStateChanged(user=>{
-            if(user){
-                navigation.navigate("HomeFlow")
-            }
-        })
+        const getUsers = async() =>{
+            const data = await getDocs(usersCollectionRef);
+        
+            setUsers(data.docs.map((doc)=>({
+            ...doc.data(), id: doc.id,
+            })));
+        }
 
-        return unsubscribe;
+        getUsers();
+        //console.log(email, password)
+        // const unsubscribe =  auth.onAuthStateChanged(user=>{
+        //     if(user){
+        //         console.log("nani")
+        //     }
+        // })
+        // return unsubscribe;
     }, [])
 
     const submitHandler = async () => {
@@ -57,8 +69,18 @@ const Login = ({navigation}) => {
         if(passwordError === "" && emailError === ""){
             await signInWithEmailAndPassword(auth, email, password).then((credentials)=>{
                 const user = credentials.user;
-                console.log("Logged in with", user.email);
-                navigation.navigate('HomeFlow')
+                console.log("Logged in with", user.uid);
+                users.map(userMap=>{
+                    if(user.uid === userMap.id && userMap.isAdmin === false){
+                        console.log(userMap.id);
+                        navigation.navigate('HomeFlow')
+                    }
+                    else if (user.uid === userMap.id && userMap.isAdmin === true){
+                        console.log(userMap.id);
+                        navigation.navigate('AdminFlow')
+                    }
+                })
+                //navigation.navigate('HomeFlow')
             }).catch(error=>{
                 setErrorModal(true)
                 setErrorMsg(error.message.slice(22, -2));

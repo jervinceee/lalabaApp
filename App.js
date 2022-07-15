@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeStack from './roots/homeStack';
 import AuthFlow from './roots/AuthFlow';
+import AdminFlow from './roots/AdminFlow';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LogBox } from 'react-native';
 import _ from 'lodash';
@@ -40,6 +41,11 @@ const App = () => {
             options={{headerShown:false,}}
             name="HomeFlow"
             component={HomeStack}
+          />
+          <Stack.Screen
+            options={{headerShown:false,}}
+            name="AdminFlow"
+            component={AdminFlow}
           />
         </Stack.Navigator>
       </NavigationContainer>
