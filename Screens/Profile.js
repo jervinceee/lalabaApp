@@ -46,8 +46,10 @@ const Profile = ({navigation}) => {
     },[])
 
     return (
+
         <ScrollView style={{backgroundColor: '#01BCE4'}}>
             <StatusBar barStyle="light-content"/>
+
            <View>
                 <View style={styles.headerContainer}>
                     <TouchableOpacity onPress={() => navigation.navigate('Edit')}>

@@ -56,7 +56,7 @@ const Shop2Menu = ({navigation}) => {
   });
 
     return (
-        <ScrollView style={{backgroundColor:'white',}}>
+        <ScrollView style={{backgroundColor:'white',marginTop:45}}>
             <View>
                 <View style={styles.schedule}>
                     <Text style={{

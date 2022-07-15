@@ -11,6 +11,13 @@ import {
     TextInput
 } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
+
+import Bubble from '../assets/icons/bubble.png';
+import clothes from '../assets/icons/clothes.png';
+import clothesW from '../assets/icons/clothes washing.png';
+import beddings from '../assets/icons/warmMachine.png';
+import IonIcon from 'react-native-ionicons'
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -203,7 +210,7 @@ const Shop1Menu = ({navigation}) => {
   });
 
     return (
-        <ScrollView style={{backgroundColor:'white',}}>
+        <ScrollView style={{backgroundColor:'white',marginTop:45}}>
             <View>
                 <Text style={{marginTop:40, fontSize:30, color:'black', fontWeight:'bold', marginLeft:10}}>Schedule</Text>
                 <View style={styles.retrieveContainer}>
@@ -594,25 +601,25 @@ const styles = StyleSheet.create({
     },
     mainContainer:{
         marginHorizontal:10,
-        height:850,
+        height:700,
     },
    itemContainer1:{
-       height:200,
-       width:170,
+       height:150,
+       width:120,
        alignContent:'center',
        alignItems:'center',
    },
    imageContainer1:{
         backgroundColor:'#f6f6f6',
         borderRadius:20,
-        height:150,
-        width:150,
+        height:100,
+        width:100,
         justifyContent:'center',
    }, 
    itemImage: {
         height:100,
         width: 100,
-        alignSelf:'center'
+        alignSelf:'center',
    },
    bookButton:{
         backgroundColor: '#01BCE4',
@@ -648,11 +655,6 @@ const styles = StyleSheet.create({
     marginHorizontal:20,
     borderRadius:10
 },  
-
-
-
-
-
 
 
 // Latter Styles
