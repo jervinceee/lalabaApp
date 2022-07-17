@@ -53,6 +53,7 @@ const DetergentComponent = (props) =>{
                 />
             </TouchableOpacity>
             <Text style={styles.buttonText}>{props.buttonName}</Text>
+            <Text style={styles.buttonTextPrice}>{props.buttonPrice}</Text>
             <View style={selected === true? styles.volumeContainer : {display:'none'}}>
                 <TouchableOpacity
                     style={disableBtn === true? styles.volumeButtonDisabled: styles.volumeButton}
@@ -122,7 +123,11 @@ const styles = StyleSheet.create({
         width:80,
     },
     buttonText:{
-        fontSize:18
+        fontSize:15
+    },
+    buttonTextPrice:{
+        fontSize:14,
+        fontWeight:'bold',
     },
     volumeContainer:{
         display:'flex',
