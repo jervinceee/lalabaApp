@@ -39,7 +39,7 @@ const App = () => {
       <ProductButton cost={30} number={2} buttonName={"Beddings"} path={require('./assets/icons/warmmachine.png')}/> */}
       <NavigationContainer>
         <Stack.Navigator>
-          {/*<Stack.Screen
+          <Stack.Screen
             options={{headerShown:false,}}
             name="Auth"
             component={AuthFlow}
@@ -48,12 +48,13 @@ const App = () => {
             options={{headerShown:false,}}
             name="HomeFlow"
             component={HomeStack}
-          />*/}
+          />
+          {/*
           <Stack.Screen
             options={{headerShown:false,}}
             name="AdminFLow"
             component={AdminFlow}
-          />
+          />*/}
         </Stack.Navigator>
       </NavigationContainer>
       
