@@ -14,7 +14,7 @@ import {
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
 
-const Chat = ({navigation}) => { 
+const AChat = ({navigation}) => { 
   const [dimensions, setDimensions] = useState({ window, screen });
 
   useEffect(() => {
@@ -34,8 +34,8 @@ const Chat = ({navigation}) => {
         }}>
         This is Chat
     </Text>
-    <Button title="Shop1"
-            onPress={() => navigation.navigate('Shop1')}
+    <Button title="Home"
+            onPress={() => navigation.navigate('AHome')}
     />
 </View>
   )
@@ -52,4 +52,4 @@ const styles = StyleSheet.create({
 },
 
 })
-export default Chat;
+export default AChat;

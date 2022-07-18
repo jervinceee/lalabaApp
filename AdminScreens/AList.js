@@ -14,7 +14,7 @@ import { db, auth } from '../core/config'
 import { AntDesign } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 
- const List = ({navigation}) => {
+ const AList = ({navigation}) => {
   var months = [
     "January",
     "February",
@@ -156,4 +156,4 @@ const styles = StyleSheet.create({
   }
 })
 
-  export default List;
+  export default AList;

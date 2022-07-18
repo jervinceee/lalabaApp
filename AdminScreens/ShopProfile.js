@@ -26,7 +26,7 @@ import { FontAwesome } from '@expo/vector-icons';
 
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
-const Shop1Menu = ({navigation}) => {
+const ShopProfile = ({navigation}) => {
 
     const shop1collectionRef = collection(db, "shop1orders")
     //submit order
@@ -205,12 +205,18 @@ const Shop1Menu = ({navigation}) => {
     return (
         <ScrollView style={{backgroundColor:'white',marginTop:45}}>
             <View>
-                <Text style={{marginTop:40, fontSize:30, color:'black', fontWeight:'bold', marginLeft:10}}>Schedule</Text>
+                <View style={{flexDirection:'row', justifyContent:'space-between',marginTop:40, marginRight:10,}}>
+                    <Text style={{ fontSize:30, color:'black', fontWeight:'bold', marginLeft:10}}>Schedule</Text>
+                    <Icon name='logout' color={'red'} size={50}  
+                                onPress={() => navigation.navigate('ShopProfile')}
+                            />
+                </View>
+                
                 <View style={styles.retrieveContainer}>
-                    <Text style={styles.scheduleQ}>How should we retrieve your Labada?</Text>
+                    <Text style={styles.scheduleQ}>Edit shop schedule </Text>
                     {/* retrieving schedule */}
                     <View style={styles.scheduleButtonsContainer}>
-                        <TouchableOpacity 
+                    {/*<TouchableOpacity 
                             style={retrieveMethod === 'Pick-up'? styles.scheduleButtonsSelected:styles.scheduleButtons}
                             onPress={()=>setRetrieveMethod('Pick-up')}    
                         >
@@ -251,13 +257,14 @@ const Shop1Menu = ({navigation}) => {
                                     onTouchCancel={()=>setShowRetrieve(false)}
                                 />
                             )
-                        }
+                        } */}   
+                    
                     </View>
                 </View>
 
                 <View style={styles.retrieveContainer}>
-                    <Text style={styles.scheduleQ}>How would you like to receive your Labada back?</Text>
-                    {/* sending schedule */}
+                   {/*  <Text style={styles.scheduleQ}>How would you like to receive your Labada back?</Text>*/}
+                    {/* sending schedule  
                     <View style={styles.scheduleButtonsContainer}>
                         <TouchableOpacity 
                             style={receiveMethod === 'Delivery'? styles.scheduleButtonsSelected:styles.scheduleButtons}
@@ -275,11 +282,13 @@ const Shop1Menu = ({navigation}) => {
                                 style={receiveMethod==='Pick-up'?{color:'white'}:{color:'black'}}
                             >Pick-up</Text>
                         </TouchableOpacity>
-                    </View>
-                    <Text style={{alignSelf:'center'}}>Please select Date and Time</Text>
+                    </View>*/}
+                    
+                    <Text style={{alignSelf:'center'}}>Shop Open Monday - Sunday</Text>
+                    <Text style={{alignSelf:'center'}}>8:00 AM - 10:30 PM</Text>
                     <View style={styles.calendar}>
                         <TouchableOpacity
-                            onPress={()=> showModeReceive ('date')}
+                            onPress={()=> showModeReceive('date')}
                         >
                             <Icon name='event' color={'#01BCE4'} size={50} />
                         </TouchableOpacity>
@@ -304,36 +313,38 @@ const Shop1Menu = ({navigation}) => {
                     </View>
                 </View>
                 <View style={styles.mainContainer}>
+                        <View>
+                            <Text>
+                                Edit prices
+                            </Text>
+                        </View>
                     <Text style={styles.categoryTitle}>Services</Text>
 
 
                     <ScrollView horizontal={true}>
+                       
                         <View style={styles.categoryContainer}>
                             {/* items ng mga services */}
                             <Service
-                                buttonName={"Wash, Dry and Fold"}
-                                buttonPrice={" Php 130.00 per 8kg"}
+                                buttonName={"Wash, Dry, and Fold"}
                                 path={require('../assets/icons/clotheswashing.png')}
                                 cost={16.25}
                             />
 
                             <Service
-                                buttonName={"Wash, Dry and Iron"}
-                                buttonPrice={" Php 130.00 per 8kg"}
+                                buttonName={"Filler Button"}
                                 path={require('../assets/icons/bubble.png')}
                                 cost={16.25}
                             />
 
                             <Service
                                 buttonName={"Dry Clean"}
-                                buttonPrice={'\nPhp 130.00 per 8kg'}
                                 path={require('../assets/icons/clothes.png')}
                                 cost={16.25}
                             />
 
                             <Service
                                 buttonName={"Beddings"}
-                                buttonPrice={'\nPhp 130.00 per 8kg'}
                                 path={require('../assets/icons/warmmachine.png')}
                                 cost={16.25}
                             />
@@ -344,34 +355,24 @@ const Shop1Menu = ({navigation}) => {
                         <View style={styles.categoryContainer}>
                             {/* items ng mga detergent */}
                             <Detergent
-                                buttonName={"Surf powder Cherry Blossom 75g"}
-                                buttonPrice={" Php 30.00 each"}
-                                path={require('../assets/icons/DSurf.png')}
+                                buttonName={"Surf 100g"}
+                                path={require('../assets/icons/Surf.png')}
                                 cost={30}
                             />
                             <Detergent
-                                buttonName={'Tide Original Scent\n80g'}
-                                buttonPrice={" Php 20.00 each"}
-                                path={require('../assets/icons/DTide.png')}
+                                buttonName={"Tide 100g"}
+                                path={require('../assets/icons/Tide.png')}
                                 cost={20}
                             />
                             <Detergent
-                                buttonName={"Ariel powder with downy\n66g"}
-                                buttonPrice={" Php 25.00 each"}
-                                path={require('../assets/icons/DAriel.png')}
+                                buttonName={"Ariel 100g"}
+                                path={require('../assets/icons/Ariel.png')}
                                 cost={25}
                             />
                             <Detergent
-                                buttonName={'Laundry shop choice \n 80g'}
-                                buttonPrice={" Php 10.00 each"}
+                                buttonName={"Sample 100g"}
                                 path={require('../assets/icons/bubble.png')}
                                 cost={69}
-                            />
-                             <Detergent
-                                buttonName={'I will provide my own'}
-                                buttonPrice={" \n Php 0.00"}
-                                path={require('../assets/icons/bubble.png')}
-                                cost={0}
                             />
 
                         </View>
@@ -381,48 +382,27 @@ const Shop1Menu = ({navigation}) => {
                         <View style={styles.categoryContainer}>
                             {/* items ng mga services */}
                             <FabCon
-                                buttonName={'Surf \n Blossom Fresh \n 40ml'}
-                                buttonPrice={" Php 30.00 each"}
-                                path={require('../assets/icons/FSurf.png')}
+                                buttonName={"Surf Pink 100ml"}
+                                path={require('../assets/icons/Surf.png')}
                                 cost={30}
                             />
                             <FabCon
-                                buttonName={'Del Gentle Protect\n26ml'}
-                                buttonPrice={" Php 20.00 each"}
-                                path={require('../assets/icons/FDel.png')}
+                                buttonName={"Tide 100ml"}
+                                path={require('../assets/icons/Tide.png')}
                                 cost={20}
                             />
                             <FabCon
-                                buttonName={"Downey Sunrise Fresh\n38ml"}
-                                buttonPrice={" Php 30.00 each"}
-                                path={require('../assets/icons/FDowny.png')}
+                                buttonName={"Ariel Blu 100ml"}
+                                path={require('../assets/icons/Ariel.png')}
                                 cost={25}
                             />
                             <FabCon
-                                buttonName={'Laundry shop choice \n 100ml'}
-                                buttonPrice={" Php 30.00 each"}
+                                buttonName={"Sample 100ml"}
                                 path={require('../assets/icons/bubble.png')}
                                 cost={69}
                             />
-                            <FabCon
-                                buttonName={'I will provide my own'}
-                                buttonPrice={" \n Php 0.00"}
-                                path={require('../assets/icons/bubble.png')}
-                                cost={0}
-                            />
                         </View>
                     </ScrollView>
-                    {/* To add notes starts here */}
-                    <View>
-                    
-                        <View style={{ height:50, backgroundColor:'#f6f6f6', borderRadius:20, margin:10, justifyContent:'center',}}>
-                        <Text style={{fontSize: 20, left:15,
-                                color:'gray',
-                            }}> 
-                            Add note:
-                            </Text>
-                        </View>
-                    </View>
 
                     <Modal
                         animationType="slide"
@@ -534,6 +514,7 @@ const Shop1Menu = ({navigation}) => {
                     </View>
                     </Modal>
                     {/* Billing codes start here */}
+                    
                     <TouchableOpacity onPress={getStoredDate}>
                             <View style={styles.bookButton}>
                                 <Text style={{
@@ -541,7 +522,7 @@ const Shop1Menu = ({navigation}) => {
                                     fontWeight:'bold',
                                     color: 'white',
                                 }}>
-                                    Book
+                                    Save
                                 </Text>
                             </View>
                     </TouchableOpacity>
@@ -628,7 +609,7 @@ const styles = StyleSheet.create({
     },
     mainContainer:{
         marginHorizontal:10,
-        height:950,
+        height:700,
     },
    itemContainer1:{
        height:150,
@@ -691,7 +672,7 @@ const styles = StyleSheet.create({
         color:'black',
    },
    categoryContainer:{
-        flexDirection:'row',
+        flexDirection:'row'
    },
 
    billModal:{
@@ -784,4 +765,4 @@ const styles = StyleSheet.create({
         borderRadius:10,
     },
 })
-export default Shop1Menu;
+export default ShopProfile;

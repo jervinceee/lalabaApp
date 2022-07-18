@@ -1,20 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import {
     View,
     Text,
-    Button,
     StyleSheet,
     ScrollView,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    Dimensions,
 } from "react-native";
 import branch1 from '../assets/image/branch1.png';
-import bubble from '../assets/icons/bubble.png';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+const window = Dimensions.get("window");
+const screen = Dimensions.get("screen");
+
 const Shop1 = ({navigation}) => {
+    const [dimensions, setDimensions] = useState({ window, screen });
+
+    useEffect(() => {
+      const subscription = Dimensions.addEventListener(
+        "change",
+        ({ window, screen }) => {
+          setDimensions({ window, screen });
+        }
+      );
+      return () => subscription?.remove();
+    });
     return (
-        <ScrollView style={{backgroundColor: '#01BCE4'}}>
+        <ScrollView style={{backgroundColor: '#01BCE4',marginTop:45}}>
             <View>
                 <View style={{ height: 15, backgroundColor: '#01BCE4'}}>
                 </View>
@@ -84,6 +97,7 @@ const styles = StyleSheet.create({
         borderRadius:20,
         alignContent: 'center',
         alignSelf: 'center', 
+        marginTop:'10%',
         paddingTop:30,
         paddingHorizontal: 20,
         width: '95%',
@@ -130,9 +144,6 @@ const styles = StyleSheet.create({
         alignItems:'center',
         alignContent:'center',
         justifyContent: 'center',
-
-
-
     },
     
 

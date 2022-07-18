@@ -13,7 +13,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Shop2 = ({navigation}) => {
     return (
-        <ScrollView style={{backgroundColor: '#01BCE4'}}>
+        <ScrollView style={{backgroundColor: '#01BCE4',marginTop:45}}>
             <View>
                 <View style={{ height: 15, backgroundColor: '#01BCE4'}}>
                 </View>
@@ -79,6 +79,7 @@ const Shop2 = ({navigation}) => {
 }
 const styles = StyleSheet.create({
     imgShape: {
+        marginTop:'10%',
         backgroundColor:'white',
         borderRadius:20,
         alignContent: 'center',

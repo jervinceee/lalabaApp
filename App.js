@@ -3,49 +3,71 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Home from './Screens/Home';
-import Shop1 from './Screens/Shop1';
-import Shop2 from './Screens/Shop2';
-import Tabs from './navigation/tabs';
-import List from './Screens/List';
-import Chat from './Screens/Chat';
-import Profile from './Screens/Profile';
-import TabBar from './components/TabBar';
-import Navigator from './roots/homeStack';
-import Shop1Menu from './Screens/Shop1Menu';
-import Shop2Menu from './Screens/Shop2Menu';
-import Edit from './Screens/Edit';
-import Shop1CheckOut from './Screens/Shop1CheckOut';
-import Shop2CheckOut from './Screens/Shop2CheckOut';
+import HomeStack from './roots/homeStack';
+
+
+import AdminFlow from './roots/AdminFlow';
+import PendingOrders from './AdminScreens/PendingOrders';
+import ActiveOrders from './AdminScreens/ActiveOrders';
+
+import AuthFlow from './roots/AuthFlow';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LogBox } from 'react-native';
+import _ from 'lodash';
+
+
+LogBox.ignoreLogs(['Warning:...']); // ignore specific logs
+LogBox.ignoreAllLogs(); // ignore all logs
+const _console = _.clone(console);
+console.warn = message => {
+if (message.indexOf('Setting a timer') <= -1) {
+   _console.warn(message);
+   }
+};
+// import ServiceButton from './components/ServiceComponent'
+// import ProductButton from './components/DetergentComponent'
+
 
 const Stack = createNativeStackNavigator();
-
-<Navigator/>
 const App = () => {
+  AsyncStorage.clear();
   return (
-    <NavigationContainer>
-    
-    <Stack.Navigator 
-      screenOptions={{
-        showHeader: false,
-      }}
-      initialRouteName="Home"
-    >
-      <Stack.Screen name="Home" component={Tabs} />
-      <Stack.Screen name="Shop1" component={Shop1} options={{ title: 'Laundry Shop 1' }}/>
-      <Stack.Screen name="Shop2" component={Shop2} options={{ title: 'Laundry Shop 2' }}/>
-      <Stack.Screen name="Chat" component={Chat} options={{ title: 'Chat' }}/>
-      <Stack.Screen name="List" component={List} options={{ title: 'List' }}/>
-      <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="Edit" component={Edit} />
-      <Stack.Screen name="Shop1Menu" component={Shop1Menu} options={{ title: 'Menu: Laundry Shop 1' }} />
-      <Stack.Screen name="Shop2Menu" component={Shop2Menu} options={{ title: 'Menu: Laundry Shop 2' }} />
-      <Stack.Screen name="Shop1CheckOut" component={Shop1CheckOut} options={{ title: 'Summary' }} />
-      <Stack.Screen name="Shop2CheckOut" component={Shop2CheckOut} options={{ title: 'Summary' }} />
+    <View style={styles.container}>
+      <StatusBar barStyle="light-content"/>
+      {/* <ProductButton cost={30} number={1} buttonName={"Wash, Dry, and Fold"} path={require('./assets/icons/clotheswashing.png')}/>
+      <ProductButton cost={25} number={2} buttonName={"Dry Clean"} path={require('./assets/icons/clothes.png')}/>
+      <ProductButton cost={30} number={2} buttonName={"Beddings"} path={require('./assets/icons/warmmachine.png')}/> */}
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            options={{headerShown:false,}}
+            name="Auth"
+            component={AuthFlow}
+          />
+          <Stack.Screen
+            options={{headerShown:false,}}
+            name="HomeFlow"
+            component={HomeStack}
+          />
+          {/*
+          <Stack.Screen
+            options={{headerShown:false,}}
+            name="AdminFLow"
+            component={AdminFlow}
+          />*/}
+        </Stack.Navigator>
+      </NavigationContainer>
       
-      
-    </Stack.Navigator>
-  </NavigationContainer>
+    </View>
   )
 };
 export default App;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    height:'100%'
+  },
+});
+
