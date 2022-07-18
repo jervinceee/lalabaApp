@@ -73,9 +73,11 @@ const AHome = ({navigation}) => {
                         }}>
                             Pending Orders
                         </Text>
-                        <Text style={{top:3,}}>
-                            View all
-                        </Text>
+                        <TouchableOpacity onPress={()=>navigation.navigate('PendingOrders')}>
+                            <Text style={{top:3,}}>
+                                View all
+                            </Text>
+                        </TouchableOpacity>
                     </View>
                         <View style={styles.orderContent}>
                             <View style={styles.customerOrders}>

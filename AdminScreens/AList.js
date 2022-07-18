@@ -1,4 +1,3 @@
-
 import React from 'react'
 import {
     View,
@@ -14,7 +13,7 @@ import { db, auth } from '../core/config'
 import { AntDesign } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 
- const List = ({navigation}) => {
+ const AList = ({navigation}) => {
   var months = [
     "January",
     "February",
@@ -43,7 +42,10 @@ import { ScrollView } from 'react-native-gesture-handler';
     }
 
     getOrders();
-    
+    // TO DO: 
+    // FIX RENDERING DATES
+    // ADMIN SCREENS
+
     orders.map((order)=>{
         console.log(months[new Date(order.receiveDate.seconds * 1000).getMonth()]);
         console.log(new Date(order.receiveDate.seconds * 1000).getMonth())
@@ -59,7 +61,7 @@ import { ScrollView } from 'react-native-gesture-handler';
       <View style={styles.notDoneContainer}>
       <Text style={styles.containerText}>Scheduled: </Text>
           {/* Nothing to see here... */}
-          {orders.filter(name=>name.orderby === auth.currentUser.email).map((order, index)=>{
+          {orders.map((order, index)=>{
               var minutesRetrieve = new Date(order.retrieveDate.seconds * 1000).getMinutes()
               var minutesReceive = new Date(order.receiveDate.seconds * 1000).getMinutes()
               return(
@@ -153,4 +155,4 @@ const styles = StyleSheet.create({
   }
 })
 
-  export default List;
+  export default AList;
