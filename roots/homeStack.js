@@ -14,6 +14,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AHome from "../AdminScreens/AHome";
 import ActiveOrders from "../AdminScreens/ActiveOrders";
 import PendingOrders from "../AdminScreens/PendingOrders";
+import AdminFlow from '../roots/AdminFlow';
 const homeStack = createNativeStackNavigator();
 const HomeFlow = ({navigation}) => {
     return(
@@ -22,7 +23,7 @@ const HomeFlow = ({navigation}) => {
                 options={{headerShown:false,gestureEnabled:false}}
                 index={0}
                 name="HomeTabs"
-                component={Tabs}
+                component={AdminFlow}
             />
             <homeStack.Screen
                 options={{headerShown:false}}

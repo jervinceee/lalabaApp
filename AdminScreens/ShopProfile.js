@@ -13,6 +13,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DateTimePicker from '@react-native-community/datetimepicker';
+import Login from "../Screens/Login";
 
 //firestore
 import {auth, db} from '../core/config'
@@ -51,6 +52,7 @@ const ShopProfile = ({navigation}) => {
             console.log("done")
         })
     }
+  
 
     //UI Variables
     const [retrieveMethod, setRetrieveMethod] = React.useState('');
@@ -208,7 +210,7 @@ const ShopProfile = ({navigation}) => {
                 <View style={{flexDirection:'row', justifyContent:'space-between',marginTop:40, marginRight:10,}}>
                     <Text style={{ fontSize:30, color:'black', fontWeight:'bold', marginLeft:10}}>Schedule</Text>
                     <Icon name='logout' color={'red'} size={50}  
-                                onPress={() => navigation.navigate('ShopProfile')}
+                                onPress={() => navigation.navigate({/*login na ulit */})}
                             />
                 </View>
                 
@@ -326,25 +328,29 @@ const ShopProfile = ({navigation}) => {
                         <View style={styles.categoryContainer}>
                             {/* items ng mga services */}
                             <Service
-                                buttonName={"Wash, Dry, and Fold"}
+                                buttonName={"Wash, Dry and Fold"}
+                                buttonPrice={" Php 130.00 per 8kg"}
                                 path={require('../assets/icons/clotheswashing.png')}
                                 cost={16.25}
                             />
 
                             <Service
-                                buttonName={"Filler Button"}
+                                buttonName={"Wash, Dry and Iron"}
+                                buttonPrice={" Php 130.00 per 8kg"}
                                 path={require('../assets/icons/bubble.png')}
                                 cost={16.25}
                             />
 
                             <Service
                                 buttonName={"Dry Clean"}
+                                buttonPrice={'\nPhp 130.00 per 8kg'}
                                 path={require('../assets/icons/clothes.png')}
                                 cost={16.25}
                             />
 
                             <Service
                                 buttonName={"Beddings"}
+                                buttonPrice={'\nPhp 130.00 per 8kg'}
                                 path={require('../assets/icons/warmmachine.png')}
                                 cost={16.25}
                             />
@@ -355,24 +361,34 @@ const ShopProfile = ({navigation}) => {
                         <View style={styles.categoryContainer}>
                             {/* items ng mga detergent */}
                             <Detergent
-                                buttonName={"Surf 100g"}
-                                path={require('../assets/icons/Surf.png')}
+                                buttonName={"Surf powder Cherry Blossom 75g"}
+                                buttonPrice={" Php 30.00 each"}
+                                path={require('../assets/icons/DSurf.png')}
                                 cost={30}
                             />
                             <Detergent
-                                buttonName={"Tide 100g"}
-                                path={require('../assets/icons/Tide.png')}
+                                buttonName={'Tide Original Scent\n80g'}
+                                buttonPrice={" Php 20.00 each"}
+                                path={require('../assets/icons/DTide.png')}
                                 cost={20}
                             />
                             <Detergent
-                                buttonName={"Ariel 100g"}
-                                path={require('../assets/icons/Ariel.png')}
+                                buttonName={"Ariel powder with downy\n66g"}
+                                buttonPrice={" Php 25.00 each"}
+                                path={require('../assets/icons/DAriel.png')}
                                 cost={25}
                             />
                             <Detergent
-                                buttonName={"Sample 100g"}
+                                buttonName={'Laundry shop choice \n 80g'}
+                                buttonPrice={" Php 10.00 each"}
                                 path={require('../assets/icons/bubble.png')}
                                 cost={69}
+                            />
+                             <Detergent
+                                buttonName={'I will provide my own'}
+                                buttonPrice={" \n Php 0.00"}
+                                path={require('../assets/icons/bubble.png')}
+                                cost={0}
                             />
 
                         </View>
@@ -382,24 +398,34 @@ const ShopProfile = ({navigation}) => {
                         <View style={styles.categoryContainer}>
                             {/* items ng mga services */}
                             <FabCon
-                                buttonName={"Surf Pink 100ml"}
-                                path={require('../assets/icons/Surf.png')}
+                                buttonName={'Surf \n Blossom Fresh \n 40ml'}
+                                buttonPrice={" Php 30.00 each"}
+                                path={require('../assets/icons/FSurf.png')}
                                 cost={30}
                             />
                             <FabCon
-                                buttonName={"Tide 100ml"}
-                                path={require('../assets/icons/Tide.png')}
+                                buttonName={'Del Gentle Protect\n26ml'}
+                                buttonPrice={" Php 20.00 each"}
+                                path={require('../assets/icons/FDel.png')}
                                 cost={20}
                             />
                             <FabCon
-                                buttonName={"Ariel Blu 100ml"}
-                                path={require('../assets/icons/Ariel.png')}
+                                buttonName={"Downey Sunrise Fresh\n38ml"}
+                                buttonPrice={" Php 30.00 each"}
+                                path={require('../assets/icons/FDowny.png')}
                                 cost={25}
                             />
                             <FabCon
-                                buttonName={"Sample 100ml"}
+                                buttonName={'Laundry shop choice \n 100ml'}
+                                buttonPrice={" Php 30.00 each"}
                                 path={require('../assets/icons/bubble.png')}
                                 cost={69}
+                            />
+                            <FabCon
+                                buttonName={'I will provide my own'}
+                                buttonPrice={" \n Php 0.00"}
+                                path={require('../assets/icons/bubble.png')}
+                                cost={0}
                             />
                         </View>
                     </ScrollView>
@@ -609,7 +635,7 @@ const styles = StyleSheet.create({
     },
     mainContainer:{
         marginHorizontal:10,
-        height:700,
+        height:950,
     },
    itemContainer1:{
        height:150,
