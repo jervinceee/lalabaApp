@@ -37,13 +37,23 @@ const Login = ({navigation}) => {
         }
 
         getUsers();
-        //console.log(email, password)
-        // const unsubscribe =  auth.onAuthStateChanged(user=>{
+        console.log(email, password);
+
+        // const unsubscribe = auth.onAuthStateChanged( async user=>{
         //     if(user){
-        //         console.log("nani")
+        //         users.map(async userMap=>{
+        //         if(user.uid === await userMap.id && userMap.isAdmin === false){
+        //             //console.log(userMap.id);
+        //             navigation.navigate('HomeFlow');
+        //         }
+        //         else if (user.uid === await userMap.id && userMap.isAdmin === true){
+        //             //console.log(userMap.id);
+        //             navigation.navigate('AdminFlow');
+        //         }})
         //     }
         // })
-        // return unsubscribe;
+
+        // return unsubscribe();
     }, [])
 
     const submitHandler = async () => {

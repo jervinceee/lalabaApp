@@ -10,20 +10,49 @@ import {
 } from "react-native";
 import bubble from "../assets/icons/bubble.png"
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { collection, getDocs, Timestamp } from 'firebase/firestore';
+import { db, auth } from '../core/config'
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
 
 const AHome = ({navigation}) => {
     const [dimensions, setDimensions] = useState({ window, screen });
+    var months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+      ]
+    const [orders, setOrders] = React.useState([]);
+    const shopCollectionReference = collection(db, 'shop1orders');
 
     useEffect(() => {
-      const subscription = Dimensions.addEventListener(
-        "change",
-        ({ window, screen }) => {
-          setDimensions({ window, screen });
+
+        const getOrders = async () =>{
+            const data = await getDocs(shopCollectionReference);
+            
+            setOrders(data.docs.map((doc)=>({
+              ...doc.data(), id: doc.id,
+            })));
         }
-      );
-      return () => subscription?.remove();
+    
+        getOrders();
+
+        const subscription = Dimensions.addEventListener(
+            "change",
+            ({ window, screen }) => {
+            setDimensions({ window, screen });
+            }
+        );
+        return () => subscription?.remove();
     });
     return (
         <ScrollView style={{backgroundColor: 'white', marginTop:50}}>
@@ -82,13 +111,7 @@ const AHome = ({navigation}) => {
                         <View style={styles.orderContent}>
                             <View style={styles.customerOrders}>
                                 <View style={styles.orderCustomerShape}>
-                                        <Text style={{ 
-                                            fontSize:20,
-                                            fontWeight:'400',
-                                            color:'white',
-                                            alignSelf:'center',
-                                            
-                                        }}>
+                                        <Text style={styles.nameText}>
                                             Customer 1
                                         </Text>
                                 </View>
@@ -99,14 +122,28 @@ const AHome = ({navigation}) => {
                                 <Icon name="close" size={45} color={'red'}/>
                                 </View>
                             </View>
+                            {/* {
+                                orders.filter((filter)=> filter.status==='pending' ).map((order, index)=>{
+                                    return(
+                                        <View style={styles.customerOrders}>
+                                            <View style={styles.orderCustomerShape}>
+                                                    <Text style={styles.nameText}>
+                                                        {order.orderby}
+                                                    </Text>
+                                            </View>
+                                            <View style={styles.acceptButton}>
+                                            <Icon name="done" size={45} color={'green'}/>
+                                            </View>
+                                            <View style ={styles.declineButton}>
+                                            <Icon name="close" size={45} color={'red'}/>
+                                            </View>
+                                        </View>
+                                    )
+                                })
+                            } */}
                             <View style={styles.customerOrders}>
                                 <View style={styles.orderCustomerShape}>
-                                        <Text style={{ 
-                                            fontSize:20,
-                                            fontWeight:'400',
-                                            color:'white',
-                                            alignSelf:'center',
-                                        }}>
+                                        <Text style={styles.nameText}>
                                             Customer 2
                                         </Text>
                                 </View>
@@ -243,7 +280,12 @@ const styles = StyleSheet.create({
     profilePicture: {
         width:100,
         height:100
-        
+    },
+    nameText:{ 
+        fontSize:20,
+        fontWeight:'400',
+        color:'white',
+        alignSelf:'center',
     }
 })
 

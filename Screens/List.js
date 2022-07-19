@@ -88,6 +88,7 @@ import { ScrollView } from 'react-native-gesture-handler';
                             minutesReceive <=9 ? "0"+minutesReceive: minutesReceive
                           }</Text>
                       </View>
+                      <Text style={{fontSize:18, marginLeft:5, marginTop:5}}>Status: {order.status}</Text>
                   </View>
               )
           })}
@@ -112,7 +113,8 @@ const styles = StyleSheet.create({
   notDoneContainer:{
     width:'90%',
     backgroundColor:'#f6f6f6',
-    padding:20,
+    paddingTop:20,
+    paddingHorizontal:20,
     borderRadius:20,
     marginBottom:20
   },

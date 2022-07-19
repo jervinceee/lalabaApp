@@ -8,15 +8,20 @@ import {
     TouchableOpacity,
     Dimensions,
     Modal,
-    TextInput
+    TextInput,
 } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DateTimePicker from '@react-native-community/datetimepicker';
+import * as ImagePicker from 'expo-image-picker';
+import 'react-native-get-random-values'
 
-//firestore
-import {auth, db} from '../core/config'
+
+//firebase
+import {auth, db, storage} from '../core/config'
 import {collection, addDoc, serverTimestamp, FieldValue} from 'firebase/firestore'
+import { ref, uploadBytes, uploadString } from 'firebase/storage'
+import {v4} from 'uuid'
 
 //components
 import Service from "../components/ServiceComponent";
@@ -30,7 +35,14 @@ const Shop1Menu = ({navigation}) => {
 
     const shop1collectionRef = collection(db, "shop1orders")
     //submit order
+
+    //image upload not working!!!
+    const metadata = {
+        contentType: 'image/jpeg',
+    };
     const submitOrder = async () =>{
+        const imageRef = ref(storage, `shop1storage/${imagePath}`);
+        uploadBytes(imageRef, imageUpload , metadata)
         await addDoc( shop1collectionRef, {
             detergent : detergent,
             detergentVolume : detergentVol,
@@ -46,7 +58,8 @@ const Shop1Menu = ({navigation}) => {
             receiveDate: receiveTimestamp,
             modeOfPayment: payment,
             cashPrepared: cashAmount,
-            status:'pending'
+            status:'pending',
+            proofPayment:imagePath
         }).then(()=>{
             navigation.navigate("List");
             console.log("done")
@@ -76,6 +89,8 @@ const Shop1Menu = ({navigation}) => {
     const [payment, setPayment] = React.useState('');
     const [cashAmount, setCashAmount] = React.useState(0);
     const [submitDisable, setSubmitDisable] = React.useState(true);
+    const [image, setImage] = useState(null);
+    const [imageUpload, setImageUpload] = useState(null)
 
     // date and time picker variables
     const [dateRetrieve, setDateRetrieve] = React.useState(new Date());
@@ -85,7 +100,26 @@ const Shop1Menu = ({navigation}) => {
     const [showReceive, setShowReceive] = React.useState(false);
     const [retrieveTimestamp, setRetrieveTimestamp] = React.useState();
     const [receiveTimestamp, setReceiveTimestamp] = React.useState();
+    const [imagePath, setImagePath] = React.useState('');
 
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [9, 16],
+          quality: 1,
+        });
+    
+        console.log(result);
+    
+        if (!result.cancelled) {
+          setImage(result.uri);
+          setImagePath(auth.currentUser.email + v4())
+          setImageUpload(result)
+        }
+    };
+    
     const RenderBillModal = () =>{
         if(retrieveMethod === ""){
             setBillModalError("Please tell us how to retrieve your Labada.")
@@ -174,9 +208,12 @@ const Shop1Menu = ({navigation}) => {
     const [dimensions, setDimensions] = useState({ window, screen });
 
   useEffect(() => {
-    console.log(detergent, detergentVol);
-    console.log(fabcon, fabconVol);
-    console.log("Amount Entered: ", cashAmount )
+    // console.log("full: ", image);
+    if(image !== null){
+        console.log(image.slice(137,-4) + auth.currentUser.email + v4());
+    }
+    // console.log(fabcon, fabconVol);
+    // console.log("Amount Entered: ", cashAmount )
     setTotalCost(
         parseInt(fabconCost) + parseInt(detergentCost) + parseInt(serviceCost)
     );
@@ -188,6 +225,9 @@ const Shop1Menu = ({navigation}) => {
     }else if(payment === 'cod' && cashAmount < totalCost){
         setSubmitDisable(true)
         setSubmissionError("Cash prepared must be larger than the total service cost.")
+    }else if(payment === 'gcash' && image === null){
+        setSubmitDisable(true)
+        setSubmissionError("Please upload proof of payment.")
     }else{
         setSubmissionError("");
         setSubmitDisable(false)
@@ -403,6 +443,7 @@ const Shop1Menu = ({navigation}) => {
                                 <RenderBillModal/>
                             :
                             <View style={styles.billContainer}>
+                                <ScrollView>
                                 <Text>Our rider will retrieve your Labada on:</Text>
                                 <Text style={styles.billTitle}>{
                                     retrieveTimestamp.getMonth()+1 + '/' + 
@@ -458,6 +499,10 @@ const Shop1Menu = ({navigation}) => {
                                             <Text style={styles.remindersText}>
                                                 Kindly send a screenshot of the receipt before the laundry schedule.
                                             </Text>
+                                                <TouchableOpacity style={styles.submitButton} onPress={pickImage}>
+                                                    <Text style={{color:'white',fontWeight:'bold'}}>Upload Payment Proof</Text>
+                                                </TouchableOpacity>
+                                                {image && <Image source={{ uri: image }} style={styles.screenshot} />}
                                         </View>
                                         : payment === 'cod'?
                                         <View style={styles.remindersContainer}>
@@ -488,6 +533,7 @@ const Shop1Menu = ({navigation}) => {
                                 <Text style={{color:'red', alignSelf:'center'}}>
                                     {submissionError}
                                 </Text>
+
                                 <TouchableOpacity
                                     onPress = {submitOrder}
                                     style={submitDisable? styles.submitButtonDisabled :styles.submitButton}
@@ -495,6 +541,7 @@ const Shop1Menu = ({navigation}) => {
                                 >
                                     <Text style={{color:'white',fontWeight:'bold'}}>SUBMIT</Text>
                                 </TouchableOpacity>
+                                </ScrollView>
                             </View>
                         }
                     </View>
@@ -679,7 +726,8 @@ const styles = StyleSheet.create({
         width:'80%',
         padding:10,
         elevation:20,
-        borderRadius:10
+        borderRadius:10,
+        marginVertical:10
    },   
    billContent:{
         display:'flex',
@@ -755,5 +803,12 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         borderRadius:10,
     },
+    screenshot:{ 
+        width: 180, 
+        height: 320, 
+        alignSelf:'center',
+        borderRadius:5,
+        marginTop:10
+    }
 })
 export default Shop1Menu;

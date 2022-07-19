@@ -33,8 +33,6 @@ const PendingOrders = ({navigation}) => {
     const [orders, setOrders] = React.useState([]);
     const shopCollectionReference = collection(db, 'shop1orders');
 
-
-
     useEffect(() => {
 
         const getOrders = async () =>{
