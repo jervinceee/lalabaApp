@@ -37,12 +37,15 @@ const Shop1Menu = ({navigation}) => {
     //submit order
 
     //image upload not working!!!
-    const metadata = {
-        contentType: 'image/jpeg',
-    };
+    // const metadata = {
+    //     contentType: 'image/jpeg',
+    // };
+    
     const submitOrder = async () =>{
+        const img = await fetch(imageUpload.uri);
+        const bytes = await img.blob();
         const imageRef = ref(storage, `shop1storage/${imagePath}`);
-        uploadBytes(imageRef, imageUpload , metadata)
+        await uploadBytes(imageRef, bytes)
         await addDoc( shop1collectionRef, {
             detergent : detergent,
             detergentVolume : detergentVol,
@@ -59,7 +62,8 @@ const Shop1Menu = ({navigation}) => {
             modeOfPayment: payment,
             cashPrepared: cashAmount,
             status:'pending',
-            proofPayment:imagePath
+            proofPayment:imagePath,
+            address: address
         }).then(()=>{
             navigation.navigate("List");
             console.log("done")
@@ -71,6 +75,7 @@ const Shop1Menu = ({navigation}) => {
     const [receiveMethod, setReceiveMethod] = React.useState('')
 
     //AsyncStorage Data
+    const [address, setAddress] = React.useState("");
     const [service, setService] = React.useState("");
     const [maxWeight, setMaxWeight] = React.useState(0);
     const [serviceCost, setServiceCost] = React.useState(0);
@@ -80,6 +85,7 @@ const Shop1Menu = ({navigation}) => {
     const [fabcon, setFabcon] = React.useState("");
     const [fabconVol, setFabconVol] = React.useState(0);
     const [fabconCost, setFabconCost] = React.useState(0);
+    
 
     //bill modal stuff
     const [totalCost, setTotalCost] = React.useState(0);
@@ -121,7 +127,10 @@ const Shop1Menu = ({navigation}) => {
     };
     
     const RenderBillModal = () =>{
-        if(retrieveMethod === ""){
+
+        if( address === null || address === "null" || address === "none" || address === ""){
+            setBillModalError("Please set an Address for your profile first.");
+        }else if(retrieveMethod === ""){
             setBillModalError("Please tell us how to retrieve your Labada.")
         }else if(retrieveTimestamp === undefined || retrieveTimestamp === null){
             setBillModalError("You haven't specified a Date/Time for us to retrieve your Labada.")
@@ -136,6 +145,8 @@ const Shop1Menu = ({navigation}) => {
         }else if(detergent===null || detergent === ""){
             setBillModalError("No Detergents were selected.");
         }else if(service===null || service === ""){
+            setBillModalError("No Services were selected.");
+        }else if(address===null || address === ""){
             setBillModalError("No Services were selected.");
         }else{
             setBillModalError("");
@@ -193,6 +204,7 @@ const Shop1Menu = ({navigation}) => {
     }
 
     const getStoredDate = async ()=>{
+        setAddress(await AsyncStorage.getItem('useraddress'));
         setDetergent(await AsyncStorage.getItem('detergentname'));
         setDetergentVol( await AsyncStorage.getItem('detergentvolume'));
         setDetergentCost(await AsyncStorage.getItem('detergentcost'));
@@ -230,10 +242,10 @@ const Shop1Menu = ({navigation}) => {
         setSubmissionError("Please upload proof of payment.")
     }else{
         setSubmissionError("");
-        setSubmitDisable(false)
+        setSubmitDisable(false);
     }
     
-
+    console.log(address);
     const subscription = Dimensions.addEventListener(
       "change",
       ({ window, screen }) => {
@@ -444,16 +456,17 @@ const Shop1Menu = ({navigation}) => {
                             :
                             <View style={styles.billContainer}>
                                 <ScrollView>
+                                <Text>Address: {address}</Text>
                                 <Text>Our rider will retrieve your Labada on:</Text>
                                 <Text style={styles.billTitle}>{
-                                    retrieveTimestamp.getMonth()+1 + '/' + 
+                                    retrieveTimestamp === undefined ? null : retrieveTimestamp.getMonth()+1 + '/' + 
                                     retrieveTimestamp.getDate() + '/' + 
                                     retrieveTimestamp.getFullYear() + ' at ' + 
                                     retrieveTimestamp.getHours() + ':' + 
                                     retrieveTimestamp.getMinutes()}</Text>
                                 <Text>And you will receive your Labada back on:</Text>
                                 <Text style={styles.billTitle}>{
-                                    receiveTimestamp.getMonth()+1 + '/' + 
+                                    receiveTimestamp === undefined ? null : receiveTimestamp.getMonth()+1 + '/' + 
                                     receiveTimestamp.getDate() + '/' + 
                                     receiveTimestamp.getFullYear() + ' at ' + 
                                     receiveTimestamp.getHours() + ':' + 

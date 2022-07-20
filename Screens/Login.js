@@ -14,6 +14,7 @@ import { auth, db } from '../core/config';
 import { MaterialIcons } from '@expo/vector-icons';
 import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
 import { collection, getDocs } from 'firebase/firestore';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Login = ({navigation}) => {
 
@@ -80,10 +81,11 @@ const Login = ({navigation}) => {
             await signInWithEmailAndPassword(auth, email, password).then((credentials)=>{
                 const user = credentials.user;
                 console.log("Logged in with", user.uid);
-                users.map(userMap=>{
+                users.map(async userMap =>{
                     if(user.uid === userMap.id && userMap.isAdmin === false){
                         //console.log(userMap.id);
-                        navigation.navigate('HomeFlow')
+                        navigation.navigate('HomeFlow');
+                        await AsyncStorage.setItem('useraddress', userMap.address);
                     }
                     else if (user.uid === userMap.id && userMap.isAdmin === true){
                         //console.log(userMap.id);
