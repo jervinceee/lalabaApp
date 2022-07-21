@@ -51,7 +51,7 @@ const Shop1Menu = ({navigation}) => {
             receiveDate: receiveTimestamp,
             modeOfPayment: payment,
             cashPrepared: cashAmount,
-            status: 'Pending',
+            status: payment == 'gcash' ? "Accepted" : 'Pending',
             addNote: '',
         }).then(()=>{
             navigation.navigate("List");

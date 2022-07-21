@@ -8,10 +8,45 @@ import {
     TouchableOpacity
 } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { collection, getDocs, doc, getDoc, deleteDoc } from 'firebase/firestore';
+import { db, auth, } from '../core/config'
+
+
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
 const PendingOrders = ({navigation}) => {
     const [dimensions, setDimensions] = useState({ window, screen });
+
+    const [orders, setOrders] = React.useState([]);
+    const shopCollectionReference = collection(db, 'shop1orders');
+    const usersColleciton = collection(db, 'users');
+
+
+    useEffect(async()=>{
+        let dict = {};
+        let snapshot = await getDocs(usersColleciton)
+        snapshot.forEach((doc) => {
+            let data = doc.data();
+            dict[data.email] = data.userName
+        });
+
+        let item = [];
+        snapshot = await getDocs(shopCollectionReference)
+        snapshot.forEach((doc) => {
+            let data = doc.data();
+            
+            if(data.status === 'Pending'){
+              item.push(
+                  { 
+                      ...data, id: doc.id, userName: dict[data.orderby]
+                  }
+              );
+            }
+        });
+        
+        setOrders(item);
+        console.log('hahaha')
+    },[]);
 
     useEffect(() => {
       const subscription = Dimensions.addEventListener(
@@ -22,6 +57,16 @@ const PendingOrders = ({navigation}) => {
       );
       return () => subscription?.remove();
     });
+    
+    const dateFormat =(date)=>{
+        console.log(date.getDay())
+        return `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`
+    }
+
+    const timeFormat =(date)=>{
+        return `${date.getHours() == 12 ? 12 : date.getHours() % 12}:${date.getMinutes()}${date.getHours() >= 12 ? 'PM' : 'AM'}`
+    }
+
     return (
         <ScrollView style={{backgroundColor: 'white', marginTop:50 }}>
             <View>
@@ -34,288 +79,96 @@ const PendingOrders = ({navigation}) => {
                         Pending Orders:
                     </Text>
                 </View>
-{/* Order Instance 1*/}
-                <View style={styles.orderShape}>
-                    <View style={styles.orderContainer}>
-                        <View style={styles.orderName}>
+                
+                {orders.map((order, index)=>{
+                    return <View key={`${order.id}`} style={styles.orderShape}>
                             <Text style={{
                                 fontSize:25,
                                 fontWeight:'600',
                                 color:'black',
                             }}>
-                                CustomerName 1
+                                {order.userName}
                             </Text>
-                            <Icon name="close" size={40} color={'red'}/>
-                        </View>
-                        <View style={styles.scheduleShape}>
-                            <View style={styles.deliveryMode}>
-                                <Text style={{
-                                    fontSize:20,
-                                    fontWeight:"600",
-                                    color:'white',
-                                }}>
-                                    Pick-Up   {'\n'} 
-                                    Delivery
-                                </Text>
+                                {/* <Icon name="close" size={40} color={'red'}/> */}
+                            <View style={styles.scheduleShape}>
+                                <View style={styles.deliveryMode}>
+                                    <Text style={{
+                                        fontSize:20,
+                                        fontWeight:"600",
+                                        color:'white',
+                                    }}>
+                                        {`${order.retrieveMethod}\n${order.receiveMethod}`}
+                                    </Text>
+                                </View>
+                                <View style={styles.scheduleDate}>
+                                    <Text style={{
+                                        fontSize:20,
+                                        fontWeight:"600",
+                                        color:'white',
+                                    }}>
+                                        {`${ dateFormat(new Date(order.retrieveDate.toDate())) }\n${ dateFormat(new Date(order.receiveDate.toDate())) }`}
+
+                                    </Text>
+                                </View>
+                                <View style={styles.scheduleTime}>
+                                    <Text style={{
+                                        fontSize:20,
+                                        fontWeight:"600",
+                                        color:'white',
+                                    }}>
+                                    {`${ timeFormat(new Date(order.retrieveDate.toDate())) }\n${ timeFormat(new Date(order.receiveDate.toDate())) }`}
+                                    </Text>
+                                </View>
                             </View>
-                            <View style={styles.scheduleDate}>
+                            <View style={styles.serviceModeContainer}>
                                 <Text style={{
-                                    fontSize:20,
-                                    fontWeight:"600",
-                                    color:'white',
-                                }}>
-                                    05/12/22   {'\n'} 
-                                    05/12/22
-                                </Text>
-                            </View>
-                            <View style={styles.scheduleTime}>
-                                <Text style={{
-                                    fontSize:20,
-                                    fontWeight:"600",
-                                    color:'white',
-                                }}>
-                                    5:00PM   {'\n'} 
-                                    8:00PM
-                                </Text>
-                            </View>
-                        </View>
-                        <View style={styles.serviceModeContainer}>
-                            <Text style={{
-                                fontSize:22,
-                                fontWeight:'600',
-                                color:'black',
-                            }}>
-                                Wash Dry Fold
-                            </Text>
-                                <Text style={{
-                                fontSize:15,
-                                fontWeight:'bold',
-                                color:'black',
-                                left:180,
-                            }}> 
-                                8kg {'\n'} 1 x detergent 1 {'\n'} 1 x Fabcon 1
-                                </Text>
-                            <Text style={{
-                                fontSize:20,
-                                fontWeight:'600',
-                                color:'black',
-                            }}>
-                                Mode of Payment
-                            </Text>
-                            <Text style={{
-                                fontSize:15,
-                                fontWeight:'bold',
-                                color:'black',
-                                left:180
-                            }}> 
-                                Gcash
-                            </Text>
-                            <View style={styles.totalNDoneButton}>
-                                <Text style={{
-                                    fontSize:40,
+                                    fontSize:22,
                                     fontWeight:'600',
                                     color:'black',
-                                    alignSelf:'center'
                                 }}>
-                                    PHP 130.00
+                                    Wash Dry Fold
                                 </Text>
-                                <TouchableOpacity style={{
-                                    left:35
-                                }}>
-                                    <Icon name="check" size={40} color={'green'}/>
-                                </TouchableOpacity>
-                            </View> 
-                        </View>
-                    </View>
-                </View>
-{/*Order Instance 3 */}
-                <View style={styles.orderShape}>
-                    <View style={styles.orderContainer}>
-                        <View style={styles.orderName}>
-                            <Text style={{
-                                fontSize:25,
-                                fontWeight:'600',
-                                color:'black',
-                            }}>
-                                CustomerName 2
-                            </Text>
-                            <Icon name="close" size={40} color={'red'}/>
-                        </View>
-                        <View style={styles.scheduleShape}>
-                            <View style={styles.deliveryMode}>
+                                    <Text style={{
+                                    fontSize:15,
+                                    fontWeight:'bold',
+                                    color:'black',
+                                    left:180,
+                                }}> 
+                                    8kg {'\n'} 1 x detergent 1 {'\n'} 1 x Fabcon 1
+                                    </Text>
                                 <Text style={{
                                     fontSize:20,
-                                    fontWeight:"600",
-                                    color:'white',
-                                }}>
-                                    Pick-Up   {'\n'} 
-                                    Delivery
-                                </Text>
-                            </View>
-                            <View style={styles.scheduleDate}>
-                                <Text style={{
-                                    fontSize:20,
-                                    fontWeight:"600",
-                                    color:'white',
-                                }}>
-                                    05/12/22   {'\n'} 
-                                    05/12/22
-                                </Text>
-                            </View>
-                            <View style={styles.scheduleTime}>
-                                <Text style={{
-                                    fontSize:20,
-                                    fontWeight:"600",
-                                    color:'white',
-                                }}>
-                                    6:00PM   {'\n'} 
-                                    9:00PM
-                                </Text>
-                            </View>
-                        </View>
-                        <View style={styles.serviceModeContainer}>
-                            <Text style={{
-                                fontSize:22,
-                                fontWeight:'600',
-                                color:'black',
-                            }}>
-                                Wash Dry Fold
-                            </Text>
-                                <Text style={{
-                                fontSize:15,
-                                fontWeight:'bold',
-                                color:'black',
-                                left:180,
-                            }}> 
-                                8kg {'\n'} 1 x detergent 1 {'\n'} 1 x Fabcon 1
-                                </Text>
-                            <Text style={{
-                                fontSize:20,
-                                fontWeight:'600',
-                                color:'black',
-                            }}>
-                                Mode of Payment
-                            </Text>
-                            <Text style={{
-                                fontSize:15,
-                                fontWeight:'bold',
-                                color:'black',
-                                left:180
-                            }}> 
-                                COD
-                            </Text>
-                            <View style={styles.totalNDoneButton}>
-                                <Text style={{
-                                    fontSize:40,
                                     fontWeight:'600',
                                     color:'black',
-                                    alignSelf:'center'
                                 }}>
-                                    PHP 130.00
+                                    Mode of Payment
                                 </Text>
-                                <TouchableOpacity style={{
-                                    left:35
-                                }}>
-                                    <Icon name="check" size={40} color={'green'}/>
-                                </TouchableOpacity>
-                            </View> 
-                        </View>
-                    </View>
-                </View>
-                {/*Order Instance 2 */}
-                <View style={styles.orderShape}>
-                    <View style={styles.orderContainer}>
-                        <View style={styles.orderName}>
-                            <Text style={{
-                                fontSize:25,
-                                fontWeight:'600',
-                                color:'black',
-                            }}>
-                                CustomerName 3
-                            </Text>
-                            <Icon name="close" size={40} color={'red'}/>
-                        </View>
-                        <View style={styles.scheduleShape}>
-                            <View style={styles.deliveryMode}>
                                 <Text style={{
-                                    fontSize:20,
-                                    fontWeight:"600",
-                                    color:'white',
-                                }}>
-                                    Pick-Up   {'\n'} 
-                                    Delivery
-                                </Text>
-                            </View>
-                            <View style={styles.scheduleDate}>
-                                <Text style={{
-                                    fontSize:20,
-                                    fontWeight:"600",
-                                    color:'white',
-                                }}>
-                                    05/12/22   {'\n'} 
-                                    05/12/22
-                                </Text>
-                            </View>
-                            <View style={styles.scheduleTime}>
-                                <Text style={{
-                                    fontSize:20,
-                                    fontWeight:"600",
-                                    color:'white',
-                                }}>
-                                    5:00PM   {'\n'} 
-                                    8:00PM
-                                </Text>
-                            </View>
-                        </View>
-                        <View style={styles.serviceModeContainer}>
-                            <Text style={{
-                                fontSize:22,
-                                fontWeight:'600',
-                                color:'black',
-                            }}>
-                                Wash Dry Fold
-                            </Text>
-                                <Text style={{
-                                fontSize:15,
-                                fontWeight:'bold',
-                                color:'black',
-                                left:180,
-                            }}> 
-                                8kg {'\n'} 1 x detergent 1 {'\n'} 1 x Fabcon 1
-                                </Text>
-                            <Text style={{
-                                fontSize:20,
-                                fontWeight:'600',
-                                color:'black',
-                            }}>
-                                Mode of Payment
-                            </Text>
-                            <Text style={{
-                                fontSize:15,
-                                fontWeight:'bold',
-                                color:'black',
-                                left:180
-                            }}> 
-                                Gcash
-                            </Text>
-                            <View style={styles.totalNDoneButton}>
-                                <Text style={{
-                                    fontSize:40,
-                                    fontWeight:'600',
+                                    fontSize:15,
+                                    fontWeight:'bold',
                                     color:'black',
-                                    alignSelf:'center'
-                                }}>
-                                    PHP 130.00
+                                    left:180
+                                }}> 
+                                    Gcash
                                 </Text>
-                                <TouchableOpacity style={{
-                                    left:35
-                                }}>
-                                    <Icon name="check" size={40} color={'green'}/>
-                                </TouchableOpacity>
-                            </View> 
-                        </View>
+                                <View style={styles.totalNDoneButton}>
+                                    <Text style={{
+                                        fontSize:40,
+                                        fontWeight:'600',
+                                        color:'black',
+                                        alignSelf:'center'
+                                    }}>
+                                        PHP 130.00
+                                    </Text>
+                                    <TouchableOpacity style={{
+                                        left:35
+                                    }}>
+                                        <Icon name="check" size={40} color={'green'}/>
+                                    </TouchableOpacity>
+                                </View> 
+                            </View>
                     </View>
-                </View>
+                })}
             </View>
         </ScrollView>
 
@@ -339,6 +192,7 @@ const styles = StyleSheet.create({
         borderRadius:20,
         alignSelf:'center',
         marginVertical:10,
+        padding: 15,
     },
     orderContainer: {
         height:290,
@@ -351,11 +205,13 @@ const styles = StyleSheet.create({
         marginTop:10,
     },
     scheduleShape: {
-        width:'80%',
+        width:'100%',
         backgroundColor:'#01BCE4',
         flexDirection:'row',
-        borderRadius:15,
-        justifyContent:'center'
+        borderRadius:5,
+        justifyContent:'center',
+        marginTop: 10,
+
     },
     deliveryMode: {
         flexDirection:'column',
