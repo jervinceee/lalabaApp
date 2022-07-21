@@ -27,6 +27,8 @@ const PendingOrders = ({navigation}) => {
         snapshot.forEach((doc) => {
             let data = doc.data();
             dict[data.email] = data.userName
+            dict[data.email+'1'] = data.address
+            dict[data.email+'2'] = data.phoneNum
         });
 
         let item = [];
@@ -37,7 +39,7 @@ const PendingOrders = ({navigation}) => {
             if(data.status === 'Pending'){
               item.push(
                   { 
-                      ...data, id: doc.id, userName: dict[data.orderby]
+                      ...data, id: doc.id, userName: dict[data.orderby], phoneNum: dict[data.orderby+'2'], address: dict[data.orderby+'1']
                   }
               );
             }
@@ -46,6 +48,21 @@ const PendingOrders = ({navigation}) => {
         setOrders(item);
         console.log('hahaha')
     },[]);
+    
+    const RenderCashPayment =(method, payment)=>{
+        if(method.method == 'cod'){
+            return <View style={styles.totalNDoneButton}>
+                <Text style={{
+                    fontSize:20,
+                    fontWeight:'600',
+                    color:'black',
+                }}>
+                    {`Payment: PHP ${method.payment}.00`}
+                </Text>
+            </View> 
+        }
+        return null
+    }
 
     useEffect(() => {
       const subscription = Dimensions.addEventListener(
@@ -172,6 +189,29 @@ const PendingOrders = ({navigation}) => {
                                         color:'black',
                                     }}>
                                         {`PHP ${order.totalCost}.00`}
+                                    </Text>
+                                </View> 
+                                
+                                <RenderCashPayment method={order.modeOfPayment} payment={order.cashPrepared}/>
+
+                                <View style={styles.totalNDoneButton}>
+                                    <Text style={{
+                                        fontSize:15,
+                                        fontWeight:'800',
+                                        color:'black',
+                                        marginVertical: 5,
+                                    }}>
+                                        {`Address: ${order.address}`}
+                                    </Text>
+                                </View> 
+                                <View style={styles.totalNDoneButton}>
+                                    <Text style={{
+                                        fontSize:15,
+                                        fontWeight:'800',
+                                        color:'black',
+                                        marginBottom: 5,
+                                    }}>
+                                        {`Phone: ${order.phoneNum}`}
                                     </Text>
                                 </View> 
                                 

@@ -27,6 +27,8 @@ const ActiveOrders = ({navigation}) => {
         snapshot.forEach((doc) => {
             let data = doc.data();
             dict[data.email] = data.userName
+            dict[data.email+'1'] = data.address
+            dict[data.email+'2'] = data.phoneNum
         });
 
         let item = [];
@@ -37,7 +39,7 @@ const ActiveOrders = ({navigation}) => {
             if(data.status === 'Accepted'){
               item.push(
                   { 
-                      ...data, id: doc.id, userName: dict[data.orderby]
+                      ...data, id: doc.id, userName: dict[data.orderby], phoneNum: dict[data.orderby+'2'], address: dict[data.orderby+'1']
                   }
               );
             }
@@ -191,6 +193,26 @@ const ActiveOrders = ({navigation}) => {
                                 </View> 
                                 <RenderCashPayment method={order.modeOfPayment} payment={order.cashPrepared}/>
 
+                                <View style={styles.totalNDoneButton}>
+                                    <Text style={{
+                                        fontSize:15,
+                                        fontWeight:'800',
+                                        color:'black',
+                                        marginVertical: 5,
+                                    }}>
+                                        {`Address: ${order.address}`}
+                                    </Text>
+                                </View> 
+                                <View style={styles.totalNDoneButton}>
+                                    <Text style={{
+                                        fontSize:15,
+                                        fontWeight:'800',
+                                        color:'black',
+                                        marginBottom: 5,
+                                    }}>
+                                        {`Phone: ${order.phoneNum}`}
+                                    </Text>
+                                </View> 
                                 <TouchableOpacity 
                                     onPress={()=>updateStatus(order.id, 'Done', index)}
                                     style={{ marginRight: 12, paddingHorizontal: 10, paddingVertical: 5, backgroundColor: '#4caf50', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>

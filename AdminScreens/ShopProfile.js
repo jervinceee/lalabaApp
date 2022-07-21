@@ -215,13 +215,10 @@ const ShopProfile = ({navigation}) => {
             <View>
                 <View style={{flexDirection:'row', justifyContent:'space-between',marginTop:40, marginRight:10,}}>
                     <Text style={{ fontSize:30, color:'black', fontWeight:'bold', marginLeft:10}}>Schedule</Text>
-                    <Icon name='logout' color={'red'} size={50}  
-                                onPress={signOut}
-                            />
+                    
                 </View>
                 
                 <View style={styles.retrieveContainer}>
-                    <Text style={styles.scheduleQ}>Edit shop schedule </Text>
                     {/* retrieving schedule */}
                     <View style={styles.scheduleButtonsContainer}>
                     {/*<TouchableOpacity 
@@ -294,7 +291,7 @@ const ShopProfile = ({navigation}) => {
                     
                     <Text style={{alignSelf:'center'}}>Shop Open Monday - Sunday</Text>
                     <Text style={{alignSelf:'center'}}>8:00 AM - 10:30 PM</Text>
-                    <View style={styles.calendar}>
+                    {/* <View style={styles.calendar}>
                         <TouchableOpacity
                             onPress={()=> showModeReceive('date')}
                         >
@@ -318,14 +315,9 @@ const ShopProfile = ({navigation}) => {
                                 />
                             )
                         }
-                    </View>
+                    </View> */}
                 </View>
                 <View style={styles.mainContainer}>
-                        <View>
-                            <Text>
-                                Edit prices
-                            </Text>
-                        </View>
                     <Text style={styles.categoryTitle}>Services</Text>
 
 
@@ -338,6 +330,7 @@ const ShopProfile = ({navigation}) => {
                                 buttonPrice={" Php 130.00 per 8kg"}
                                 path={require('../assets/icons/clotheswashing.png')}
                                 cost={16.25}
+                                disable={true}
                             />
 
                             <Service
@@ -345,6 +338,7 @@ const ShopProfile = ({navigation}) => {
                                 buttonPrice={" Php 130.00 per 8kg"}
                                 path={require('../assets/icons/bubble.png')}
                                 cost={16.25}
+                                disable={true}
                             />
 
                             <Service
@@ -352,6 +346,7 @@ const ShopProfile = ({navigation}) => {
                                 buttonPrice={'\nPhp 130.00 per 8kg'}
                                 path={require('../assets/icons/clothes.png')}
                                 cost={16.25}
+                                disable={true}
                             />
 
                             <Service
@@ -359,6 +354,7 @@ const ShopProfile = ({navigation}) => {
                                 buttonPrice={'\nPhp 130.00 per 8kg'}
                                 path={require('../assets/icons/washing machine.png')}
                                 cost={16.25}
+                                disable={true}
                             />
                         </View>
                     </ScrollView>
@@ -371,30 +367,35 @@ const ShopProfile = ({navigation}) => {
                                 buttonPrice={" Php 30.00 each"}
                                 path={require('../assets/icons/DSurf.png')}
                                 cost={30}
+                                disable={true}
                             />
                             <Detergent
                                 buttonName={'Tide Original Scent\n80g'}
                                 buttonPrice={" Php 20.00 each"}
                                 path={require('../assets/icons/DTide.png')}
                                 cost={20}
+                                disable={true}
                             />
                             <Detergent
                                 buttonName={"Ariel powder with downy\n66g"}
                                 buttonPrice={" Php 25.00 each"}
                                 path={require('../assets/icons/DAriel.png')}
                                 cost={25}
+                                disable={true}
                             />
                             <Detergent
                                 buttonName={'Laundry shop choice \n 80g'}
                                 buttonPrice={" Php 10.00 each"}
                                 path={require('../assets/icons/bubble.png')}
                                 cost={69}
+                                disable={true}
                             />
                              <Detergent
                                 buttonName={'I will provide my own'}
                                 buttonPrice={" \n Php 0.00"}
                                 path={require('../assets/icons/bubble.png')}
                                 cost={0}
+                                disable={true}
                             />
 
                         </View>
@@ -408,30 +409,35 @@ const ShopProfile = ({navigation}) => {
                                 buttonPrice={" Php 30.00 each"}
                                 path={require('../assets/icons/FSurf.png')}
                                 cost={30}
+                                disable={true}
                             />
                             <FabCon
                                 buttonName={'Del Gentle Protect\n26ml'}
                                 buttonPrice={" Php 20.00 each"}
                                 path={require('../assets/icons/FDel.png')}
                                 cost={20}
+                                disable={true}
                             />
                             <FabCon
                                 buttonName={"Downey Sunrise Fresh\n38ml"}
                                 buttonPrice={" Php 30.00 each"}
                                 path={require('../assets/icons/FDowny.png')}
                                 cost={25}
+                                disable={true}
                             />
                             <FabCon
                                 buttonName={'Laundry shop choice \n 100ml'}
                                 buttonPrice={" Php 30.00 each"}
                                 path={require('../assets/icons/bubble.png')}
                                 cost={69}
+                                disable={true}
                             />
                             <FabCon
                                 buttonName={'I will provide my own'}
                                 buttonPrice={" \n Php 0.00"}
                                 path={require('../assets/icons/bubble.png')}
                                 cost={0}
+                                disable={true}
                             />
                         </View>
                     </ScrollView>
@@ -547,14 +553,14 @@ const ShopProfile = ({navigation}) => {
                     </Modal>
                     {/* Billing codes start here */}
                     
-                    <TouchableOpacity onPress={getStoredDate}>
+                    <TouchableOpacity onPress={signOut}>
                             <View style={styles.bookButton}>
                                 <Text style={{
                                     fontSize:25,
                                     fontWeight:'bold',
                                     color: 'white',
                                 }}>
-                                    Save
+                                    Sign Out
                                 </Text>
                             </View>
                     </TouchableOpacity>
@@ -662,7 +668,7 @@ const styles = StyleSheet.create({
         alignSelf:'center',
    },
    bookButton:{
-        backgroundColor: '#01BCE4',
+        backgroundColor: 'red',
         borderRadius: 20,
         height: 60,
         alignItems:'center',

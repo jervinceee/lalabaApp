@@ -500,6 +500,7 @@ const Shop1Menu = ({navigation}) => {
                                     isSelected={item.selected}
                                     id={item.id}
                                     key={item.id}
+                                    disable={false}
                                 />
                             })}
 
@@ -520,6 +521,7 @@ const Shop1Menu = ({navigation}) => {
                                     isSelected={item.selected}
                                     id={item.id}
                                     key={item.id}
+                                    disable={false}
                                 />
                             })}
                         </View>
@@ -539,6 +541,7 @@ const Shop1Menu = ({navigation}) => {
                                     isSelected={item.selected}
                                     id={item.id}
                                     key={item.id}
+                                    disable={false}
                                 />
                             })}
 

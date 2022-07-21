@@ -51,6 +51,7 @@ const DetergentComponent = (props) =>{
             <TouchableOpacity 
                 style={props.isSelected === true? styles.btnContainerSelected : styles.btnContainer}
                 onPress={itemSelectEvent}
+                disabled={props.disable}
             >
                 <Image
                     style={styles.buttonImage}
