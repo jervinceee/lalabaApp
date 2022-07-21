@@ -16,7 +16,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 //firestore
 import {auth, db} from '../core/config'
-import {collection, addDoc, serverTimestamp, FieldValue, getDocs, doc} from 'firebase/firestore'
+import {collection, addDoc, serverTimestamp, FieldValue, getDoc, getDocs, doc} from 'firebase/firestore'
 
 //components
 import Service from "../components/ServiceComponent";
@@ -109,7 +109,9 @@ const Shop1Menu = ({navigation}) => {
         const retrieveHours = new Date(dateRetrieve).getHours()
         const recieveHours = new Date(dateReceive).getHours()
 
-        if(retrieveMethod === ""){
+        if(address == ""){
+            setBillModalError("Please add your address before booking")
+        }else if(retrieveMethod === ""){
             setBillModalError("Please tell us how to retrieve your Labada.")
         }else if(retrieveTimestamp === undefined || retrieveTimestamp === null){
             setBillModalError("You haven't specified a Date/Time for us to retrieve your Labada.")
@@ -332,6 +334,7 @@ const Shop1Menu = ({navigation}) => {
     getDoc(user).then((snapshot)=>{
         if(snapshot.exists){
             setAddress(snapshot.data().address);
+            console.log()
         }else{
             console.log("NO DOC FOUND!!")
         }
@@ -626,7 +629,7 @@ const Shop1Menu = ({navigation}) => {
                     </View>
                     </Modal>
                     {/* Billing codes start here */}
-                    <TouchableOpacity onPress={getStoredDate} disabled={address == ""}>
+                    <TouchableOpacity onPress={getStoredDate}>
                             <View style={styles.bookButton}>
                                 <Text style={{
                                     fontSize:25,

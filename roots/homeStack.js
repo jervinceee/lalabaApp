@@ -23,7 +23,7 @@ const HomeFlow = ({navigation}) => {
                 options={{headerShown:false,gestureEnabled:false}}
                 index={0}
                 name="HomeTabs"
-                component={AdminFlow}
+                component={Tabs} // AdminFlow
             />
             <homeStack.Screen
                 options={{headerShown:false}}
