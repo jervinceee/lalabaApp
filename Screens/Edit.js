@@ -86,7 +86,7 @@ const Edit = ({navigation}) => {
             setPhoneError("")
         }
 
-        if ((userName === newName) && (address === newAddress) && (phoneNum === newNum) && (age === newAge)){
+        if ((userName === newName) || (address === newAddress) || (phoneNum === newNum) || (age === newAge)){
             console.log("NOTHING CHANGED");
             setModalMsg("Input data were same as previous data.");
             setModalVisible(true)
@@ -110,7 +110,7 @@ const Edit = ({navigation}) => {
     }
 
     return (
-        <ScrollView style={{backgroundColor: '#01BCE4'}}>
+        <ScrollView style={{backgroundColor: '#01BCE4',marginTop:45}}>
            <View>
                 <View style={styles.headerContainer}>
                 </View>

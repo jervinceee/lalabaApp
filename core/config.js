@@ -4,14 +4,13 @@ import { getAuth } from 'firebase/auth';
 import { getStorage } from 'firebase/storage'
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDOkEgMdXBoMzEouFTJnFZXNVXpfizG7W0",
-    authDomain: "lalabaapp-5ab31.firebaseapp.com",
-    projectId: "lalabaapp-5ab31",
-    storageBucket: "lalabaapp-5ab31.appspot.com",
-    messagingSenderId: "628103843419",
-    appId: "1:628103843419:web:799e0d67e5367754ae397e",
-    measurementId: "G-VV1M0DN9HQ"
-  };
+  apiKey: "AIzaSyDizMk5wm7-JXgDAO8U25L9MFMGcRkHr_I",
+  authDomain: "lalabaapp.firebaseapp.com",
+  projectId: "lalabaapp",
+  storageBucket: "lalabaapp.appspot.com",
+  messagingSenderId: "652003400772",
+  appId: "1:652003400772:web:d7d2c71de9e07d93e77011"
+};
 
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);

@@ -4,7 +4,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ShopServiceComponent = (props) =>{
 
-    const [selected, setSelected] = React.useState(false);
     const [volume, setVolume] = React.useState(8);
     const [disableBtn, setDisableBtn] = React.useState(false);
     const [cost, setCost] = React.useState(130);
@@ -25,9 +24,14 @@ const ShopServiceComponent = (props) =>{
         
     }
 
+    const itemSelectEvent = async() =>{
+        await itemSelect();
+        await props.onSelectEvent(props.id);
+    }
+
     const itemSelect = async() =>{
-        setSelected(!selected);
-        if(selected !== true){
+        // setSelected(!selected);
+        if(props.isSelected !== true){
             await AsyncStorage.setItem('servicename', prodName);
             await AsyncStorage.setItem('maxweight', JSON.stringify(volume));
             await AsyncStorage.setItem('servicecost', JSON.stringify(cost));
@@ -47,8 +51,8 @@ const ShopServiceComponent = (props) =>{
     return(
         <View style={styles.container}>
             <TouchableOpacity 
-                style={selected === true? styles.btnContainerSelected : styles.btnContainer}
-                onPress={itemSelect}
+                style={props.isSelected === true? styles.btnContainerSelected : styles.btnContainer}
+                onPress={itemSelectEvent}
             >
                 <Image
                     style={styles.buttonImage}
@@ -56,7 +60,8 @@ const ShopServiceComponent = (props) =>{
                 />
             </TouchableOpacity>
             <Text style={styles.buttonText}>{props.buttonName}</Text>
-            <View style={selected === true? styles.volumeContainer : {display:'none'}}>
+            <Text style={styles.buttonTextPrice}>{props.buttonPrice}</Text>
+            <View style={props.isSelected === true? styles.volumeContainer : {display:'none'}}>
                 <TouchableOpacity
                     style={disableBtn === true? styles.volumeButtonDisabled: styles.volumeButton}
                     onPress={subtract}
@@ -116,7 +121,11 @@ const styles = StyleSheet.create({
         width:80,
     },
     buttonText:{
-        fontSize:18
+        fontSize:15
+    },
+    buttonTextPrice:{
+        fontSize:14,
+        fontWeight:'bold',
     },
     volumeContainer:{
         display:'flex',

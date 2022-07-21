@@ -11,16 +11,41 @@ import Shop2Menu from "../Screens/Shop2Menu";
 import Shop1CheckOut from "../Screens/Shop1CheckOut";
 import Shop2CheckOut from "../Screens/Shop2CheckOut";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import AHome from "../AdminScreens/AHome";
+import ActiveOrders from "../AdminScreens/ActiveOrders";
+import PendingOrders from "../AdminScreens/PendingOrders";
+import AdminFlow from '../roots/AdminFlow';
+import {auth, db} from '../core/config';
+import {collection, getDoc, doc} from 'firebase/firestore'
+import React, { useState, useEffect } from "react";
 
 const homeStack = createNativeStackNavigator();
+
 const HomeFlow = ({navigation}) => {
+    const [isAdmin, setAdmin] = React.useState(false);
+
+    React.useEffect(()=>{
+
+        var loggedInId = auth.currentUser.uid;
+        const user = doc(db, "users", loggedInId)
+
+        getDoc(user).then((snapshot)=>{
+            if(snapshot.exists){
+                setAdmin(snapshot.data().isAdmin)
+            }else{
+                console.log("NO DOC FOUND!!")
+            }
+        });
+        
+    },[])
+
     return(
         <homeStack.Navigator>
             <homeStack.Screen
                 options={{headerShown:false,gestureEnabled:false}}
                 index={0}
                 name="HomeTabs"
-                component={Tabs}
+                component={ isAdmin ? AdminFlow : Tabs} // AdminFlow
             />
             <homeStack.Screen
                 options={{headerShown:false}}
@@ -46,11 +71,6 @@ const HomeFlow = ({navigation}) => {
                 options={{headerShown:false}}
                 name="Shop2"
                 component={Shop2}
-            />
-            <homeStack.Screen
-                options={{headerShown:false}}
-                name="Tabs"
-                component={Tabs}
             />
             <homeStack.Screen
                 options={{headerShown:false}}

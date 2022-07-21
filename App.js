@@ -4,11 +4,18 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeStack from './roots/homeStack';
+
+
+import AdminFlow from './roots/AdminFlow';
+import PendingOrders from './AdminScreens/PendingOrders';
+import ActiveOrders from './AdminScreens/ActiveOrders';
+
 import AuthFlow from './roots/AuthFlow';
 import AdminFlow from './roots/AdminFlow';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LogBox } from 'react-native';
 import _ from 'lodash';
+
 
 LogBox.ignoreLogs(['Warning:...']); // ignore specific logs
 LogBox.ignoreAllLogs(); // ignore all logs
@@ -20,6 +27,7 @@ if (message.indexOf('Setting a timer') <= -1) {
 };
 // import ServiceButton from './components/ServiceComponent'
 // import ProductButton from './components/DetergentComponent'
+
 
 const Stack = createNativeStackNavigator();
 const App = () => {
@@ -44,6 +52,12 @@ const App = () => {
             name="AdminFlow"
             component={AdminFlow}
           />
+          {/*
+          <Stack.Screen
+            options={{headerShown:false,}}
+            name="AdminFLow"
+            component={AdminFlow}
+          />*/}
         </Stack.Navigator>
       </NavigationContainer>
       

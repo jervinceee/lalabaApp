@@ -9,10 +9,11 @@ import {
 } from 'react-native';
 
 //firebase
-import { collection, getDocs, Timestamp } from 'firebase/firestore';
-import { db, auth } from '../core/config'
+import { collection, getDocs, doc, getDoc, deleteDoc } from 'firebase/firestore';
+import { db, auth, } from '../core/config'
 import { AntDesign } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useIsFocused } from '@react-navigation/native';
 
  const List = ({navigation}) => {
   var months = [
@@ -31,25 +32,72 @@ import { ScrollView } from 'react-native-gesture-handler';
   ]
   const [orders, setOrders] = React.useState([]);
   const [dates, setDates] = React.useState([])
+
+  var loggedInId = auth.currentUser.uid;
+  const user = doc(db, "users", loggedInId)
+
   const shopCollectionReference = collection(db, 'shop1orders');
 
-  React.useEffect(()=>{
-    const getOrders = async () =>{
-        const data = await getDocs(shopCollectionReference);
+  const goHome =()=>{
+    
+    navigation.navigate("Home");
+  }
+
+  const deleteSchedule =async(ind)=>{
+    console.log(orders[ind].id)
+    await deleteDoc(doc(db, "shop1orders", orders[ind].id));
+    
+    setOrders([
+      ...orders.slice(0, ind),
+      ...orders.slice(ind + 1)
+    ]);
+
+  }
+  
+  const isFocused = useIsFocused();
+
+  React.useEffect(async()=>{
+
+    let email = ''
+    getDoc(user).then((snapshot)=>{
+      if(snapshot.exists){
+        email = snapshot.data().email
+      }else{
+        console.log("NO DOC FOUND!")
+      }
+    })
+
+    let item = [];
+    let snapshot = await getDocs(shopCollectionReference)
+    snapshot.forEach((doc) => {
+        let data = doc.data();
         
-        setOrders(data.docs.map((doc)=>({
-          ...doc.data(), id: doc.id,
-        })));
+        if(data.orderby === email){
+          item.push(
+              { 
+                  ...data, id: doc.id
+              }
+          );
+        }
+    });
+    
+    setOrders(item);
+    
+  },[isFocused])
+
+  const RenderDeleteButton =({status, ind})=>{
+    if(status == 'Pending'){
+      return <TouchableOpacity 
+        style={{ borderRadius: 5, backgroundColor:'red', paddingHorizontal: 20, paddingVertical: 10, display: 'flex', alignItems:'center', justifyContent:'center', flexDirection: 'row'}}
+        onPress={()=>deleteSchedule(ind)}    
+      >
+          <AntDesign name="delete" size={30} color="white"/>
+          <Text style={{color: 'white', marginLeft: 8}}> Delete Schedule </Text>
+      </TouchableOpacity>
     }
 
-    getOrders();
-    
-    orders.map((order)=>{
-        console.log(months[new Date(order.receiveDate.seconds * 1000).getMonth()]);
-        console.log(new Date(order.receiveDate.seconds * 1000).getMonth())
-    })
-    
-  },[])
+    return null
+  }
 
   return (
     <ScrollView>
@@ -63,11 +111,14 @@ import { ScrollView } from 'react-native-gesture-handler';
               var minutesRetrieve = new Date(order.retrieveDate.seconds * 1000).getMinutes()
               var minutesReceive = new Date(order.receiveDate.seconds * 1000).getMinutes()
               return(
-                  <View key={index} style={styles.orderContainer}>
-                      <Text key={index} style={styles.methodText}>{order.retrieveMethod}</Text>
-                      <View key={index} style={styles.dateContainer}>
+                  <View key={`v1${order.id}`} style={styles.orderContainer}>
+                      <View style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                        <Text key={`t1${order.id}`} style={styles.methodText}>{order.retrieveMethod}</Text>
+                        <Text key={`t5${order.id}`} style={ order.status == 'Pending' ? styles.pendingText : order.status == 'Accepted' ? styles.acceptedText : styles.deletedText  }>{order.status}</Text>
+                      </View>
+                      <View key={`v2${order.id}`} style={styles.dateContainer}>
                           <AntDesign name="calendar" size={30} color="white" />
-                          <Text key={index} style={styles.dateText}>{
+                          <Text key={`t2${order.id}`} style={styles.dateText}>{
                               months[new Date(order.retrieveDate.seconds * 1000).getMonth()] + " " +
                               new Date(order.retrieveDate.seconds * 1000).getDate() + ", " +
                               new Date(order.retrieveDate.seconds * 1000).getFullYear() + " at " + 
@@ -76,10 +127,12 @@ import { ScrollView } from 'react-native-gesture-handler';
                             minutesRetrieve <=9 ? "0" + minutesRetrieve: minutesRetrieve
                           }</Text>
                       </View>
-                      <Text key={index} style={styles.methodText}>{order.receiveMethod}</Text>
-                      <View key={index} style={styles.dateContainer}>
+
+                      <Text key={`t3${order.id}`} style={styles.methodText}>{order.receiveMethod}</Text>
+
+                      <View key={`v3${order.id}`} style={styles.dateContainer}>
                           <AntDesign name="calendar" size={30} color="white" />
-                          <Text key={index} style={styles.dateText}>{
+                          <Text key={`t4${order.id}`} style={styles.dateText}>{
                               months[new Date(order.receiveDate.seconds * 1000).getMonth()] + " " +
                               new Date(order.receiveDate.seconds * 1000).getDate() + ", " +
                               new Date(order.receiveDate.seconds * 1000).getFullYear() + " at " + 
@@ -89,11 +142,21 @@ import { ScrollView } from 'react-native-gesture-handler';
                           }</Text>
                       </View>
                       <Text style={{fontSize:18, marginLeft:5, marginTop:5}}>Status: {order.status}</Text>
+                      
+                    <RenderDeleteButton status={order.status} ind={index}/>
                   </View>
               )
           })}
       </View>
+
       
+      <TouchableOpacity 
+        style={{ borderRadius: 5, backgroundColor:'green', paddingHorizontal: 20, paddingVertical: 10, display: 'flex', alignItems:'center', justifyContent:'center', flexDirection: 'row'}}
+        onPress={()=>goHome()}    
+      >
+          <AntDesign name="home" size={30} color="white"/>
+          <Text style={{color: 'white', marginLeft: 8}}>Home </Text>
+      </TouchableOpacity>
 </View>
 </ScrollView> 
   )
@@ -105,6 +168,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       backgroundColor: 'white',
       paddingTop:40,
+      paddingBottom: 10,
   },
   listText: {
     color: 'black',
@@ -130,7 +194,37 @@ const styles = StyleSheet.create({
     textAlign:'center',
     color:'white',
     backgroundColor:'#01BCE4',
-    width:'20%',
+    width:'25%',
+    padding:5,
+    borderRadius:5,
+    marginLeft:10,
+    fontWeight:'bold'
+  },
+  pendingText:{
+    textAlign:'center',
+    color:'white',
+    backgroundColor:'orange',
+    width:'25%',
+    padding:5,
+    borderRadius:5,
+    marginLeft:10,
+    fontWeight:'bold'
+  },
+  acceptedText:{
+    textAlign:'center',
+    color:'white',
+    backgroundColor:'green',
+    width:'25%',
+    padding:5,
+    borderRadius:5,
+    marginLeft:10,
+    fontWeight:'bold'
+  },
+  deletedText:{
+    textAlign:'center',
+    color:'white',
+    backgroundColor:'red',
+    width:'25%',
     padding:5,
     borderRadius:5,
     marginLeft:10,

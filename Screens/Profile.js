@@ -46,8 +46,10 @@ const Profile = ({navigation}) => {
     },[])
 
     return (
+
         <ScrollView style={{backgroundColor: '#01BCE4'}}>
             <StatusBar barStyle="light-content"/>
+
            <View>
                 <View style={styles.headerContainer}>
                     <TouchableOpacity onPress={() => navigation.navigate('Edit')}>
@@ -82,7 +84,7 @@ const Profile = ({navigation}) => {
                                 <Text style={styles.infoTitle}>Address</Text>
                                     {address != null && address != "" ?
                                         <Text style={styles.infoContent}>{address}</Text> : 
-                                        <Text style={styles.infoContent}>LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOONG TEXT</Text>
+                                        <Text style={styles.infoContent}>Address Not Set</Text>
                                     }
                             </View>
                         </View>

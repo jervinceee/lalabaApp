@@ -143,7 +143,7 @@ const ActiveOrders = ({navigation}) => {
 }
 const styles = StyleSheet.create({
     titleHolder: {
-        alignSelf:'flex-start',
+        alignSelf:'center',
         backgroundColor:'#01BCE4',
         height:60,
         width:'65%',
@@ -224,5 +224,6 @@ const styles = StyleSheet.create({
 
 
 })
+
 
 export default ActiveOrders;

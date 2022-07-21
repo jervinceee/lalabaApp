@@ -26,16 +26,20 @@ const Tab = createBottomTabNavigator();
 }}*/
 const screenOptions = (route, color) => {
     let iconName;
-  
+    
+    
     switch (route.name) {
       case 'Home':
         iconName = 'home';
+        
         break;
       case 'Chat':
         iconName = 'chat';
+        
         break;
       case 'List':
         iconName = 'receipt';
+        
         break;
       default:
         break;

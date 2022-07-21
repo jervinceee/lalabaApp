@@ -28,12 +28,16 @@ import Service from "../components/ServiceComponent";
 import Detergent from '../components/DetergentComponent';
 import FabCon from '../components/FabConComponent';
 import { FontAwesome } from '@expo/vector-icons';
+import { images } from '../global/global'
 
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
 const Shop1Menu = ({navigation}) => {
 
     const shop1collectionRef = collection(db, "shop1orders")
+
+    var loggedInId = auth.currentUser.uid;
+    const user = doc(db, "users", loggedInId)
     //submit order
 
     //image upload not working!!!
@@ -125,8 +129,24 @@ const Shop1Menu = ({navigation}) => {
           setImageUpload(result)
         }
     };
+
+    const servicesCollection = collection(db, "services")
+    const detergentsCollection = collection(db, "detergents")
+    const fabconsCollection = collection(db, "fabcons")
+    // Service Array 
+    const [serviceItems, setServiceItems] = React.useState([]);
+    const [detergentsItems, setDetergentsItems] = React.useState([]);
+    const [fabconItems, setFabconItems] = React.useState([]);
+    
+    const getDifferenceInSeconds = (date1, date2) => {
+        const diffInMs = date2 - date1;
+        
+        return (diffInMs / 1000) >= 10800 ? false: true;
+    }
     
     const RenderBillModal = () =>{
+        const retrieveHours = new Date(dateRetrieve).getHours()
+        const recieveHours = new Date(dateReceive).getHours()
 
         if( address === null || address === "null" || address === "none" || address === ""){
             setBillModalError("Please set an Address for your profile first.");
@@ -134,10 +154,16 @@ const Shop1Menu = ({navigation}) => {
             setBillModalError("Please tell us how to retrieve your Labada.")
         }else if(retrieveTimestamp === undefined || retrieveTimestamp === null){
             setBillModalError("You haven't specified a Date/Time for us to retrieve your Labada.")
+        }else if(retrieveHours < 8 || retrieveHours > 22 ){
+            setBillModalError("Open time of our Shop is 8:00 am to 10:00 pm only")
         }else if(receiveMethod === ""){
             setBillModalError("Please tell us how you would like to receive your Labada back.")
         }else if(receiveTimestamp === undefined || receiveTimestamp === null){
             setBillModalError("You haven't specified a Date/Time for us to retrieve your Labada.")
+        }else if(recieveHours < 8 || recieveHours > 22 ){
+            setBillModalError("Open time of our Shop is 8:00 am to 10:00 pm only")
+        }else if(getDifferenceInSeconds(new Date(dateRetrieve), new Date(dateReceive))){
+            setBillModalError("Please input a valid Retrieve and Recieve Date. At least 3 Hours between 2 dates")
         }else if((fabcon === null || fabcon === "") && (detergent === null || detergent === "")&& (service === null || service === "")){
             setBillModalError("You haven't selected anything.");
         }else if(fabcon===null || fabcon === ""){
@@ -165,6 +191,57 @@ const Shop1Menu = ({navigation}) => {
         )
     }
 
+    const onSelectService = (selectedService) =>{
+        setServiceItems((serviceItems) =>
+            serviceItems.map((item) =>
+                item.id === selectedService
+                ? {
+                    ...item,
+                    selected: true
+                }
+                : {
+                    ...item,
+                    selected: false
+                }
+            )
+        );
+    }
+
+    const onSelectDetergent = async(selectedDetergent) =>{
+
+        setDetergentsItems((detergentsItems) =>
+            detergentsItems.map((item) =>
+                item.id === selectedDetergent
+                ? {
+                    ...item,
+                    selected: true
+                }
+                : {
+                    ...item,
+                    selected: false
+                }
+            )
+        );
+
+    }
+
+    const onSelectFabcon= (selectedFabcon) =>{
+
+        setFabconItems((fabconItems) =>
+            fabconItems.map((item) =>
+                item.id === selectedFabcon
+                ? {
+                    ...item,
+                    selected: true
+                }
+                : {
+                    ...item,
+                    selected: false
+                }
+            )
+        );
+
+    }
     //storing dates to timestamp variable
     const onChangeRetrieveDate = (event, selectedDate)=>{
         const currentDate = selectedDate || dateRetrieve;
@@ -178,6 +255,7 @@ const Shop1Menu = ({navigation}) => {
         console.log(fDate + " (" + fTime + ")");
         console.log(tempDate);
         setRetrieveTimestamp(tempDate);
+        setBillModalError('error');
     }
 
     const onChangeReceiveDate = (event, selectedDate)=>{
@@ -192,6 +270,7 @@ const Shop1Menu = ({navigation}) => {
         console.log(fDate + " (" + fTime + ")");
         console.log(tempDate);
         setReceiveTimestamp(tempDate);
+        setBillModalError('error');
     }
 
     const showModeRetrieve = (currentMode) =>{
@@ -225,6 +304,9 @@ const Shop1Menu = ({navigation}) => {
         console.log(image.slice(137,-4) + auth.currentUser.email + v4());
     }
     // console.log(fabcon, fabconVol);
+    // console.log(service);
+    // console.log(detergent);
+    // console.log(fabcon);
     // console.log("Amount Entered: ", cashAmount )
     setTotalCost(
         parseInt(fabconCost) + parseInt(detergentCost) + parseInt(serviceCost)
@@ -255,8 +337,63 @@ const Shop1Menu = ({navigation}) => {
     return () => subscription?.remove();
   });
 
+  useEffect( async() =>{
+    AsyncStorage.clear();
+    let item = [];
+    let snapshot = await getDocs(servicesCollection)
+    snapshot.forEach((doc) => {
+        let data = doc.data();
+        
+        item.push(
+            { 
+                id: doc.id, selected: false, name: data.name, weight: data.weight, price: data.price, path: images.icons[data.path]
+            }
+        );
+    });
+    
+    setServiceItems(item);
+    
+    let item2 = [];
+    snapshot = await getDocs(detergentsCollection)
+    snapshot.forEach((doc) => {
+        let data = doc.data();
+        
+        item2.push(
+            { 
+                id: doc.id, selected: false, name: data.name, weight: data.weight, price: data.price, path: images.icons[data.path]
+            }
+        );
+    });
+
+    setDetergentsItems(item2);
+    
+    let item3 = [];
+    snapshot = await getDocs(fabconsCollection)
+    snapshot.forEach((doc) => {
+        let data = doc.data();
+        
+        item3.push(
+            { 
+                id: doc.id, selected: false, name: data.name, weight: data.weight, price: data.price, path: images.icons[data.path]
+            }
+        );
+    });
+
+    setFabconItems(item3);
+
+    getDoc(user).then((snapshot)=>{
+        if(snapshot.exists){
+            setAddress(snapshot.data().address);
+            console.log()
+        }else{
+            console.log("NO DOC FOUND!!")
+        }
+    })
+
+  }, []);
+
     return (
-        <ScrollView style={{backgroundColor:'white',}}>
+        <ScrollView style={{backgroundColor:'white',marginTop:45}}>
             <View>
                 <Text style={{marginTop:40, fontSize:30, color:'black', fontWeight:'bold', marginLeft:10}}>Schedule</Text>
                 <View style={styles.retrieveContainer}>
@@ -302,6 +439,7 @@ const Shop1Menu = ({navigation}) => {
                                     display='default'
                                     onChange={onChangeRetrieveDate}
                                     onTouchCancel={()=>setShowRetrieve(false)}
+                                    minimumDate={new Date()}
                                 />
                             )
                         }
@@ -332,7 +470,7 @@ const Shop1Menu = ({navigation}) => {
                     <Text style={{alignSelf:'center'}}>Please select Date and Time</Text>
                     <View style={styles.calendar}>
                         <TouchableOpacity
-                            onPress={()=> showModeReceive('date')}
+                            onPress={()=> showModeReceive ('date')}
                         >
                             <Icon name='event' color={'#01BCE4'} size={50} />
                         </TouchableOpacity>
@@ -351,6 +489,7 @@ const Shop1Menu = ({navigation}) => {
                                     display='default'
                                     onChange={onChangeReceiveDate}
                                     onTouchCancel={()=>setShowReceive(false)}
+                                    minimumDate={new Date()}
                                 />
                             )
                         }
@@ -363,84 +502,72 @@ const Shop1Menu = ({navigation}) => {
                     <ScrollView horizontal={true}>
                         <View style={styles.categoryContainer}>
                             {/* items ng mga services */}
-                            <Service
-                                buttonName={"Wash, Dry, and Fold"}
-                                path={require('../assets/icons/clotheswashing.png')}
-                                cost={16.25}
-                            />
 
-                            <Service
-                                buttonName={"Filler Button"}
-                                path={require('../assets/icons/bubble.png')}
-                                cost={16.25}
-                            />
+                            {serviceItems.map((item, key) => {
+                                return <Service
+                                    buttonName={item.name}
+                                    buttonPrice={`Php ${item.price} per ${item.weight}kg`}
+                                    path={item.path}
+                                    cost={16.25}
+                                    onSelectEvent={onSelectService}
+                                    isSelected={item.selected}
+                                    id={item.id}
+                                    key={item.id}
+                                />
+                            })}
 
-                            <Service
-                                buttonName={"Dry Clean"}
-                                path={require('../assets/icons/clothes.png')}
-                                cost={16.25}
-                            />
-
-                            <Service
-                                buttonName={"Beddings"}
-                                path={require('../assets/icons/warmmachine.png')}
-                                cost={16.25}
-                            />
                         </View>
                     </ScrollView>
                     <Text style={styles.categoryTitle}>Detergents</Text>
                     <ScrollView horizontal={true}>
                         <View style={styles.categoryContainer}>
                             {/* items ng mga detergent */}
-                            <Detergent
-                                buttonName={"Surf"}
-                                path={require('../assets/icons/Surf.png')}
-                                cost={30}
-                            />
-                            <Detergent
-                                buttonName={"Tide"}
-                                path={require('../assets/icons/Tide.png')}
-                                cost={20}
-                            />
-                            <Detergent
-                                buttonName={"Ariel"}
-                                path={require('../assets/icons/Ariel.png')}
-                                cost={25}
-                            />
-                            <Detergent
-                                buttonName={"Sample"}
-                                path={require('../assets/icons/bubble.png')}
-                                cost={69}
-                            />
-
+                            
+                            {detergentsItems.map((item, key) => {
+                                return <Detergent
+                                    buttonName={item.name + ` ${item.weight}g`}
+                                    buttonPrice={`Php ${item.price} each`}
+                                    path={item.path}
+                                    cost={item.price}
+                                    onSelectEvent={onSelectDetergent}
+                                    isSelected={item.selected}
+                                    id={item.id}
+                                    key={item.id}
+                                />
+                            })}
                         </View>
                     </ScrollView>
                     <Text style={styles.categoryTitle}>Fabric Conditioner</Text>
                     <ScrollView horizontal={true}>
                         <View style={styles.categoryContainer}>
                             {/* items ng mga services */}
-                            <FabCon
-                                buttonName={"Surf"}
-                                path={require('../assets/icons/Surf.png')}
-                                cost={30}
-                            />
-                            <FabCon
-                                buttonName={"Tide"}
-                                path={require('../assets/icons/Tide.png')}
-                                cost={20}
-                            />
-                            <FabCon
-                                buttonName={"Ariel"}
-                                path={require('../assets/icons/Ariel.png')}
-                                cost={25}
-                            />
-                            <FabCon
-                                buttonName={"Sample"}
-                                path={require('../assets/icons/bubble.png')}
-                                cost={69}
-                            />
+                            
+                            {fabconItems.map((item, key) => {
+                                return <FabCon
+                                    buttonName={item.name + ` ${item.weight}ml`}
+                                    buttonPrice={`Php ${item.price} each`}
+                                    path={item.path}
+                                    cost={item.price}
+                                    onSelectEvent={onSelectFabcon}
+                                    isSelected={item.selected}
+                                    id={item.id}
+                                    key={item.id}
+                                />
+                            })}
+
                         </View>
                     </ScrollView>
+                    {/* To add notes starts here */}
+                    <View>
+                    
+                        <View style={{ height:50, backgroundColor:'#f6f6f6', borderRadius:20, margin:10, justifyContent:'center',}}>
+                        <Text style={{fontSize: 20, left:15,
+                                color:'gray',
+                            }}> 
+                            Add note:
+                            </Text>
+                        </View>
+                    </View>
 
                     <Modal
                         animationType="slide"
@@ -560,7 +687,6 @@ const Shop1Menu = ({navigation}) => {
                     </View>
                     </Modal>
                     {/* Billing codes start here */}
-                    
                     <TouchableOpacity onPress={getStoredDate}>
                             <View style={styles.bookButton}>
                                 <Text style={{
@@ -655,25 +781,25 @@ const styles = StyleSheet.create({
     },
     mainContainer:{
         marginHorizontal:10,
-        height:850,
+        height:950,
     },
    itemContainer1:{
-       height:200,
-       width:170,
+       height:150,
+       width:120,
        alignContent:'center',
        alignItems:'center',
    },
    imageContainer1:{
         backgroundColor:'#f6f6f6',
         borderRadius:20,
-        height:150,
-        width:150,
+        height:100,
+        width:100,
         justifyContent:'center',
    }, 
    itemImage: {
         height:100,
         width: 100,
-        alignSelf:'center'
+        alignSelf:'center',
    },
    bookButton:{
         backgroundColor: '#01BCE4',
@@ -711,11 +837,6 @@ const styles = StyleSheet.create({
 },  
 
 
-
-
-
-
-
 // Latter Styles
    categoryTitle:{
         fontSize: 30,
@@ -723,7 +844,7 @@ const styles = StyleSheet.create({
         color:'black',
    },
    categoryContainer:{
-        flexDirection:'row'
+        flexDirection:'row',
    },
 
    billModal:{
