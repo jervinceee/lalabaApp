@@ -167,7 +167,7 @@ const AHome = ({navigation}) => {
                                 <Text style={{
                                     fontSize: 25,
                                     fontWeight: '800',
-                                    color: 'white',
+                                    color: 'white', 
                                     alignSelf:'center'
                                     }} >
                                     Order History
