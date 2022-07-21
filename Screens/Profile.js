@@ -84,7 +84,7 @@ const Profile = ({navigation}) => {
                                 <Text style={styles.infoTitle}>Address</Text>
                                     {address != null && address != "" ?
                                         <Text style={styles.infoContent}>{address}</Text> : 
-                                        <Text style={styles.infoContent}>LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOONG TEXT</Text>
+                                        <Text style={styles.infoContent}>Address Not Set</Text>
                                     }
                             </View>
                         </View>

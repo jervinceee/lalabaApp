@@ -4,7 +4,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const FabConComponent = (props) =>{
 
-    const [selected, setSelected] = React.useState(false);
     const [volume, setVolume] = React.useState(1);
     const [disableBtn, setDisableBtn] = React.useState(false);
     const [cost, setCost] = React.useState(props.cost);
@@ -25,12 +24,18 @@ const FabConComponent = (props) =>{
     }
 
     const itemSelect = async() =>{
-        setSelected(!selected);
-        if(selected !== true){
+        // setSelected(!selected);
+        if(props.isSelected !== true){
+            
             await AsyncStorage.setItem('fabconname', prodName);
             await AsyncStorage.setItem('fabconvolume', JSON.stringify(volume));
             await AsyncStorage.setItem('fabconcost', JSON.stringify(cost));
         }
+    }
+    
+    const itemSelectEvent = async() =>{
+        await itemSelect();
+        await props.onSelectEvent(props.id);
     }
 
     React.useEffect(()=>{
@@ -46,8 +51,8 @@ const FabConComponent = (props) =>{
     return(
         <View style={styles.container}>
             <TouchableOpacity 
-                style={selected === true? styles.btnContainerSelected : styles.btnContainer}
-                onPress={itemSelect}
+                style={props.isSelected === true? styles.btnContainerSelected : styles.btnContainer}
+                onPress={itemSelectEvent}
             >
                 <Image
                     style={styles.buttonImage}
@@ -56,7 +61,7 @@ const FabConComponent = (props) =>{
             </TouchableOpacity>
             <Text style={styles.buttonText}>{props.buttonName}</Text>
             <Text style={styles.buttonTextPrice}>{props.buttonPrice}</Text>
-            <View style={selected === true? styles.volumeContainer : {display:'none'}}>
+            <View style={props.isSelected === true? styles.volumeContainer : {display:'none'}}>
                 <TouchableOpacity
                     style={disableBtn === true? styles.volumeButtonDisabled: styles.volumeButton}
                     onPress={subtract}
@@ -73,7 +78,7 @@ const FabConComponent = (props) =>{
                 </TouchableOpacity>
             </View>
 
-            <Text style={selected===true? 
+            <Text style={props.isSelected===true? 
                 {
                     fontWeight:'bold',
                     fontSize:18,

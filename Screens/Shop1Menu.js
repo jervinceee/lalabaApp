@@ -16,19 +16,24 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 //firestore
 import {auth, db} from '../core/config'
-import {collection, addDoc, serverTimestamp, FieldValue} from 'firebase/firestore'
+import {collection, addDoc, serverTimestamp, FieldValue, getDocs, doc} from 'firebase/firestore'
 
 //components
 import Service from "../components/ServiceComponent";
 import Detergent from '../components/DetergentComponent';
 import FabCon from '../components/FabConComponent';
 import { FontAwesome } from '@expo/vector-icons';
+import { images } from '../global/global'
 
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
 const Shop1Menu = ({navigation}) => {
 
     const shop1collectionRef = collection(db, "shop1orders")
+
+    var loggedInId = auth.currentUser.uid;
+    const user = doc(db, "users", loggedInId)
+    const [address, setAddress] = React.useState("");
     //submit order
     const submitOrder = async () =>{
         await addDoc( shop1collectionRef, {
@@ -45,7 +50,8 @@ const Shop1Menu = ({navigation}) => {
             retrieveDate : retrieveTimestamp,
             receiveDate: receiveTimestamp,
             modeOfPayment: payment,
-            cashPrepared: cashAmount
+            cashPrepared: cashAmount,
+            status: 'Pending',
         }).then(()=>{
             navigation.navigate("List");
             console.log("done")
@@ -85,15 +91,38 @@ const Shop1Menu = ({navigation}) => {
     const [retrieveTimestamp, setRetrieveTimestamp] = React.useState();
     const [receiveTimestamp, setReceiveTimestamp] = React.useState();
 
+    const servicesCollection = collection(db, "services")
+    const detergentsCollection = collection(db, "detergents")
+    const fabconsCollection = collection(db, "fabcons")
+    // Service Array 
+    const [serviceItems, setServiceItems] = React.useState([]);
+    const [detergentsItems, setDetergentsItems] = React.useState([]);
+    const [fabconItems, setFabconItems] = React.useState([]);
+    
+    const getDifferenceInSeconds = (date1, date2) => {
+        const diffInMs = date2 - date1;
+        
+        return (diffInMs / 1000) >= 10800 ? false: true;
+    }
+    
     const RenderBillModal = () =>{
+        const retrieveHours = new Date(dateRetrieve).getHours()
+        const recieveHours = new Date(dateReceive).getHours()
+
         if(retrieveMethod === ""){
             setBillModalError("Please tell us how to retrieve your Labada.")
         }else if(retrieveTimestamp === undefined || retrieveTimestamp === null){
             setBillModalError("You haven't specified a Date/Time for us to retrieve your Labada.")
+        }else if(retrieveHours < 8 || retrieveHours > 22 ){
+            setBillModalError("Open time of our Shop is 8:00 am to 10:00 pm only")
         }else if(receiveMethod === ""){
             setBillModalError("Please tell us how you would like to receive your Labada back.")
         }else if(receiveTimestamp === undefined || receiveTimestamp === null){
             setBillModalError("You haven't specified a Date/Time for us to retrieve your Labada.")
+        }else if(recieveHours < 8 || recieveHours > 22 ){
+            setBillModalError("Open time of our Shop is 8:00 am to 10:00 pm only")
+        }else if(getDifferenceInSeconds(new Date(dateRetrieve), new Date(dateReceive))){
+            setBillModalError("Please input a valid Retrieve and Recieve Date. At least 3 Hours between 2 dates")
         }else if((fabcon === null || fabcon === "") && (detergent === null || detergent === "")&& (service === null || service === "")){
             setBillModalError("You haven't selected anything.");
         }else if(fabcon===null || fabcon === ""){
@@ -119,6 +148,57 @@ const Shop1Menu = ({navigation}) => {
         )
     }
 
+    const onSelectService = (selectedService) =>{
+        setServiceItems((serviceItems) =>
+            serviceItems.map((item) =>
+                item.id === selectedService
+                ? {
+                    ...item,
+                    selected: true
+                }
+                : {
+                    ...item,
+                    selected: false
+                }
+            )
+        );
+    }
+
+    const onSelectDetergent = async(selectedDetergent) =>{
+
+        setDetergentsItems((detergentsItems) =>
+            detergentsItems.map((item) =>
+                item.id === selectedDetergent
+                ? {
+                    ...item,
+                    selected: true
+                }
+                : {
+                    ...item,
+                    selected: false
+                }
+            )
+        );
+
+    }
+
+    const onSelectFabcon= (selectedFabcon) =>{
+
+        setFabconItems((fabconItems) =>
+            fabconItems.map((item) =>
+                item.id === selectedFabcon
+                ? {
+                    ...item,
+                    selected: true
+                }
+                : {
+                    ...item,
+                    selected: false
+                }
+            )
+        );
+
+    }
     //storing dates to timestamp variable
     const onChangeRetrieveDate = (event, selectedDate)=>{
         const currentDate = selectedDate || dateRetrieve;
@@ -132,6 +212,7 @@ const Shop1Menu = ({navigation}) => {
         console.log(fDate + " (" + fTime + ")");
         console.log(tempDate);
         setRetrieveTimestamp(tempDate);
+        setBillModalError('error');
     }
 
     const onChangeReceiveDate = (event, selectedDate)=>{
@@ -146,6 +227,7 @@ const Shop1Menu = ({navigation}) => {
         console.log(fDate + " (" + fTime + ")");
         console.log(tempDate);
         setReceiveTimestamp(tempDate);
+        setBillModalError('error');
     }
 
     const showModeRetrieve = (currentMode) =>{
@@ -173,9 +255,10 @@ const Shop1Menu = ({navigation}) => {
     const [dimensions, setDimensions] = useState({ window, screen });
 
   useEffect(() => {
-    console.log(detergent, detergentVol);
-    console.log(fabcon, fabconVol);
-    console.log("Amount Entered: ", cashAmount )
+    // console.log(service);
+    // console.log(detergent);
+    // console.log(fabcon);
+    // console.log("Amount Entered: ", cashAmount )
     setTotalCost(
         parseInt(fabconCost) + parseInt(detergentCost) + parseInt(serviceCost)
     );
@@ -201,6 +284,60 @@ const Shop1Menu = ({navigation}) => {
     );
     return () => subscription?.remove();
   });
+
+  useEffect( async() =>{
+
+    let item = [];
+    let snapshot = await getDocs(servicesCollection)
+    snapshot.forEach((doc) => {
+        let data = doc.data();
+        
+        item.push(
+            { 
+                id: doc.id, selected: false, name: data.name, weight: data.weight, price: data.price, path: images.icons[data.path]
+            }
+        );
+    });
+    
+    setServiceItems(item);
+    
+    let item2 = [];
+    snapshot = await getDocs(detergentsCollection)
+    snapshot.forEach((doc) => {
+        let data = doc.data();
+        
+        item2.push(
+            { 
+                id: doc.id, selected: false, name: data.name, weight: data.weight, price: data.price, path: images.icons[data.path]
+            }
+        );
+    });
+
+    setDetergentsItems(item2);
+    
+    let item3 = [];
+    snapshot = await getDocs(fabconsCollection)
+    snapshot.forEach((doc) => {
+        let data = doc.data();
+        
+        item3.push(
+            { 
+                id: doc.id, selected: false, name: data.name, weight: data.weight, price: data.price, path: images.icons[data.path]
+            }
+        );
+    });
+
+    setFabconItems(item3);
+
+    getDoc(user).then((snapshot)=>{
+        if(snapshot.exists){
+            setAddress(snapshot.data().address);
+        }else{
+            console.log("NO DOC FOUND!!")
+        }
+    })
+
+  }, []);
 
     return (
         <ScrollView style={{backgroundColor:'white',marginTop:45}}>
@@ -249,6 +386,7 @@ const Shop1Menu = ({navigation}) => {
                                     display='default'
                                     onChange={onChangeRetrieveDate}
                                     onTouchCancel={()=>setShowRetrieve(false)}
+                                    minimumDate={new Date()}
                                 />
                             )
                         }
@@ -298,6 +436,7 @@ const Shop1Menu = ({navigation}) => {
                                     display='default'
                                     onChange={onChangeReceiveDate}
                                     onTouchCancel={()=>setShowReceive(false)}
+                                    minimumDate={new Date()}
                                 />
                             )
                         }
@@ -310,106 +449,59 @@ const Shop1Menu = ({navigation}) => {
                     <ScrollView horizontal={true}>
                         <View style={styles.categoryContainer}>
                             {/* items ng mga services */}
-                            <Service
-                                buttonName={"Wash, Dry and Fold"}
-                                buttonPrice={" Php 130.00 per 8kg"}
-                                path={require('../assets/icons/clotheswashing.png')}
-                                cost={16.25}
-                            />
 
-                            <Service
-                                buttonName={"Wash, Dry and Iron"}
-                                buttonPrice={" Php 130.00 per 8kg"}
-                                path={require('../assets/icons/bubble.png')}
-                                cost={16.25}
-                            />
+                            {serviceItems.map((item, key) => {
+                                return <Service
+                                    buttonName={item.name}
+                                    buttonPrice={`Php ${item.price} per ${item.weight}kg`}
+                                    path={item.path}
+                                    cost={16.25}
+                                    onSelectEvent={onSelectService}
+                                    isSelected={item.selected}
+                                    id={item.id}
+                                    key={item.id}
+                                />
+                            })}
 
-                            <Service
-                                buttonName={"Dry Clean"}
-                                buttonPrice={'\nPhp 130.00 per 8kg'}
-                                path={require('../assets/icons/clothes.png')}
-                                cost={16.25}
-                            />
-
-                            <Service
-                                buttonName={"Beddings"}
-                                buttonPrice={'\nPhp 130.00 per 8kg'}
-                                path={require('../assets/icons/warmmachine.png')}
-                                cost={16.25}
-                            />
                         </View>
                     </ScrollView>
                     <Text style={styles.categoryTitle}>Detergents</Text>
                     <ScrollView horizontal={true}>
                         <View style={styles.categoryContainer}>
                             {/* items ng mga detergent */}
-                            <Detergent
-                                buttonName={"Surf powder Cherry Blossom 75g"}
-                                buttonPrice={" Php 30.00 each"}
-                                path={require('../assets/icons/DSurf.png')}
-                                cost={30}
-                            />
-                            <Detergent
-                                buttonName={'Tide Original Scent\n80g'}
-                                buttonPrice={" Php 20.00 each"}
-                                path={require('../assets/icons/DTide.png')}
-                                cost={20}
-                            />
-                            <Detergent
-                                buttonName={"Ariel powder with downy\n66g"}
-                                buttonPrice={" Php 25.00 each"}
-                                path={require('../assets/icons/DAriel.png')}
-                                cost={25}
-                            />
-                            <Detergent
-                                buttonName={'Laundry shop choice \n 80g'}
-                                buttonPrice={" Php 10.00 each"}
-                                path={require('../assets/icons/bubble.png')}
-                                cost={69}
-                            />
-                             <Detergent
-                                buttonName={'I will provide my own'}
-                                buttonPrice={" \n Php 0.00"}
-                                path={require('../assets/icons/bubble.png')}
-                                cost={0}
-                            />
-
+                            
+                            {detergentsItems.map((item, key) => {
+                                return <Detergent
+                                    buttonName={item.name + ` ${item.weight}g`}
+                                    buttonPrice={`Php ${item.price} each`}
+                                    path={item.path}
+                                    cost={item.price}
+                                    onSelectEvent={onSelectDetergent}
+                                    isSelected={item.selected}
+                                    id={item.id}
+                                    key={item.id}
+                                />
+                            })}
                         </View>
                     </ScrollView>
                     <Text style={styles.categoryTitle}>Fabric Conditioner</Text>
                     <ScrollView horizontal={true}>
                         <View style={styles.categoryContainer}>
                             {/* items ng mga services */}
-                            <FabCon
-                                buttonName={'Surf \n Blossom Fresh \n 40ml'}
-                                buttonPrice={" Php 30.00 each"}
-                                path={require('../assets/icons/FSurf.png')}
-                                cost={30}
-                            />
-                            <FabCon
-                                buttonName={'Del Gentle Protect\n26ml'}
-                                buttonPrice={" Php 20.00 each"}
-                                path={require('../assets/icons/FDel.png')}
-                                cost={20}
-                            />
-                            <FabCon
-                                buttonName={"Downey Sunrise Fresh\n38ml"}
-                                buttonPrice={" Php 30.00 each"}
-                                path={require('../assets/icons/FDowny.png')}
-                                cost={25}
-                            />
-                            <FabCon
-                                buttonName={'Laundry shop choice \n 100ml'}
-                                buttonPrice={" Php 30.00 each"}
-                                path={require('../assets/icons/bubble.png')}
-                                cost={69}
-                            />
-                            <FabCon
-                                buttonName={'I will provide my own'}
-                                buttonPrice={" \n Php 0.00"}
-                                path={require('../assets/icons/bubble.png')}
-                                cost={0}
-                            />
+                            
+                            {fabconItems.map((item, key) => {
+                                return <FabCon
+                                    buttonName={item.name + ` ${item.weight}ml`}
+                                    buttonPrice={`Php ${item.price} each`}
+                                    path={item.path}
+                                    cost={item.price}
+                                    onSelectEvent={onSelectFabcon}
+                                    isSelected={item.selected}
+                                    id={item.id}
+                                    key={item.id}
+                                />
+                            })}
+
                         </View>
                     </ScrollView>
                     {/* To add notes starts here */}
@@ -534,7 +626,7 @@ const Shop1Menu = ({navigation}) => {
                     </View>
                     </Modal>
                     {/* Billing codes start here */}
-                    <TouchableOpacity onPress={getStoredDate}>
+                    <TouchableOpacity onPress={getStoredDate} disabled={address == ""}>
                             <View style={styles.bookButton}>
                                 <Text style={{
                                     fontSize:25,

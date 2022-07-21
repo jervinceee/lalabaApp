@@ -4,7 +4,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DetergentComponent = (props) =>{
 
-    const [selected, setSelected] = React.useState(false);
     const [volume, setVolume] = React.useState(1);
     const [disableBtn, setDisableBtn] = React.useState(false);
     const [cost, setCost] = React.useState(props.cost);
@@ -23,13 +22,19 @@ const DetergentComponent = (props) =>{
     }
 
     const itemSelect = async () =>{
-        setSelected(!selected);
-        if(selected !== true){
+        // setSelected(!selected);
+        if(props.isSelected !== true){
             await AsyncStorage.setItem('detergentname', prodName);
             await AsyncStorage.setItem('detergentvolume', JSON.stringify(volume));
             await AsyncStorage.setItem('detergentcost', JSON.stringify(cost));
         }
     }
+    
+    const itemSelectEvent = async() =>{
+        await itemSelect();
+        await props.onSelectEvent(props.id);
+    }
+
 
     React.useEffect(()=>{
         if(volume < 2){
@@ -44,8 +49,8 @@ const DetergentComponent = (props) =>{
     return(
         <View style={styles.container}>
             <TouchableOpacity 
-                style={selected === true? styles.btnContainerSelected : styles.btnContainer}
-                onPress={itemSelect}
+                style={props.isSelected === true? styles.btnContainerSelected : styles.btnContainer}
+                onPress={itemSelectEvent}
             >
                 <Image
                     style={styles.buttonImage}
@@ -54,7 +59,7 @@ const DetergentComponent = (props) =>{
             </TouchableOpacity>
             <Text style={styles.buttonText}>{props.buttonName}</Text>
             <Text style={styles.buttonTextPrice}>{props.buttonPrice}</Text>
-            <View style={selected === true? styles.volumeContainer : {display:'none'}}>
+            <View style={props.isSelected === true? styles.volumeContainer : {display:'none'}}>
                 <TouchableOpacity
                     style={disableBtn === true? styles.volumeButtonDisabled: styles.volumeButton}
                     onPress={subtract}
@@ -71,7 +76,7 @@ const DetergentComponent = (props) =>{
                 </TouchableOpacity>
             </View>
 
-            <Text style={selected===true? 
+            <Text style={props.isSelected===true? 
                 {
                     fontWeight:'bold',
                     fontSize:18,
