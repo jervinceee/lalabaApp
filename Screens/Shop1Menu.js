@@ -65,12 +65,13 @@ const Shop1Menu = ({navigation}) => {
             receiveDate: receiveTimestamp,
             modeOfPayment: payment,
             cashPrepared: cashAmount,
-            status:'pending',
             proofPayment:imagePath,
-            address: address
+            address: address,
+            status: payment == 'gcash' ? "Accepted" : 'Pending',
+            addNote: '',
         }).then(()=>{
             navigation.navigate("List");
-            console.log("done")
+            console.log("done");
         })
     }
 
@@ -79,6 +80,8 @@ const Shop1Menu = ({navigation}) => {
     const [receiveMethod, setReceiveMethod] = React.useState('')
 
     //AsyncStorage Data
+    const [username, setUserName] = React.useState('');
+    const [phoneNum, setPhoneNum] = React.useState('')
     const [address, setAddress] = React.useState("");
     const [service, setService] = React.useState("");
     const [maxWeight, setMaxWeight] = React.useState(0);
@@ -148,7 +151,7 @@ const Shop1Menu = ({navigation}) => {
         const retrieveHours = new Date(dateRetrieve).getHours()
         const recieveHours = new Date(dateReceive).getHours()
 
-        if( address === null || address === "null" || address === "none" || address === ""){
+        if( address === null || address === ""){
             setBillModalError("Please set an Address for your profile first.");
         }else if(retrieveMethod === ""){
             setBillModalError("Please tell us how to retrieve your Labada.")
@@ -283,6 +286,8 @@ const Shop1Menu = ({navigation}) => {
     }
 
     const getStoredDate = async ()=>{
+        setUserName(await AsyncStorage.getItem('username'));
+        setPhoneNum(await AsyncStorage.getItem('usernumber'))
         setAddress(await AsyncStorage.getItem('useraddress'));
         setDetergent(await AsyncStorage.getItem('detergentname'));
         setDetergentVol( await AsyncStorage.getItem('detergentvolume'));

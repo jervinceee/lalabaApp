@@ -8,8 +8,10 @@ import {
     TouchableOpacity
 } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { collection, getDocs, Timestamp } from 'firebase/firestore';
-import { db, auth } from '../core/config'
+import { collection, getDocs, doc, getDoc, deleteDoc } from 'firebase/firestore';
+import { db, auth, } from '../core/config'
+
+
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
 
@@ -32,6 +34,34 @@ const PendingOrders = ({navigation}) => {
       ]
     const [orders, setOrders] = React.useState([]);
     const shopCollectionReference = collection(db, 'shop1orders');
+    const usersColleciton = collection(db, 'users');
+
+
+    useEffect(async()=>{
+        let dict = {};
+        let snapshot = await getDocs(usersColleciton)
+        snapshot.forEach((doc) => {
+            let data = doc.data();
+            dict[data.email] = data.userName
+        });
+
+        let item = [];
+        snapshot = await getDocs(shopCollectionReference)
+        snapshot.forEach((doc) => {
+            let data = doc.data();
+            
+            if(data.status === 'Pending'){
+              item.push(
+                  { 
+                      ...data, id: doc.id, userName: dict[data.orderby]
+                  }
+              );
+            }
+        });
+        
+        setOrders(item);
+        console.log('hahaha')
+    },[]);
 
     useEffect(() => {
 
@@ -53,7 +83,6 @@ const PendingOrders = ({navigation}) => {
         );
         return () => subscription?.remove();
     });
-
 
     return (
         <ScrollView style={{backgroundColor: 'white', marginTop:50 }}>
@@ -157,6 +186,7 @@ const styles = StyleSheet.create({
         borderRadius:20,
         alignSelf:'center',
         marginVertical:10,
+        padding: 15,
     },
     orderContainer: {
         height:290,
@@ -169,11 +199,13 @@ const styles = StyleSheet.create({
         marginTop:10,
     },
     scheduleShape: {
-        width:'80%',
+        width:'100%',
         backgroundColor:'#01BCE4',
         flexDirection:'row',
-        borderRadius:15,
-        justifyContent:'center'
+        borderRadius:5,
+        justifyContent:'center',
+        marginTop: 10,
+
     },
     deliveryMode: {
         flexDirection:'column',

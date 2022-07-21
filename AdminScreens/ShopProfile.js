@@ -356,7 +356,7 @@ const ShopProfile = ({navigation}) => {
                             <Service
                                 buttonName={"Beddings"}
                                 buttonPrice={'\nPhp 130.00 per 8kg'}
-                                path={require('../assets/icons/washing machine.png')}
+                                path={require('../assets/icons/washingmachine.png')}
                                 cost={16.25}
                             />
                         </View>

@@ -25,7 +25,7 @@ const Login = ({navigation}) => {
     const [passwordError, setPasswordError] = React.useState("initial");
     const [errorMsg, setErrorMsg] = React.useState("");
     const [errorModal, setErrorModal] = React.useState(false);
-    const [users, setUsers] = React.useState([])
+    const [users, setUsers] = React.useState([]);
     const usersCollectionRef= collection(db, 'users');
 
     React.useEffect(()=>{
@@ -84,8 +84,11 @@ const Login = ({navigation}) => {
                 users.map(async userMap =>{
                     if(user.uid === userMap.id && userMap.isAdmin === false){
                         //console.log(userMap.id);
-                        navigation.navigate('HomeFlow');
                         await AsyncStorage.setItem('useraddress', userMap.address);
+                        await AsyncStorage.setItem('usernumber', userMap.phoneNum);
+                        await AsyncStorage.setItem('username', userMap.userName);
+                        navigation.navigate('HomeFlow');
+                        
                     }
                     else if (user.uid === userMap.id && userMap.isAdmin === true){
                         //console.log(userMap.id);
