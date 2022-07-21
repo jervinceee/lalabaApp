@@ -10,8 +10,12 @@ import {
 } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { collection, getDocs, doc, getDoc, deleteDoc, updateDoc } from 'firebase/firestore';
+<<<<<<< HEAD
 import { listAll, ref, getDownloadURL } from "firebase/storage";
 import { db, auth, storage} from '../core/config'
+=======
+import { db, auth, } from '../core/config'
+>>>>>>> 0a25798dd99a65ed512794d327eaa97d97f857ba
 
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
@@ -20,6 +24,7 @@ const ActiveOrders = ({navigation}) => {
     const [dimensions, setDimensions] = useState({ window, screen });
 
     const [orders, setOrders] = React.useState([]);
+<<<<<<< HEAD
     const [imageList, setImageList] = React.useState([])
     const shopCollectionReference = collection(db, 'shop1orders');
     const usersColleciton = collection(db, 'users');
@@ -29,10 +34,22 @@ const ActiveOrders = ({navigation}) => {
 
         const settingItem = async ()=>{
             let dict = {};
+=======
+    const shopCollectionReference = collection(db, 'shop1orders');
+    const usersColleciton = collection(db, 'users');
+    
+    useEffect(async()=>{
+        let dict = {};
+>>>>>>> 0a25798dd99a65ed512794d327eaa97d97f857ba
         let snapshot = await getDocs(usersColleciton)
         snapshot.forEach((doc) => {
             let data = doc.data();
             dict[data.email] = data.userName
+<<<<<<< HEAD
+=======
+            dict[data.email+'1'] = data.address
+            dict[data.email+'2'] = data.phoneNum
+>>>>>>> 0a25798dd99a65ed512794d327eaa97d97f857ba
         });
 
         let item = [];
@@ -43,11 +60,16 @@ const ActiveOrders = ({navigation}) => {
             if(data.status === 'Accepted'){
               item.push(
                   { 
+<<<<<<< HEAD
                       ...data, id: doc.id, userName: dict[data.orderby]
+=======
+                      ...data, id: doc.id, userName: dict[data.orderby], phoneNum: dict[data.orderby+'2'], address: dict[data.orderby+'1']
+>>>>>>> 0a25798dd99a65ed512794d327eaa97d97f857ba
                   }
               );
             }
         });
+<<<<<<< HEAD
         setOrders(item);
         }
         settingItem();
@@ -62,6 +84,11 @@ const ActiveOrders = ({navigation}) => {
                 }) 
             })
         });
+=======
+        
+        setOrders(item);
+        console.log('hahaha')
+>>>>>>> 0a25798dd99a65ed512794d327eaa97d97f857ba
     },[]);
 
     useEffect(() => {
@@ -207,10 +234,34 @@ const ActiveOrders = ({navigation}) => {
                                     </Text>
                                 </View> 
                                 <RenderCashPayment method={order.modeOfPayment} payment={order.cashPrepared}/>
+<<<<<<< HEAD
                                     {/* {
                                         order.modeOfPayment === 'gcash'?
                                         // <Image source={imageList.filter(image => )}/>
                                     } */}
+=======
+
+                                <View style={styles.totalNDoneButton}>
+                                    <Text style={{
+                                        fontSize:15,
+                                        fontWeight:'800',
+                                        color:'black',
+                                        marginVertical: 5,
+                                    }}>
+                                        {`Address: ${order.address}`}
+                                    </Text>
+                                </View> 
+                                <View style={styles.totalNDoneButton}>
+                                    <Text style={{
+                                        fontSize:15,
+                                        fontWeight:'800',
+                                        color:'black',
+                                        marginBottom: 5,
+                                    }}>
+                                        {`Phone: ${order.phoneNum}`}
+                                    </Text>
+                                </View> 
+>>>>>>> 0a25798dd99a65ed512794d327eaa97d97f857ba
                                 <TouchableOpacity 
                                     onPress={()=>updateStatus(order.id, 'Done', index)}
                                     style={{ marginRight: 12, paddingHorizontal: 10, paddingVertical: 5, backgroundColor: '#4caf50', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
@@ -293,4 +344,8 @@ const styles = StyleSheet.create({
 
 })
 
+<<<<<<< HEAD
 export default ActiveOrders;
+=======
+export default ActiveOrders;
+>>>>>>> 0a25798dd99a65ed512794d327eaa97d97f857ba

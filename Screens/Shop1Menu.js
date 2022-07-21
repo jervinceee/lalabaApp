@@ -38,6 +38,7 @@ const Shop1Menu = ({navigation}) => {
 
     var loggedInId = auth.currentUser.uid;
     const user = doc(db, "users", loggedInId)
+    const [phone, setPhone] = React.useState("");
     //submit order
 
     //image upload not working!!!
@@ -153,8 +154,10 @@ const Shop1Menu = ({navigation}) => {
         const retrieveHours = new Date(dateRetrieve).getHours()
         const recieveHours = new Date(dateReceive).getHours()
 
-        if( address === null || address === ""){
-            setBillModalError("Please set an Address for your profile first.");
+        if (phone == ""){
+            setBillModalError("Please add your phone number before booking")
+        }else if(address == ""){
+            setBillModalError("Please add your address before booking")
         }else if(retrieveMethod === ""){
             setBillModalError("Please tell us how to retrieve your Labada.")
         }else if(retrieveTimestamp === undefined || retrieveTimestamp === null){
@@ -343,9 +346,42 @@ const Shop1Menu = ({navigation}) => {
     );
     return () => subscription?.remove();
   });
-
+  
   useEffect( async() =>{
     //AsyncStorage.clear();
+    // let services = [
+    //     { name: "Wash, Dry and Iron", weight: '8kg', path: 'bubble', price: 130},
+    //     { name: "Wash, Dry and Fold", weight: '8kg', path: 'clotheswashing', price: 130},
+    //     { name: "Dry Clean", weight: '8kg', path: 'clothes', price: 130},
+    //     { name: "Beddings", weight: '8kg', path: 'washingmachine', price: 130},
+    // ]
+    // let fabcon = [
+    //     { name: "Surf \n Blossom Fresh", weight: 40, path: 'FSurf', price: 30},
+    //     { name: "Del Gentle Protect", weight: 26, path: 'FDel', price: 20},
+    //     { name: "Downey Sunrise Fresh", weight: 38, path: 'FDowny', price: 30},
+    //     { name: "Laundry shop choice", weight: 100, path: 'bubble', price: 30},
+    //     { name: "I will provide my own", weight: 0, path: 'bubble', price: 0},
+    // ]
+    // let detergent = [
+    //     { name: "Surf powder Cherry Blossom", weight: 75, path: 'DSurf', price: 30},
+    //     { name: "Tide Original Scent", weight: 80, path: 'DTide', price: 20},
+    //     { name: "Ariel powder with downy", weight: 66, path: 'DAriel', price: 25},
+    //     { name: "Laundry shop choice", weight: 80, path: 'bubble', price: 10},
+    //     { name: "I will provide my own", weight: 0, path: 'bubble', price: 0},
+    // ]
+    // for(let i =0; i < 5; i++){
+    //     await addDoc( fabconsCollection, {
+    //         name: fabcon[i].name,
+    //         weight: fabcon[i].weight,
+    //         path: fabcon[i].path,
+    //         price: fabcon[i].price
+    //     }).then(()=>{
+    //         navigation.navigate("List");
+    //         console.log("done")
+    //     })
+    // }
+
+    AsyncStorage.clear();
     let item = [];
     let snapshot = await getDocs(servicesCollection)
     snapshot.forEach((doc) => {
@@ -391,6 +427,7 @@ const Shop1Menu = ({navigation}) => {
     getDoc(user).then((snapshot)=>{
         if(snapshot.exists){
             setAddress(snapshot.data().address);
+            setPhone(snapshot.data().phoneNum);
             console.log()
         }else{
             console.log("NO DOC FOUND!!")
@@ -520,6 +557,7 @@ const Shop1Menu = ({navigation}) => {
                                     isSelected={item.selected}
                                     id={item.id}
                                     key={item.id}
+                                    disable={false}
                                 />
                             })}
 
@@ -540,6 +578,7 @@ const Shop1Menu = ({navigation}) => {
                                     isSelected={item.selected}
                                     id={item.id}
                                     key={item.id}
+                                    disable={false}
                                 />
                             })}
                         </View>
@@ -559,6 +598,7 @@ const Shop1Menu = ({navigation}) => {
                                     isSelected={item.selected}
                                     id={item.id}
                                     key={item.id}
+                                    disable={false}
                                 />
                             })}
 
