@@ -35,23 +35,24 @@ import { ScrollView } from 'react-native-gesture-handler';
 
   React.useEffect(()=>{
     const getOrders = async () =>{
-        const data = await getDocs(shopCollectionReference);
-        
-        setOrders(data.docs.map((doc)=>({
-          ...doc.data(), id: doc.id,
-        })));
+      let item = [];
+      let snapshot = await getDocs(shopCollectionReference)
+      snapshot.forEach((doc) => {
+          let data = doc.data();
+          
+          if(data.status == 'Done'){
+            item.push(
+                { 
+                    ...data, id: doc.id
+                }
+            );
+          }
+      });
+
+      setOrders(item)
     }
 
     getOrders();
-    // TO DO: 
-    // FIX RENDERING DATES
-    // ADMIN SCREENS
-
-    orders.map((order)=>{
-        console.log(months[new Date(order.receiveDate.seconds * 1000).getMonth()]);
-        console.log(new Date(order.receiveDate.seconds * 1000).getMonth())
-    })
-    
   },[])
 
   return (
@@ -66,32 +67,24 @@ import { ScrollView } from 'react-native-gesture-handler';
               var minutesRetrieve = new Date(order.retrieveDate.seconds * 1000).getMinutes()
               var minutesReceive = new Date(order.receiveDate.seconds * 1000).getMinutes()
               return(
-                  <View key={index} style={styles.orderContainer}>
-                      <Text key={index} style={styles.methodText}>{order.retrieveMethod}</Text>
-                      <View key={index} style={styles.dateContainer}>
-                          <AntDesign name="calendar" size={30} color="white" />
-                          <Text key={index} style={styles.dateText}>{
-                              months[new Date(order.retrieveDate.seconds * 1000).getMonth()] + " " +
-                              new Date(order.retrieveDate.seconds * 1000).getDate() + ", " +
-                              new Date(order.retrieveDate.seconds * 1000).getFullYear() + " at " + 
-                              new Date(order.retrieveDate.seconds * 1000).getHours() + ":"  
-                          }{
-                            minutesRetrieve <=9 ? "0" + minutesRetrieve: minutesRetrieve
-                          }</Text>
-                      </View>
-                      <Text key={index} style={styles.methodText}>{order.receiveMethod}</Text>
-                      <View key={index} style={styles.dateContainer}>
-                          <AntDesign name="calendar" size={30} color="white" />
-                          <Text key={index} style={styles.dateText}>{
-                              months[new Date(order.receiveDate.seconds * 1000).getMonth()] + " " +
+                  <View key={`v6${order.id}`}  style={{ marginVertical: 8 ,padding: 8, width: '100%', backgroundColor: '#7F8487'}}>
+                  <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center', }}>
+                    
+                    <AntDesign name="calendar" size={30} color="white" />
+                    <Text key={`t6${order.id}`}  style={{color: 'white', fontSize: 15}}>
+                        { months[new Date(order.receiveDate.seconds * 1000).getMonth()] + " " +
                               new Date(order.receiveDate.seconds * 1000).getDate() + ", " +
                               new Date(order.receiveDate.seconds * 1000).getFullYear() + " at " + 
-                              new Date(order.receiveDate.seconds * 1000).getHours() + ":"  
-                          }{
+                              new Date(order.receiveDate.seconds * 1000).getHours() + ":"  }{
+                                
                             minutesReceive <=9 ? "0"+minutesReceive: minutesReceive
-                          }</Text>
-                      </View>
+                              }
+                    </Text>
                   </View>
+                  <Text key={`t8${order.id}`}  style={{color: 'white', fontSize: 15, textAlign: 'center', marginTop: 8}}>
+                      {`PHP ${order.totalCost}, ${order.modeOfPayment.toUpperCase()}, ${order.receiveMethod}`}
+                  </Text>
+                </View>
               )
           })}
       </View>

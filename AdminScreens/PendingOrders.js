@@ -8,19 +8,18 @@ import {
     TouchableOpacity
 } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { collection, getDocs, doc, getDoc, deleteDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, getDoc, deleteDoc, updateDoc } from 'firebase/firestore';
 import { db, auth, } from '../core/config'
-
 
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
+
 const PendingOrders = ({navigation}) => {
     const [dimensions, setDimensions] = useState({ window, screen });
 
     const [orders, setOrders] = React.useState([]);
     const shopCollectionReference = collection(db, 'shop1orders');
     const usersColleciton = collection(db, 'users');
-
 
     useEffect(async()=>{
         let dict = {};
@@ -60,15 +59,27 @@ const PendingOrders = ({navigation}) => {
     
     const dateFormat =(date)=>{
         console.log(date.getDay())
-        return `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`
+        return `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`
     }
 
     const timeFormat =(date)=>{
         return `${date.getHours() == 12 ? 12 : date.getHours() % 12}:${date.getMinutes()}${date.getHours() >= 12 ? 'PM' : 'AM'}`
     }
 
+    const updateStatus =async(id, status, ind)=>{
+        
+        await updateDoc(doc(db, "shop1orders", id), {
+            status: status,
+        });
+        
+        setOrders([
+          ...orders.slice(0, ind),
+          ...orders.slice(ind + 1)
+        ]);
+    }
+
     return (
-        <ScrollView style={{backgroundColor: 'white', marginTop:50 }}>
+        <ScrollView style={{backgroundColor: 'white', marginTop:50, padding: 10, }}>
             <View>
                 <View style={styles.titleHolder}>
                     <Text style={{
@@ -89,7 +100,6 @@ const PendingOrders = ({navigation}) => {
                             }}>
                                 {order.userName}
                             </Text>
-                                {/* <Icon name="close" size={40} color={'red'}/> */}
                             <View style={styles.scheduleShape}>
                                 <View style={styles.deliveryMode}>
                                     <Text style={{
@@ -120,50 +130,63 @@ const PendingOrders = ({navigation}) => {
                                     </Text>
                                 </View>
                             </View>
+
+                            {/* <Icon name="close" size={40} color={'red'}/> */}
                             <View style={styles.serviceModeContainer}>
                                 <Text style={{
-                                    fontSize:22,
-                                    fontWeight:'600',
-                                    color:'black',
-                                }}>
-                                    Wash Dry Fold
-                                </Text>
-                                    <Text style={{
+                                    marginTop: 5,
                                     fontSize:15,
                                     fontWeight:'bold',
                                     color:'black',
-                                    left:180,
-                                }}> 
-                                    8kg {'\n'} 1 x detergent 1 {'\n'} 1 x Fabcon 1
-                                    </Text>
+                                }}>
+                                    {`${order.serviceName} ${order.maxWeight}kg`}
+                                </Text>
                                 <Text style={{
+                                    fontSize:15,
+                                    fontWeight:'bold',
+                                    color:'black',
+                                }}> 
+                                    {`${order.detergent} x${order.detergentVolume}`}
+                                </Text>
+                                <Text style={{
+                                    fontSize:15,
+                                    fontWeight:'bold',
+                                    color:'black',
+                                }}> 
+                                    {`${order.fabcon == 'I will provide my own ml' ? 'I will provide my own' : order.fabcon} ${order.fabcon == 'I will provide my own ml' ? '' : 'x'+order.fabconVolume}`}
+                                </Text>
+
+                                <Text style={{
+                                    marginTop: 15,
+                                    marginBottom: 10,
                                     fontSize:20,
                                     fontWeight:'600',
                                     color:'black',
                                 }}>
-                                    Mode of Payment
-                                </Text>
-                                <Text style={{
-                                    fontSize:15,
-                                    fontWeight:'bold',
-                                    color:'black',
-                                    left:180
-                                }}> 
-                                    Gcash
+                                    {`Mode of Payment: ${order.modeOfPayment.toUpperCase()}`}
                                 </Text>
                                 <View style={styles.totalNDoneButton}>
                                     <Text style={{
-                                        fontSize:40,
+                                        fontSize:35,
                                         fontWeight:'600',
                                         color:'black',
-                                        alignSelf:'center'
                                     }}>
-                                        PHP 130.00
+                                        {`PHP ${order.totalCost}.00`}
                                     </Text>
-                                    <TouchableOpacity style={{
-                                        left:35
-                                    }}>
-                                        <Icon name="check" size={40} color={'green'}/>
+                                </View> 
+                                
+                                <View style={{ marginTop: 10, width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                                    <TouchableOpacity 
+                                        onPress={()=>updateStatus(order.id, 'Accepted', index)}
+                                        style={{ marginRight: 12, paddingHorizontal: 10, paddingVertical: 5, backgroundColor: 'green', flexDirection: 'row', alignItems: 'center' }}>
+                                        <Icon name="check" size={30} color={'white'}/> 
+                                        <Text style={{fontSize:15, fontWeight:'bold', color:'white',}}>Accept</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity 
+                                        onPress={()=>updateStatus(order.id, 'Rejected', index)}
+                                        style={{paddingHorizontal: 8, paddingVertical: 5, backgroundColor: 'red', flexDirection: 'row', alignItems: 'center' }}>
+                                        <Icon name="close" size={30} color={'white'}/>
+                                        <Text style={{fontSize:15, fontWeight:'bold', color:'white',}}>Reject</Text>
                                     </TouchableOpacity>
                                 </View> 
                             </View>
@@ -187,7 +210,6 @@ const styles = StyleSheet.create({
     },
     orderShape: {
         backgroundColor:'#F6F6F6',
-        height:290,
         width:'95%',
         borderRadius:20,
         alignSelf:'center',
@@ -228,7 +250,6 @@ const styles = StyleSheet.create({
     },
     totalNDoneButton: {
         flexDirection:'row',
-        justifyContent:'space-around'
     },  
    
 
