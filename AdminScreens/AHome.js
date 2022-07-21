@@ -187,7 +187,7 @@ const AHome = ({navigation}) => {
                         
                     </View>
                     <View style={styles.body2}>
-                        <TouchableOpacity onPress={()=> navigation.navigate('AChat')}>
+                        {/* <TouchableOpacity onPress={()=> navigation.navigate('AChat')}>
                             <View style={styles.buttonContainer1}>
                                 <Text style={{
                                         fontSize: 25,
@@ -198,9 +198,9 @@ const AHome = ({navigation}) => {
                                 </Text>
                                 <Icon name="chat" size={80} color={'white'}/>
                             </View>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                         <TouchableOpacity onPress={()=> navigation.navigate('AList')}>
-                            <View style={styles.buttonContainer2}>
+                            <View style={[styles.buttonContainer2, {width:360}]}>
                                 <Text style={{
                                     fontSize: 25,
                                     fontWeight: '800',
