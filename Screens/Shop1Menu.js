@@ -180,9 +180,11 @@ const Shop1Menu = ({navigation}) => {
             setBillModalError("No Detergents were selected.");
         }else if(service===null || service === ""){
             setBillModalError("No Services were selected.");
-        }else if(address===null || address === ""){
-            setBillModalError("No Services were selected.");
-        }else{
+        }
+        // else if(address===null || address === ""){
+        //     setBillModalError("No Services were selected.");
+        // }
+        else{
             setBillModalError("");
         }
 

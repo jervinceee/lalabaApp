@@ -192,8 +192,6 @@ const PendingOrders = ({navigation}) => {
                                     </Text>
                                 </View> 
                                 
-<<<<<<< HEAD
-=======
                                 <RenderCashPayment method={order.modeOfPayment} payment={order.cashPrepared}/>
 
                                 <View style={styles.totalNDoneButton}>
@@ -217,7 +215,6 @@ const PendingOrders = ({navigation}) => {
                                     </Text>
                                 </View> 
                                 
->>>>>>> 0a25798dd99a65ed512794d327eaa97d97f857ba
                                 <View style={{ marginTop: 10, width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                                     <TouchableOpacity 
                                         onPress={()=>updateStatus(order.id, 'Accepted', index)}

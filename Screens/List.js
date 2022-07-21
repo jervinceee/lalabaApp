@@ -191,50 +191,9 @@ import { useIsFocused } from '@react-navigation/native';
       <View style={styles.notDoneContainer}>
       <Text style={styles.containerText}>Scheduled: </Text>
           {/* Nothing to see here... */}
-<<<<<<< HEAD
-          {orders.filter(name=>name.orderby === auth.currentUser.email).map((order, index)=>{
-              var minutesRetrieve = new Date(order.retrieveDate.seconds * 1000).getMinutes()
-              var minutesReceive = new Date(order.receiveDate.seconds * 1000).getMinutes()
-              return(
-                  <View key={`v1${order.id}`} style={styles.orderContainer}>
-                      <View style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                        <Text key={`t1${order.id}`} style={styles.methodText}>{order.retrieveMethod}</Text>
-                        <Text key={`t5${order.id}`} style={ order.status == 'Pending' ? styles.pendingText : order.status == 'Accepted' ? styles.acceptedText : styles.deletedText  }>{order.status}</Text>
-                      </View>
-                      <View key={`v2${order.id}`} style={styles.dateContainer}>
-                          <AntDesign name="calendar" size={30} color="white" />
-                          <Text key={`t2${order.id}`} style={styles.dateText}>{
-                              months[new Date(order.retrieveDate.seconds * 1000).getMonth()] + " " +
-                              new Date(order.retrieveDate.seconds * 1000).getDate() + ", " +
-                              new Date(order.retrieveDate.seconds * 1000).getFullYear() + " at " + 
-                              new Date(order.retrieveDate.seconds * 1000).getHours() + ":"  
-                          }{
-                            minutesRetrieve <=9 ? "0" + minutesRetrieve: minutesRetrieve
-                          }</Text>
-                      </View>
-
-                      <Text key={`t3${order.id}`} style={styles.methodText}>{order.receiveMethod}</Text>
-
-                      <View key={`v3${order.id}`} style={styles.dateContainer}>
-                          <AntDesign name="calendar" size={30} color="white" />
-                          <Text key={`t4${order.id}`} style={styles.dateText}>{
-                              months[new Date(order.receiveDate.seconds * 1000).getMonth()] + " " +
-                              new Date(order.receiveDate.seconds * 1000).getDate() + ", " +
-                              new Date(order.receiveDate.seconds * 1000).getFullYear() + " at " + 
-                              new Date(order.receiveDate.seconds * 1000).getHours() + ":"  
-                          }{
-                            minutesReceive <=9 ? "0"+minutesReceive: minutesReceive
-                          }</Text>
-                      </View>
-                      <Text style={{fontSize:18, marginLeft:5, marginTop:5}}>Status: {order.status}</Text>
-                      
-                    <RenderDeleteButton status={order.status} ind={index}/>
-                  </View>
-=======
           {orders.map((order, index)=>{
               return(
                 <RenderSchedule order={order} index={index}/>
->>>>>>> 0a25798dd99a65ed512794d327eaa97d97f857ba
               )
           })}
       </View>
