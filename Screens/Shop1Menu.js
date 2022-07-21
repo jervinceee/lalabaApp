@@ -19,7 +19,7 @@ import 'react-native-get-random-values'
 
 //firebase
 import {auth, db, storage} from '../core/config'
-import {collection, addDoc, serverTimestamp, FieldValue} from 'firebase/firestore'
+import {doc, collection, addDoc, getDocs, getDoc, serverTimestamp, FieldValue} from 'firebase/firestore'
 import { ref, uploadBytes, uploadString } from 'firebase/storage'
 import {v4} from 'uuid'
 
