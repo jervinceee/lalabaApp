@@ -15,15 +15,37 @@ import AHome from "../AdminScreens/AHome";
 import ActiveOrders from "../AdminScreens/ActiveOrders";
 import PendingOrders from "../AdminScreens/PendingOrders";
 import AdminFlow from '../roots/AdminFlow';
+import {auth, db} from '../core/config';
+import {collection, getDoc, doc} from 'firebase/firestore'
+import React, { useState, useEffect } from "react";
+
 const homeStack = createNativeStackNavigator();
+
 const HomeFlow = ({navigation}) => {
+    const [isAdmin, setAdmin] = React.useState(false);
+
+    React.useEffect(()=>{
+
+        var loggedInId = auth.currentUser.uid;
+        const user = doc(db, "users", loggedInId)
+
+        getDoc(user).then((snapshot)=>{
+            if(snapshot.exists){
+                setAdmin(snapshot.data().isAdmin)
+            }else{
+                console.log("NO DOC FOUND!!")
+            }
+        });
+        
+    },[])
+
     return(
         <homeStack.Navigator>
             <homeStack.Screen
                 options={{headerShown:false,gestureEnabled:false}}
                 index={0}
                 name="HomeTabs"
-                component={Tabs} // AdminFlow
+                component={ isAdmin ? AdminFlow : Tabs} // AdminFlow
             />
             <homeStack.Screen
                 options={{headerShown:false}}

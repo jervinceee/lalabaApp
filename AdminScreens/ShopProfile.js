@@ -203,6 +203,12 @@ const ShopProfile = ({navigation}) => {
     );
     return () => subscription?.remove();
   });
+  
+  const signOut = () => {
+        auth.signOut().then(()=>{
+            navigation.navigate("Login");
+        })
+    }
 
     return (
         <ScrollView style={{backgroundColor:'white',marginTop:45}}>
@@ -210,7 +216,7 @@ const ShopProfile = ({navigation}) => {
                 <View style={{flexDirection:'row', justifyContent:'space-between',marginTop:40, marginRight:10,}}>
                     <Text style={{ fontSize:30, color:'black', fontWeight:'bold', marginLeft:10}}>Schedule</Text>
                     <Icon name='logout' color={'red'} size={50}  
-                                onPress={() => navigation.navigate({/*login na ulit */})}
+                                onPress={signOut}
                             />
                 </View>
                 

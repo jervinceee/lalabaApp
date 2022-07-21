@@ -82,6 +82,7 @@ const SignUp = ({navigation}) => {
                     userName:name,
                     age:null,
                     email:email,
+                    isAdmin: false,
                     address:"",
                     phoneNum:"",
                 });

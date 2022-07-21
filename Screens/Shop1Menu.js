@@ -52,6 +52,7 @@ const Shop1Menu = ({navigation}) => {
             modeOfPayment: payment,
             cashPrepared: cashAmount,
             status: 'Pending',
+            addNote: '',
         }).then(()=>{
             navigation.navigate("List");
             console.log("done")
@@ -288,7 +289,7 @@ const Shop1Menu = ({navigation}) => {
   });
 
   useEffect( async() =>{
-
+    AsyncStorage.clear();
     let item = [];
     let snapshot = await getDocs(servicesCollection)
     snapshot.forEach((doc) => {
