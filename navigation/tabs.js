@@ -33,10 +33,10 @@ const screenOptions = (route, color) => {
         iconName = 'home';
         
         break;
-      case 'Chat':
-        iconName = 'chat';
+      // case 'Chat':
+      //   iconName = 'chat';
         
-        break;
+      //   break;
       case 'List':
         iconName = 'receipt';
         
@@ -56,7 +56,7 @@ const screenOptions = (route, color) => {
           headerShown: false
         })}>
             <Tab.Screen name="Home" component={Home}/> 
-            <Tab.Screen name="Chat" component={Chat}/> 
+            {/* <Tab.Screen name="Chat" component={Chat}/>  */}
             <Tab.Screen name="List" component={List}/>
       </Tab.Navigator>
     );

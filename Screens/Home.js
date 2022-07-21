@@ -71,7 +71,7 @@ const Home = ({navigation}) => {
                                         fontWeight:'800',
                                         color: 'white',
                                     }} >
-                                    Laundry Shop 1
+                                    Laundry Shop
                                 </Text>
                                 <Image source={bubble}
                                     style={{
@@ -81,7 +81,7 @@ const Home = ({navigation}) => {
                                 />
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={()=> navigation.navigate('Shop2')}>
+                        {/* <TouchableOpacity onPress={()=> navigation.navigate('Shop2')}>
                             <View style={styles.buttonContainer2}>
                                 <Text style={{
                                     fontSize: 25,
@@ -97,7 +97,7 @@ const Home = ({navigation}) => {
                                     }} 
                                 />    
                             </View>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                     </View>    
                 </View>
             </View>

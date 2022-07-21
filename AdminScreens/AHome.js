@@ -171,7 +171,7 @@ const AHome = ({navigation}) => {
                                 <Icon name="format-list-bulleted" size={80} color={'white'}/>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={()=> navigation.navigate('SummarySales')}>
+                        <TouchableOpacity onPress={()=> navigation.navigate('PendingOrders')}>
                             <View style={styles.buttonContainer2}>
                                 <Text style={{
                                     fontSize: 25,
@@ -179,7 +179,7 @@ const AHome = ({navigation}) => {
                                     color: 'white',
                                     alignSelf:'center'
                                     }} >
-                                    Summary Sales
+                                    Pending Orders
                                 </Text>
                                 <Icon name="donut-large" size={80} color={'white'}/>
                             </View>

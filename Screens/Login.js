@@ -151,9 +151,9 @@ const Login = ({navigation}) => {
 
                 <Text style={passwordError==="" || passwordError==="initial"?{display:'none'}:styles.error}>{passwordError}</Text>
 
-                <TouchableOpacity>
+                {/* <TouchableOpacity>
                         <Text style={styles.forgotPass}>Forgot your password?</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
                 <TouchableOpacity
                     onPress={submitHandler}

@@ -68,7 +68,9 @@ const Shop1Menu = ({navigation}) => {
             proofPayment:imagePath,
             address: address,
             status: payment == 'gcash' ? "Accepted" : 'Pending',
-            addNote: '',
+            // addNote: '',
+            username: username,
+            contact: phoneNum
         }).then(()=>{
             navigation.navigate("List");
             console.log("done");
@@ -332,7 +334,7 @@ const Shop1Menu = ({navigation}) => {
         setSubmitDisable(false);
     }
     
-    console.log(address);
+    // console.log(address);
     const subscription = Dimensions.addEventListener(
       "change",
       ({ window, screen }) => {
@@ -343,7 +345,7 @@ const Shop1Menu = ({navigation}) => {
   });
 
   useEffect( async() =>{
-    AsyncStorage.clear();
+    //AsyncStorage.clear();
     let item = [];
     let snapshot = await getDocs(servicesCollection)
     snapshot.forEach((doc) => {
@@ -563,7 +565,7 @@ const Shop1Menu = ({navigation}) => {
                         </View>
                     </ScrollView>
                     {/* To add notes starts here */}
-                    <View>
+                    {/* <View>
                     
                         <View style={{ height:50, backgroundColor:'#f6f6f6', borderRadius:20, margin:10, justifyContent:'center',}}>
                         <Text style={{fontSize: 20, left:15,
@@ -572,7 +574,7 @@ const Shop1Menu = ({navigation}) => {
                             Add note:
                             </Text>
                         </View>
-                    </View>
+                    </View> */}
 
                     <Modal
                         animationType="slide"
@@ -672,6 +674,11 @@ const Shop1Menu = ({navigation}) => {
                                                     </Text> 
                                                 :   null   
                                             }
+                                            <TouchableOpacity
+                                                onPress={()=>setCashAmount(totalCost)}
+                                            >
+                                                <Text style={styles.exactText}>I have the exact amount.</Text>
+                                            </TouchableOpacity>
                                         </View>:
                                         null
                                     }
@@ -948,6 +955,12 @@ const styles = StyleSheet.create({
         alignSelf:'center',
         borderRadius:5,
         marginTop:10
+    },
+    exactText:{
+        fontSize:16,
+        color:'#01BCE4',
+        textDecorationLine:'underline',
+        alignSelf:'center'
     }
 })
 export default Shop1Menu;
