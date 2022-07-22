@@ -157,7 +157,7 @@ const Shop1Menu = ({navigation}) => {
         if (phone == ""){
             setBillModalError("Please add your phone number before booking")
         }else if(address == ""){
-            setBillModalError("Please add your address before booking")
+            setBillModalError("Please add your complete address before booking")
         }else if(retrieveMethod === ""){
             setBillModalError("Please tell us how to retrieve your Labada.")
         }else if(retrieveTimestamp === undefined || retrieveTimestamp === null){
