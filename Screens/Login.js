@@ -81,6 +81,7 @@ const Login = ({navigation}) => {
             await signInWithEmailAndPassword(auth, email, password).then((credentials)=>{
                 const user = credentials.user;
                 console.log("Logged in with", user.uid);
+                
                 users.map(async userMap =>{
                     if(user.uid === userMap.id && userMap.isAdmin === false){
                         //console.log(userMap.id);
@@ -88,7 +89,6 @@ const Login = ({navigation}) => {
                         await AsyncStorage.setItem('usernumber', userMap.phoneNum);
                         await AsyncStorage.setItem('username', userMap.userName);
                         navigation.navigate('HomeFlow');
-                        
                     }
                     else if (user.uid === userMap.id && userMap.isAdmin === true){
                         //console.log(userMap.id);

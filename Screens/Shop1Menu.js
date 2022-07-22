@@ -144,7 +144,15 @@ const Shop1Menu = ({navigation}) => {
     const [detergentsItems, setDetergentsItems] = React.useState([]);
     const [fabconItems, setFabconItems] = React.useState([]);
     
+    const timePast = (date1, date2) => {
+        
+        const diffInMs = date2 - date1;
+        
+        return (diffInMs / 1000) >= 0 ? false: true;
+    }
+    
     const getDifferenceInSeconds = (date1, date2) => {
+        
         const diffInMs = date2 - date1;
         
         return (diffInMs / 1000) >= 10800 ? false: true;
@@ -164,6 +172,8 @@ const Shop1Menu = ({navigation}) => {
             setBillModalError("You haven't specified a Date/Time for us to retrieve your Labada.")
         }else if(retrieveHours < 8 || retrieveHours > 22 ){
             setBillModalError("Open time of our Shop is 8:00 am to 10:00 pm only")
+        }else if(timePast(new Date(), new Date(dateRetrieve))){
+            setBillModalError("Please input a valid Retrieve time.")
         }else if(receiveMethod === ""){
             setBillModalError("Please tell us how you would like to receive your Labada back.")
         }else if(receiveTimestamp === undefined || receiveTimestamp === null){
