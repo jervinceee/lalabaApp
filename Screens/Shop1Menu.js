@@ -8,15 +8,20 @@ import {
     TouchableOpacity,
     Dimensions,
     Modal,
-    TextInput
+    TextInput,
 } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DateTimePicker from '@react-native-community/datetimepicker';
+import * as ImagePicker from 'expo-image-picker';
+import 'react-native-get-random-values'
 
-//firestore
-import {auth, db} from '../core/config'
-import {collection, addDoc, serverTimestamp, FieldValue, getDoc, getDocs, doc} from 'firebase/firestore'
+
+//firebase
+import {auth, db, storage} from '../core/config'
+import {doc, collection, addDoc, getDocs, getDoc, serverTimestamp, FieldValue} from 'firebase/firestore'
+import { ref, uploadBytes, uploadString } from 'firebase/storage'
+import {v4} from 'uuid'
 
 //components
 import Service from "../components/ServiceComponent";
@@ -33,10 +38,19 @@ const Shop1Menu = ({navigation}) => {
 
     var loggedInId = auth.currentUser.uid;
     const user = doc(db, "users", loggedInId)
-    const [address, setAddress] = React.useState("");
     const [phone, setPhone] = React.useState("");
     //submit order
+
+    //image upload not working!!!
+    // const metadata = {
+    //     contentType: 'image/jpeg',
+    // };
+    
     const submitOrder = async () =>{
+        const img = await fetch(imageUpload.uri);
+        const bytes = await img.blob();
+        const imageRef = ref(storage, `shop1storage/${imagePath}`);
+        await uploadBytes(imageRef, bytes)
         await addDoc( shop1collectionRef, {
             detergent : detergent,
             detergentVolume : detergentVol,
@@ -52,11 +66,15 @@ const Shop1Menu = ({navigation}) => {
             receiveDate: receiveTimestamp,
             modeOfPayment: payment,
             cashPrepared: cashAmount,
+            proofPayment:imagePath,
+            address: address,
             status: payment == 'gcash' ? "Accepted" : 'Pending',
-            addNote: '',
+            // addNote: '',
+            username: username,
+            contact: phoneNum
         }).then(()=>{
             navigation.navigate("List");
-            console.log("done")
+            console.log("done");
         })
     }
 
@@ -65,6 +83,9 @@ const Shop1Menu = ({navigation}) => {
     const [receiveMethod, setReceiveMethod] = React.useState('')
 
     //AsyncStorage Data
+    const [username, setUserName] = React.useState('');
+    const [phoneNum, setPhoneNum] = React.useState('')
+    const [address, setAddress] = React.useState("");
     const [service, setService] = React.useState("");
     const [maxWeight, setMaxWeight] = React.useState(0);
     const [serviceCost, setServiceCost] = React.useState(0);
@@ -74,6 +95,7 @@ const Shop1Menu = ({navigation}) => {
     const [fabcon, setFabcon] = React.useState("");
     const [fabconVol, setFabconVol] = React.useState(0);
     const [fabconCost, setFabconCost] = React.useState(0);
+    
 
     //bill modal stuff
     const [totalCost, setTotalCost] = React.useState(0);
@@ -83,6 +105,8 @@ const Shop1Menu = ({navigation}) => {
     const [payment, setPayment] = React.useState('');
     const [cashAmount, setCashAmount] = React.useState(0);
     const [submitDisable, setSubmitDisable] = React.useState(true);
+    const [image, setImage] = useState(null);
+    const [imageUpload, setImageUpload] = useState(null)
 
     // date and time picker variables
     const [dateRetrieve, setDateRetrieve] = React.useState(new Date());
@@ -92,6 +116,25 @@ const Shop1Menu = ({navigation}) => {
     const [showReceive, setShowReceive] = React.useState(false);
     const [retrieveTimestamp, setRetrieveTimestamp] = React.useState();
     const [receiveTimestamp, setReceiveTimestamp] = React.useState();
+    const [imagePath, setImagePath] = React.useState('');
+
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [9, 16],
+          quality: 1,
+        });
+    
+        console.log(result);
+    
+        if (!result.cancelled) {
+          setImage(result.uri);
+          setImagePath(auth.currentUser.email + v4())
+          setImageUpload(result)
+        }
+    };
 
     const servicesCollection = collection(db, "services")
     const detergentsCollection = collection(db, "detergents")
@@ -137,7 +180,11 @@ const Shop1Menu = ({navigation}) => {
             setBillModalError("No Detergents were selected.");
         }else if(service===null || service === ""){
             setBillModalError("No Services were selected.");
-        }else{
+        }
+        // else if(address===null || address === ""){
+        //     setBillModalError("No Services were selected.");
+        // }
+        else{
             setBillModalError("");
         }
 
@@ -246,6 +293,9 @@ const Shop1Menu = ({navigation}) => {
     }
 
     const getStoredDate = async ()=>{
+        setUserName(await AsyncStorage.getItem('username'));
+        setPhoneNum(await AsyncStorage.getItem('usernumber'))
+        setAddress(await AsyncStorage.getItem('useraddress'));
         setDetergent(await AsyncStorage.getItem('detergentname'));
         setDetergentVol( await AsyncStorage.getItem('detergentvolume'));
         setDetergentCost(await AsyncStorage.getItem('detergentcost'));
@@ -261,6 +311,11 @@ const Shop1Menu = ({navigation}) => {
     const [dimensions, setDimensions] = useState({ window, screen });
 
   useEffect(() => {
+    // console.log("full: ", image);
+    if(image !== null){
+        console.log(image.slice(137,-4) + auth.currentUser.email + v4());
+    }
+    // console.log(fabcon, fabconVol);
     // console.log(service);
     // console.log(detergent);
     // console.log(fabcon);
@@ -276,12 +331,15 @@ const Shop1Menu = ({navigation}) => {
     }else if(payment === 'cod' && cashAmount < totalCost){
         setSubmitDisable(true)
         setSubmissionError("Cash prepared must be larger than the total service cost.")
+    }else if(payment === 'gcash' && image === null){
+        setSubmitDisable(true)
+        setSubmissionError("Please upload proof of payment.")
     }else{
         setSubmissionError("");
-        setSubmitDisable(false)
+        setSubmitDisable(false);
     }
     
-
+    // console.log(address);
     const subscription = Dimensions.addEventListener(
       "change",
       ({ window, screen }) => {
@@ -292,6 +350,7 @@ const Shop1Menu = ({navigation}) => {
   });
   
   useEffect( async() =>{
+    //AsyncStorage.clear();
     // let services = [
     //     { name: "Wash, Dry and Iron", weight: '8kg', path: 'bubble', price: 130},
     //     { name: "Wash, Dry and Fold", weight: '8kg', path: 'clotheswashing', price: 130},
@@ -548,7 +607,7 @@ const Shop1Menu = ({navigation}) => {
                         </View>
                     </ScrollView>
                     {/* To add notes starts here */}
-                    <View>
+                    {/* <View>
                     
                         <View style={{ height:50, backgroundColor:'#f6f6f6', borderRadius:20, margin:10, justifyContent:'center',}}>
                         <Text style={{fontSize: 20, left:15,
@@ -557,7 +616,7 @@ const Shop1Menu = ({navigation}) => {
                             Add note:
                             </Text>
                         </View>
-                    </View>
+                    </View> */}
 
                     <Modal
                         animationType="slide"
@@ -572,16 +631,18 @@ const Shop1Menu = ({navigation}) => {
                                 <RenderBillModal/>
                             :
                             <View style={styles.billContainer}>
+                                <ScrollView>
+                                <Text>Address: {address}</Text>
                                 <Text>Our rider will retrieve your Labada on:</Text>
                                 <Text style={styles.billTitle}>{
-                                    retrieveTimestamp.getMonth()+1 + '/' + 
+                                    retrieveTimestamp === undefined ? null : retrieveTimestamp.getMonth()+1 + '/' + 
                                     retrieveTimestamp.getDate() + '/' + 
                                     retrieveTimestamp.getFullYear() + ' at ' + 
                                     retrieveTimestamp.getHours() + ':' + 
                                     retrieveTimestamp.getMinutes()}</Text>
                                 <Text>And you will receive your Labada back on:</Text>
                                 <Text style={styles.billTitle}>{
-                                    receiveTimestamp.getMonth()+1 + '/' + 
+                                    receiveTimestamp === undefined ? null : receiveTimestamp.getMonth()+1 + '/' + 
                                     receiveTimestamp.getDate() + '/' + 
                                     receiveTimestamp.getFullYear() + ' at ' + 
                                     receiveTimestamp.getHours() + ':' + 
@@ -627,6 +688,10 @@ const Shop1Menu = ({navigation}) => {
                                             <Text style={styles.remindersText}>
                                                 Kindly send a screenshot of the receipt before the laundry schedule.
                                             </Text>
+                                                <TouchableOpacity style={styles.submitButton} onPress={pickImage}>
+                                                    <Text style={{color:'white',fontWeight:'bold'}}>Upload Payment Proof</Text>
+                                                </TouchableOpacity>
+                                                {image && <Image source={{ uri: image }} style={styles.screenshot} />}
                                         </View>
                                         : payment === 'cod'?
                                         <View style={styles.remindersContainer}>
@@ -651,12 +716,18 @@ const Shop1Menu = ({navigation}) => {
                                                     </Text> 
                                                 :   null   
                                             }
+                                            <TouchableOpacity
+                                                onPress={()=>setCashAmount(totalCost)}
+                                            >
+                                                <Text style={styles.exactText}>I have the exact amount.</Text>
+                                            </TouchableOpacity>
                                         </View>:
                                         null
                                     }
                                 <Text style={{color:'red', alignSelf:'center'}}>
                                     {submissionError}
                                 </Text>
+
                                 <TouchableOpacity
                                     onPress = {submitOrder}
                                     style={submitDisable? styles.submitButtonDisabled :styles.submitButton}
@@ -664,6 +735,7 @@ const Shop1Menu = ({navigation}) => {
                                 >
                                     <Text style={{color:'white',fontWeight:'bold'}}>SUBMIT</Text>
                                 </TouchableOpacity>
+                                </ScrollView>
                             </View>
                         }
                     </View>
@@ -842,7 +914,8 @@ const styles = StyleSheet.create({
         width:'80%',
         padding:10,
         elevation:20,
-        borderRadius:10
+        borderRadius:10,
+        marginVertical:10
    },   
    billContent:{
         display:'flex',
@@ -918,5 +991,18 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         borderRadius:10,
     },
+    screenshot:{ 
+        width: 180, 
+        height: 320, 
+        alignSelf:'center',
+        borderRadius:5,
+        marginTop:10
+    },
+    exactText:{
+        fontSize:16,
+        color:'#01BCE4',
+        textDecorationLine:'underline',
+        alignSelf:'center'
+    }
 })
 export default Shop1Menu;

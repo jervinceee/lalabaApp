@@ -3,7 +3,7 @@ export const images = {
         'clothes': require('../assets/icons/clothes.png'),
         'bubble': require('../assets/icons/bubble.png'),
         'clotheswashing': require('../assets/icons/clotheswashing.png'),
-        'washingmachine': require('../assets/icons/washing machine.png'),
+        'washingmachine': require('../assets/icons/washingmachine.png'),
 
         'DSurf': require('../assets/icons/DSurf.png'),
         'DTide': require('../assets/icons/DTide.png'),

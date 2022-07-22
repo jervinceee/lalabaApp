@@ -5,11 +5,13 @@ import {
     Dimensions,
     StyleSheet,
     ScrollView,
-    TouchableOpacity
+    TouchableOpacity,
+    Image
 } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { collection, getDocs, doc, getDoc, deleteDoc, updateDoc } from 'firebase/firestore';
-import { db, auth, } from '../core/config'
+import { listAll, ref, getDownloadURL } from "firebase/storage";
+import { db, auth, storage} from '../core/config'
 
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
@@ -18,11 +20,14 @@ const ActiveOrders = ({navigation}) => {
     const [dimensions, setDimensions] = useState({ window, screen });
 
     const [orders, setOrders] = React.useState([]);
+    const [imageList, setImageList] = React.useState([])
     const shopCollectionReference = collection(db, 'shop1orders');
     const usersColleciton = collection(db, 'users');
+    const imageListRef = ref(storage, "shop1storage/")
     
-    useEffect(async()=>{
-        let dict = {};
+    useEffect(()=>{
+        const settingItem = async ()=>{
+            let dict = {};
         let snapshot = await getDocs(usersColleciton)
         snapshot.forEach((doc) => {
             let data = doc.data();
@@ -44,9 +49,20 @@ const ActiveOrders = ({navigation}) => {
               );
             }
         });
-        
         setOrders(item);
-        console.log('hahaha')
+        }
+        settingItem();
+        console.log('hahaha'); 
+
+        listAll(imageListRef).then(response => {
+            response.items.forEach((item)=>{
+                getDownloadURL(item).then((url)=>{
+                    setImageList((prev)=>[
+                        ...prev,
+                    ])
+                }) 
+            })
+        });
     },[]);
 
     useEffect(() => {
@@ -192,6 +208,10 @@ const ActiveOrders = ({navigation}) => {
                                     </Text>
                                 </View> 
                                 <RenderCashPayment method={order.modeOfPayment} payment={order.cashPrepared}/>
+                                    {/* {
+                                        order.modeOfPayment === 'gcash'?
+                                        // <Image source={imageList.filter(image => )}/>
+                                    } */}
 
                                 <View style={styles.totalNDoneButton}>
                                     <Text style={{

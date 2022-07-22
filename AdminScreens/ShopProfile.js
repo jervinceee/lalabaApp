@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+ import React, { useState, useEffect } from "react";
 import {
     View,
     Text,
@@ -13,7 +13,6 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DateTimePicker from '@react-native-community/datetimepicker';
-import Login from "../Screens/Login";
 
 //firestore
 import {auth, db} from '../core/config'
@@ -352,7 +351,7 @@ const ShopProfile = ({navigation}) => {
                             <Service
                                 buttonName={"Beddings"}
                                 buttonPrice={'\nPhp 130.00 per 8kg'}
-                                path={require('../assets/icons/washing machine.png')}
+                                path={require('../assets/icons/washingmachine.png')}
                                 cost={16.25}
                                 disable={true}
                             />

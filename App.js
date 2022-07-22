@@ -11,6 +11,7 @@ import PendingOrders from './AdminScreens/PendingOrders';
 import ActiveOrders from './AdminScreens/ActiveOrders';
 
 import AuthFlow from './roots/AuthFlow';
+//import AdminFlow from './roots/AdminFlow';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LogBox } from 'react-native';
 import _ from 'lodash';
@@ -34,9 +35,6 @@ const App = () => {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content"/>
-      {/* <ProductButton cost={30} number={1} buttonName={"Wash, Dry, and Fold"} path={require('./assets/icons/clotheswashing.png')}/>
-      <ProductButton cost={25} number={2} buttonName={"Dry Clean"} path={require('./assets/icons/clothes.png')}/>
-      <ProductButton cost={30} number={2} buttonName={"Beddings"} path={require('./assets/icons/warmmachine.png')}/> */}
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen
@@ -48,6 +46,11 @@ const App = () => {
             options={{headerShown:false,}}
             name="HomeFlow"
             component={HomeStack}
+          />
+          <Stack.Screen
+            options={{headerShown:false,}}
+            name="AdminFlow"
+            component={AdminFlow}
           />
           {/*
           <Stack.Screen

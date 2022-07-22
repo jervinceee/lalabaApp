@@ -7,7 +7,7 @@ export const maps = require('../icons/maps.png');
 export const messages = require('../icons/message.png');
 export const phone = require('../icons/phone.png');
 export const warmw = require('../icons/warm machine.png');
-export const wmachine = require('../icons/washing machine.png');
+export const wmachine = require('../icons/washingmachine.png');
 export const homeicon = require('../icons/home-outline.svg');   
 
 export default {
