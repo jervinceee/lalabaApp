@@ -322,9 +322,9 @@ const Shop1Menu = ({navigation}) => {
 
   useEffect(() => {
     // console.log("full: ", image);
-    if(image !== null){
-        console.log(image.slice(137,-4) + auth.currentUser.email + v4());
-    }
+    // if(image !== null){
+    //     console.log(image.slice(137,-4) + auth.currentUser.email + v4());
+    // }
     // console.log(fabcon, fabconVol);
     // console.log(service);
     // console.log(detergent);
@@ -695,8 +695,17 @@ const Shop1Menu = ({navigation}) => {
                                         <View style={styles.remindersContainer}>
                                             <Text style={styles.remindersTitle}>GCash Payment Reminders:</Text>
                                             <Text style={styles.remindersText}>
-                                                Please wait for the laundry personnel to confirm the total amount before sending the payment.
+                                                {/* Please wait for the laundry personnel to confirm the total amount before sending the payment. */}
+                                                Juan Dela Cruz {'\n'}
+                                                09999999999{'\n'}
                                             </Text>
+                                            <Image
+                                                style={{
+                                                    height:150,
+                                                    width:150
+                                                }}
+                                                source={require('../assets/image/qr1.png')}
+                                            />
                                             <Text style={styles.remindersText}>
                                                 Kindly send a screenshot of the receipt before the laundry schedule.
                                             </Text>
