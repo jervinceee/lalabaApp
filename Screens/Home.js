@@ -65,7 +65,7 @@ const Home = ({navigation}) => {
                             color: 'black',
                             fontSize: 15,
                             }}>
-                            John Dela Cruz {'\n'} 09999999999
+                            Welcome, {name}!
                         </Text>
                     </View>
                 </View>
