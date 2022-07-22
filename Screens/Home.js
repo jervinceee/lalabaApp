@@ -10,13 +10,20 @@ import {
 } from "react-native";
 import bubble from "../assets/icons/bubble.png"
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const window = Dimensions.get("window");
 const screen = Dimensions.get("screen");
 
 const Home = ({navigation}) => {
     const [dimensions, setDimensions] = useState({ window, screen });
+    const [name, setName] = useState('')
 
     useEffect(() => {
+        const getName = async () => {
+            setName(await AsyncStorage.getItem('username'));
+        }
+
+        getName();
       const subscription = Dimensions.addEventListener(
         "change",
         ({ window, screen }) => {

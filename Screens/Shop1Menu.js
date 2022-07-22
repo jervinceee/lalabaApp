@@ -706,9 +706,9 @@ const Shop1Menu = ({navigation}) => {
                                                 }}
                                                 source={require('../assets/image/qr1.png')}
                                             />
-                                            <Text style={styles.remindersText}>
+                                            {/* <Text style={styles.remindersText}>
                                                 Kindly send a screenshot of the receipt before the laundry schedule.
-                                            </Text>
+                                            </Text> */}
                                                 {/* <TouchableOpacity style={styles.submitButton} onPress={pickImage}>
                                                     <Text style={{color:'white',fontWeight:'bold'}}>Upload Payment Proof</Text>
                                                 </TouchableOpacity>
