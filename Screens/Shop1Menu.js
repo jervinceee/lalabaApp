@@ -13,8 +13,8 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DateTimePicker from '@react-native-community/datetimepicker';
-import * as ImagePicker from 'expo-image-picker';
-import 'react-native-get-random-values'
+// import * as ImagePicker from 'expo-image-picker';
+// import 'react-native-get-random-values'
 
 
 //firebase
@@ -47,10 +47,10 @@ const Shop1Menu = ({navigation}) => {
     // };
     
     const submitOrder = async () =>{
-        const img = await fetch(imageUpload.uri);
-        const bytes = await img.blob();
-        const imageRef = ref(storage, `shop1storage/${imagePath}`);
-        await uploadBytes(imageRef, bytes)
+        // const img = await fetch(imageUpload.uri);
+        // const bytes = await img.blob();
+        // const imageRef = ref(storage, `shop1storage/${imagePath}`);
+        // await uploadBytes(imageRef, bytes)
         await addDoc( shop1collectionRef, {
             detergent : detergent,
             detergentVolume : detergentVol,
@@ -66,7 +66,7 @@ const Shop1Menu = ({navigation}) => {
             receiveDate: receiveTimestamp,
             modeOfPayment: payment,
             cashPrepared: cashAmount,
-            proofPayment:imagePath,
+            //proofPayment:imagePath,
             address: address,
             status: payment == 'gcash' ? "Accepted" : 'Pending',
             // addNote: '',
@@ -105,8 +105,8 @@ const Shop1Menu = ({navigation}) => {
     const [payment, setPayment] = React.useState('');
     const [cashAmount, setCashAmount] = React.useState(0);
     const [submitDisable, setSubmitDisable] = React.useState(true);
-    const [image, setImage] = useState(null);
-    const [imageUpload, setImageUpload] = useState(null)
+    //const [image, setImage] = useState(null);
+    //const [imageUpload, setImageUpload] = useState(null)
 
     // date and time picker variables
     const [dateRetrieve, setDateRetrieve] = React.useState(new Date());
@@ -116,25 +116,25 @@ const Shop1Menu = ({navigation}) => {
     const [showReceive, setShowReceive] = React.useState(false);
     const [retrieveTimestamp, setRetrieveTimestamp] = React.useState();
     const [receiveTimestamp, setReceiveTimestamp] = React.useState();
-    const [imagePath, setImagePath] = React.useState('');
+    //const [imagePath, setImagePath] = React.useState('');
 
-    const pickImage = async () => {
-        // No permissions request is necessary for launching the image library
-        let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
-          allowsEditing: true,
-          aspect: [9, 16],
-          quality: 1,
-        });
+    // const pickImage = async () => {
+    //     // No permissions request is necessary for launching the image library
+    //     let result = await ImagePicker.launchImageLibraryAsync({
+    //       mediaTypes: ImagePicker.MediaTypeOptions.All,
+    //       allowsEditing: true,
+    //       aspect: [9, 16],
+    //       quality: 1,
+    //     });
     
-        console.log(result);
+    //     console.log(result);
     
-        if (!result.cancelled) {
-          setImage(result.uri);
-          setImagePath(auth.currentUser.email + v4())
-          setImageUpload(result)
-        }
-    };
+    //     if (!result.cancelled) {
+    //       setImage(result.uri);
+    //       setImagePath(auth.currentUser.email + v4())
+    //       setImageUpload(result)
+    //     }
+    // };
 
     const servicesCollection = collection(db, "services")
     const detergentsCollection = collection(db, "detergents")
@@ -331,10 +331,12 @@ const Shop1Menu = ({navigation}) => {
     }else if(payment === 'cod' && cashAmount < totalCost){
         setSubmitDisable(true)
         setSubmissionError("Cash prepared must be larger than the total service cost.")
-    }else if(payment === 'gcash' && image === null){
-        setSubmitDisable(true)
-        setSubmissionError("Please upload proof of payment.")
-    }else{
+    }
+    // else if(payment === 'gcash' && image === null){
+    //     setSubmitDisable(true)
+    //     setSubmissionError("Please upload proof of payment.")
+    // }
+    else{
         setSubmissionError("");
         setSubmitDisable(false);
     }
@@ -688,10 +690,10 @@ const Shop1Menu = ({navigation}) => {
                                             <Text style={styles.remindersText}>
                                                 Kindly send a screenshot of the receipt before the laundry schedule.
                                             </Text>
-                                                <TouchableOpacity style={styles.submitButton} onPress={pickImage}>
+                                                {/* <TouchableOpacity style={styles.submitButton} onPress={pickImage}>
                                                     <Text style={{color:'white',fontWeight:'bold'}}>Upload Payment Proof</Text>
                                                 </TouchableOpacity>
-                                                {image && <Image source={{ uri: image }} style={styles.screenshot} />}
+                                                {image && <Image source={{ uri: image }} style={styles.screenshot} />} */}
                                         </View>
                                         : payment === 'cod'?
                                         <View style={styles.remindersContainer}>

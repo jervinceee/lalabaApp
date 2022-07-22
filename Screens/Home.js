@@ -58,7 +58,7 @@ const Home = ({navigation}) => {
                             color: 'black',
                             fontSize: 15,
                             }}>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mus mauris vitae ultricies leo integer. Fusce ut placerat orci nulla
+                            John Dela Cruz {'\n'} 09999999999
                         </Text>
                     </View>
                 </View>

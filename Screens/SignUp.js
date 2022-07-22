@@ -85,7 +85,6 @@ const SignUp = ({navigation}) => {
                     isAdmin: false,
                     address:"",
                     phoneNum:"",
-                    isAdmin:false
                 });
                 
             }).catch((err)=>{

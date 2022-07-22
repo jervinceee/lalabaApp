@@ -47,14 +47,14 @@ const Shop1 = ({navigation}) => {
                         </Text>
                         <View style={styles.description}>
                             <View style={{
-                                height:80,
+                                height:40,
                                 width: 20,
                                 backgroundColor: '#01BCE4',
                                 borderRadius:20,
                             }}>
                             </View>
                             <Text style={{left: 10, bottom:10 }}>
-                            Lorem ipsum dolor sit amet, consectetur adipi scing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mus mauris vitae ultricies leo integer. Fusce ut placerat orci nulla
+                            John Dela Cruz {'\n'} 09999999999
                             </Text>
                         </View>
                         <View style={{ height: 15, backgroundColor: 'white'}}>
