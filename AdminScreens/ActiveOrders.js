@@ -52,13 +52,13 @@ const ActiveOrders = ({navigation}) => {
         setOrders(item);
         }
         settingItem();
-        console.log('hahaha'); 
+        // console.log('hahaha'); 
 
         listAll(imageListRef).then(response => {
             response.items.forEach((item)=>{
                 getDownloadURL(item).then((url)=>{
                     setImageList((prev)=>[
-                        ...prev,
+                        ...prev,url
                     ])
                 }) 
             })
@@ -73,10 +73,10 @@ const ActiveOrders = ({navigation}) => {
         }
       );
       return () => subscription?.remove();
-    });
+    }, []);
     
     const dateFormat =(date)=>{
-        console.log(date.getDay())
+        // console.log(date.getDay())
         return `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`
     }
 
@@ -115,50 +115,28 @@ const ActiveOrders = ({navigation}) => {
         <ScrollView style={{backgroundColor: 'white', marginTop:50, padding: 10, }}>
             <View>
                 <View style={styles.titleHolder}>
-                    <Text style={{
-                        fontSize:40,
-                        fontWeight:'800',
-                        color:'white',
-                    }}>
-                        Active Orders:
-                    </Text>
+                    <Text style={{fontSize:40,fontWeight:'800',color:'white',}}>Active Orders:</Text>
                 </View>
                 
                 {orders.map((order, index)=>{
                     return <View key={`${order.id}`} style={styles.orderShape}>
-                            <Text style={{
-                                fontSize:25,
-                                fontWeight:'600',
-                                color:'black',
-                            }}>
+                            <Text style={styles.orderByName}>
                                 {order.userName}
                             </Text>
                             <View style={styles.scheduleShape}>
                                 <View style={styles.deliveryMode}>
-                                    <Text style={{
-                                        fontSize:20,
-                                        fontWeight:"600",
-                                        color:'white',
-                                    }}>
+                                    <Text style={{fontSize:20,fontWeight:"600",color:'white',}}>
                                         {`${order.retrieveMethod}\n${order.receiveMethod}`}
                                     </Text>
                                 </View>
                                 <View style={styles.scheduleDate}>
-                                    <Text style={{
-                                        fontSize:20,
-                                        fontWeight:"600",
-                                        color:'white',
-                                    }}>
+                                    <Text style={{fontSize:20,fontWeight:"600",color:'white',}}>
                                         {`${ dateFormat(new Date(order.retrieveDate.toDate())) }\n${ dateFormat(new Date(order.receiveDate.toDate())) }`}
 
                                     </Text>
                                 </View>
                                 <View style={styles.scheduleTime}>
-                                    <Text style={{
-                                        fontSize:20,
-                                        fontWeight:"600",
-                                        color:'white',
-                                    }}>
+                                    <Text style={{fontSize:20,fontWeight:"600", color:'white',}}>
                                     {`${ timeFormat(new Date(order.retrieveDate.toDate())) }\n${ timeFormat(new Date(order.receiveDate.toDate())) }`}
                                     </Text>
                                 </View>
@@ -166,52 +144,36 @@ const ActiveOrders = ({navigation}) => {
 
                             {/* <Icon name="close" size={40} color={'red'}/> */}
                             <View style={styles.serviceModeContainer}>
-                                <Text style={{
-                                    marginTop: 5,
-                                    fontSize:15,
-                                    fontWeight:'bold',
-                                    color:'black',
-                                }}>
+                                <Text style={{marginTop: 5,fontSize:15,fontWeight:'bold',color:'black',}}>
                                     {`${order.serviceName} ${order.maxWeight}kg`}
                                 </Text>
-                                <Text style={{
-                                    fontSize:15,
-                                    fontWeight:'bold',
-                                    color:'black',
+                                <Text style={{fontSize:15,fontWeight:'bold',color:'black',
                                 }}> 
                                     {`${order.detergent} x${order.detergentVolume}`}
                                 </Text>
-                                <Text style={{
-                                    fontSize:15,
-                                    fontWeight:'bold',
-                                    color:'black',
+                                <Text style={{fontSize:15,fontWeight:'bold',color:'black',
                                 }}> 
                                     {`${order.fabcon == 'I will provide my own ml' ? 'I will provide my own' : order.fabcon} ${order.fabcon == 'I will provide my own ml' ? '' : 'x'+order.fabconVolume}`}
                                 </Text>
 
-                                <Text style={{
-                                    marginTop: 15,
-                                    marginBottom: 10,
-                                    fontSize:20,
-                                    fontWeight:'600',
-                                    color:'black',
-                                }}>
+                                <Text style={{marginTop: 15,marginBottom: 10,fontSize:20,fontWeight:'600',color:'black',}}>
                                     {`Mode of Payment: ${order.modeOfPayment.toUpperCase()}`}
                                 </Text>
                                 <View style={styles.totalNDoneButton}>
-                                    <Text style={{
-                                        fontSize:20,
-                                        fontWeight:'600',
-                                        color:'black',
-                                    }}>
+                                    <Text style={{fontSize:20,fontWeight:'600',color:'black',}}>
                                         {`Total Cost: PHP ${order.totalCost}.00`}
                                     </Text>
                                 </View> 
                                 <RenderCashPayment method={order.modeOfPayment} payment={order.cashPrepared}/>
-                                    {/* {
+                                    {
                                         order.modeOfPayment === 'gcash'?
-                                        // <Image source={imageList.filter(image => )}/>
-                                    } */}
+                                        imageList.map((url)=>{
+                                            return <Text>{url} {'\n'} {order.proofPayment} {'\n'}</Text>
+                                        })
+                                        //<Text>{order.proofPayment}</Text>
+                                        
+                                        : null
+                                    }
 
                                 <View style={styles.totalNDoneButton}>
                                     <Text style={{
@@ -311,7 +273,11 @@ const styles = StyleSheet.create({
     totalNDoneButton: {
         flexDirection:'row',
     },  
-   
+    orderByName:{
+        fontSize:25,
+        fontWeight:'600',
+        color:'black',
+    }
 
 })
 

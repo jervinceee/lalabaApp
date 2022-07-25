@@ -38,7 +38,7 @@ const Login = ({navigation}) => {
         }
 
         getUsers();
-        console.log(email, password);
+        //console.log(email, password);
 
         // const unsubscribe = auth.onAuthStateChanged( async user=>{
         //     if(user){
@@ -58,7 +58,7 @@ const Login = ({navigation}) => {
     }, [])
 
     const submitHandler = async () => {
-        console.log(email, password);
+        // console.log(email, password);
         const emailregex = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/; 
 
         if(email===""){
@@ -80,7 +80,7 @@ const Login = ({navigation}) => {
         if(passwordError === "" && emailError === ""){
             await signInWithEmailAndPassword(auth, email, password).then((credentials)=>{
                 const user = credentials.user;
-                console.log("Logged in with", user.uid);
+                // console.log("Logged in with", user.uid);
                 
                 users.map(async userMap =>{
                     if(user.uid === userMap.id && userMap.isAdmin === false){
@@ -99,7 +99,7 @@ const Login = ({navigation}) => {
             }).catch(error=>{
                 setErrorModal(true)
                 setErrorMsg(error.message.slice(22, -2));
-                console.log(error);
+                // console.log(error);
             })
             //navigation.navigate('HomeFlow')
         }

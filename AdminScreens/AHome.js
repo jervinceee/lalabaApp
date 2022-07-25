@@ -93,7 +93,7 @@ const AHome = ({navigation}) => {
                 }}>
                     Laundry Shop 1
                 </Text>
-                <View style={styles.orderShape}>
+                {/* <View style={styles.orderShape}>
                     <View style={styles.orderContainer}>
                         <Text style={{
                             fontSize:25,
@@ -122,7 +122,7 @@ const AHome = ({navigation}) => {
                                 <Icon name="close" size={45} color={'red'}/>
                                 </View>
                             </View>
-                            {/* {
+                            {
                                 orders.filter((filter)=> filter.status==='pending' ).map((order, index)=>{
                                     return(
                                         <View style={styles.customerOrders}>
@@ -140,7 +140,7 @@ const AHome = ({navigation}) => {
                                         </View>
                                     )
                                 })
-                            } */}
+                            }
                             <View style={styles.customerOrders}>
                                 <View style={styles.orderCustomerShape}>
                                         <Text style={styles.nameText}>
@@ -155,7 +155,7 @@ const AHome = ({navigation}) => {
                                 </View>
                             </View>
                          </View>
-                </View>
+                </View> */}
                 
                 <View style={styles.container}>
                     <View style={styles.body}>
