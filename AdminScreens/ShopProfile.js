@@ -212,82 +212,14 @@ const ShopProfile = ({navigation}) => {
     return (
         <ScrollView style={{backgroundColor:'white',marginTop:45}}>
             <View>
+                <Text style={{ fontSize:30, color:'black', fontWeight:'bold', marginLeft:10}}>Shop Info</Text>
+                <Text style={{alignSelf:'center'}}>#69-C Street st., Brgy. Barangay, City city</Text>
+                <Text style={{alignSelf:'center'}}>09999999999</Text>
                 <View style={{flexDirection:'row', justifyContent:'space-between',marginTop:40, marginRight:10,}}>
                     <Text style={{ fontSize:30, color:'black', fontWeight:'bold', marginLeft:10}}>Schedule</Text>
-                    
-                </View>
-                
-                <View style={styles.retrieveContainer}>
-                    {/* retrieving schedule */}
-                    <View style={styles.scheduleButtonsContainer}>
-                    {/*<TouchableOpacity 
-                            style={retrieveMethod === 'Pick-up'? styles.scheduleButtonsSelected:styles.scheduleButtons}
-                            onPress={()=>setRetrieveMethod('Pick-up')}    
-                        >
-                            <Text
-                                style={retrieveMethod==='Pick-up'?{color:'white'}:{color:'black'}}
-                            >Pick-up</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity 
-                            style={retrieveMethod === 'Drop-by'? styles.scheduleButtonsSelected:styles.scheduleButtons}
-                            onPress={()=>setRetrieveMethod('Drop-by')}    
-                        >
-                            <Text
-                                style={retrieveMethod==='Drop-by'?{color:'white'}:{color:'black'}}
-                            >Drop-by</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <Text style={{alignSelf:'center'}}>Please select Date and Time</Text>
-                    <View style={styles.calendar}>
-                        <TouchableOpacity
-                            onPress={()=> showModeRetrieve('date')}
-                        >
-                            <Icon name='event' color={'#01BCE4'} size={50} />
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={()=>showModeRetrieve('time')}
-                        >
-                            <FontAwesome name="clock-o" size={48} color="#01BCE4" />
-                        </TouchableOpacity>
-                        {
-                            showRetrieve===true && (
-                                <DateTimePicker
-                                    testID="dateTimePickerRetrieve"
-                                    value={dateRetrieve}
-                                    mode={mode}
-                                    is24Hour={true}
-                                    display='default'
-                                    onChange={onChangeRetrieveDate}
-                                    onTouchCancel={()=>setShowRetrieve(false)}
-                                />
-                            )
-                        } */}   
-                    
-                    </View>
                 </View>
 
                 <View style={styles.retrieveContainer}>
-                   {/*  <Text style={styles.scheduleQ}>How would you like to receive your Labada back?</Text>*/}
-                    {/* sending schedule  
-                    <View style={styles.scheduleButtonsContainer}>
-                        <TouchableOpacity 
-                            style={receiveMethod === 'Delivery'? styles.scheduleButtonsSelected:styles.scheduleButtons}
-                            onPress={()=>setReceiveMethod('Delivery')}   
-                        >
-                            <Text
-                                style={receiveMethod==='Delivery'?{color:'white'}:{color:'black'}}
-                            >Delivery</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={receiveMethod === 'Pick-up'? styles.scheduleButtonsSelected:styles.scheduleButtons}
-                            onPress={()=>setReceiveMethod('Pick-up')}   
-                        >
-                            <Text
-                                style={receiveMethod==='Pick-up'?{color:'white'}:{color:'black'}}
-                            >Pick-up</Text>
-                        </TouchableOpacity>
-                    </View>*/}
-                    
                     <Text style={{alignSelf:'center'}}>Shop Open Monday - Sunday</Text>
                     <Text style={{alignSelf:'center'}}>8:00 AM - 10:30 PM</Text>
                     {/* <View style={styles.calendar}>

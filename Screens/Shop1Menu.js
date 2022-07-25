@@ -19,8 +19,8 @@ import 'react-native-get-random-values'
 
 //firebase
 import {auth, db, storage} from '../core/config'
-import {doc, collection, addDoc, getDocs, getDoc, serverTimestamp, FieldValue} from 'firebase/firestore'
-import { ref, uploadBytes, uploadString } from 'firebase/storage'
+import {doc, collection, addDoc, getDocs, getDoc, } from 'firebase/firestore'
+import { ref, uploadBytes} from 'firebase/storage'
 import {v4} from 'uuid'
 
 //components
@@ -39,12 +39,6 @@ const Shop1Menu = ({navigation}) => {
     var loggedInId = auth.currentUser.uid;
     const user = doc(db, "users", loggedInId)
     const [phone, setPhone] = React.useState("");
-    //submit order
-
-    //image upload not working!!!
-    // const metadata = {
-    //     contentType: 'image/jpeg',
-    // };
     
     const submitOrder = async () =>{
         const img = await fetch(imageUpload.uri);
@@ -504,6 +498,11 @@ const Shop1Menu = ({navigation}) => {
                             )
                         }
                     </View>
+                    <Text >{retrieveTimestamp === undefined ? null : retrieveTimestamp.getMonth()+1 + '/' + 
+                            retrieveTimestamp.getDate() + '/' + 
+                            retrieveTimestamp.getFullYear() + ' at ' + 
+                            retrieveTimestamp.getHours() + ':' + 
+                            retrieveTimestamp.getMinutes()}</Text>
                 </View>
 
                 <View style={styles.retrieveContainer}>
@@ -554,6 +553,11 @@ const Shop1Menu = ({navigation}) => {
                             )
                         }
                     </View>
+                    <Text style={{alignSelf:'center'}}>{receiveTimestamp === undefined ? null : receiveTimestamp.getMonth()+1 + '/' + 
+                                receiveTimestamp.getDate() + '/' + 
+                                receiveTimestamp.getFullYear() + ' at ' + 
+                                receiveTimestamp.getHours() + ':' + 
+                                receiveTimestamp.getMinutes()}</Text>
                 </View>
                 <View style={styles.mainContainer}>
                     <Text style={styles.categoryTitle}>Services</Text>
@@ -646,6 +650,7 @@ const Shop1Menu = ({navigation}) => {
                             :
                             <View style={styles.billContainer}>
                                 <ScrollView>
+                                <Text>Shop Address: #69-C Street st., Brgy. Barangay, City city</Text>
                                 <Text>Address: {address}</Text>
                                 <Text>Our rider will retrieve your Labada on:</Text>
                                 <Text style={styles.billTitle}>{

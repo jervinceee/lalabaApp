@@ -113,7 +113,7 @@ const SignUp = ({navigation}) => {
 
                 <TextInput 
                     style={styles.nameInput}
-                    placeholder="Name"
+                    placeholder="Full Name"
                     placeholderTextColor={"#BDBDBD"}
                     onChangeText={(val)=>{setName(val)}}
                 />

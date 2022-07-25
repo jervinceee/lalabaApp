@@ -25,8 +25,7 @@ const ActiveOrders = ({navigation}) => {
     const usersColleciton = collection(db, 'users');
     const imageListRef = ref(storage, "shop1storage/")
     
-    useEffect(()=>{
-        const settingItem = async ()=>{
+    useEffect(async()=>{
             let dict = {};
         let snapshot = await getDocs(usersColleciton)
         snapshot.forEach((doc) => {
@@ -50,8 +49,6 @@ const ActiveOrders = ({navigation}) => {
             }
         });
         setOrders(item);
-        }
-        settingItem();
         // console.log('hahaha'); 
 
         listAll(imageListRef).then(response => {
@@ -167,8 +164,9 @@ const ActiveOrders = ({navigation}) => {
                                 <RenderCashPayment method={order.modeOfPayment} payment={order.cashPrepared}/>
                                     {
                                         order.modeOfPayment === 'gcash'?
-                                        imageList.map((url)=>{
-                                            return <Text>{url} {'\n'} {order.proofPayment} {'\n'}</Text>
+                                        imageList.filter(urlFilter => urlFilter.includes(order.proofPayment.slice(15))).map((url)=>{
+                                            
+                                            return <Image source={{uri: url}} style={{height:320,width:180, alignSelf:'center', borderRadius:5}}/>
                                         })
                                         //<Text>{order.proofPayment}</Text>
                                         
