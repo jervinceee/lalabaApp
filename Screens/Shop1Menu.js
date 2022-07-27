@@ -19,7 +19,7 @@ import 'react-native-get-random-values'
 
 //firebase
 import {auth, db, storage} from '../core/config'
-import {doc, collection, addDoc, getDocs, getDoc, } from 'firebase/firestore'
+import {doc, collection, addDoc, getDocs, getDoc, orderBy, } from 'firebase/firestore'
 import { ref, uploadBytes} from 'firebase/storage'
 import {v4} from 'uuid'
 
@@ -41,10 +41,12 @@ const Shop1Menu = ({navigation}) => {
     const [phone, setPhone] = React.useState("");
     
     const submitOrder = async () =>{
-        const img = await fetch(imageUpload.uri);
-        const bytes = await img.blob();
-        const imageRef = ref(storage, `shop1storage/${imagePath}`);
-        await uploadBytes(imageRef, bytes)
+        if(payment==='gcash'){
+            const img = await fetch(imageUpload.uri);
+            const bytes = await img.blob();
+            const imageRef = ref(storage, `shop1storage/${imagePath}`);
+            await uploadBytes(imageRef, bytes)
+        }
         await addDoc( shop1collectionRef, {
             detergent : detergent,
             detergentVolume : detergentVol,
@@ -60,7 +62,7 @@ const Shop1Menu = ({navigation}) => {
             receiveDate: receiveTimestamp,
             modeOfPayment: payment,
             cashPrepared: cashAmount,
-            proofPayment:imagePath,
+            proofPayment:payment === 'cod' ? null : imagePath,
             address: address,
             status: payment == 'gcash' ? "Accepted" : 'Pending',
             // addNote: '',
@@ -132,7 +134,7 @@ const Shop1Menu = ({navigation}) => {
         }
     };
 
-    const servicesCollection = collection(db, "services")
+    const servicesCollection = collection(db, "services" )
     const detergentsCollection = collection(db, "detergents")
     const fabconsCollection = collection(db, "fabcons")
     // Service Array 
@@ -160,7 +162,7 @@ const Shop1Menu = ({navigation}) => {
 
         if (phone == ""){
             setBillModalError("Please add your phone number before booking")
-        }else if(address == ""){
+        }else if(address == "" || address === null){
             setBillModalError("Please add your complete address before booking")
         }else if(retrieveMethod === ""){
             setBillModalError("Please tell us how to retrieve your Labada.")
@@ -301,7 +303,7 @@ const Shop1Menu = ({navigation}) => {
     const getStoredDate = async ()=>{
         setUserName(await AsyncStorage.getItem('username'));
         setPhoneNum(await AsyncStorage.getItem('usernumber'))
-        setAddress(await AsyncStorage.getItem('useraddress'));
+        // setAddress(await AsyncStorage.getItem('useraddress'));
         setDetergent(await AsyncStorage.getItem('detergentname'));
         setDetergentVol( await AsyncStorage.getItem('detergentvolume'));
         setDetergentCost(await AsyncStorage.getItem('detergentcost'));
@@ -391,7 +393,7 @@ const Shop1Menu = ({navigation}) => {
     //     })
     // }
 
-    AsyncStorage.clear();
+    //AsyncStorage.clear();
     let item = [];
     let snapshot = await getDocs(servicesCollection)
     snapshot.forEach((doc) => {
@@ -421,7 +423,7 @@ const Shop1Menu = ({navigation}) => {
     setDetergentsItems(item2);
     
     let item3 = [];
-    snapshot = await getDocs(fabconsCollection)
+    snapshot = await getDocs(fabconsCollection, orderBy("key"))
     snapshot.forEach((doc) => {
         let data = doc.data();
         
@@ -498,11 +500,11 @@ const Shop1Menu = ({navigation}) => {
                             )
                         }
                     </View>
-                    <Text >{retrieveTimestamp === undefined ? null : retrieveTimestamp.getMonth()+1 + '/' + 
+                    <Text style={{alignSelf:'center'}}>{retrieveTimestamp === undefined ? null : retrieveTimestamp.getMonth()+1 + '/' + 
                             retrieveTimestamp.getDate() + '/' + 
                             retrieveTimestamp.getFullYear() + ' at ' + 
-                            retrieveTimestamp.getHours() + ':' + 
-                            retrieveTimestamp.getMinutes()}</Text>
+                            retrieveTimestamp.getHours() + ':' + (retrieveTimestamp.getMinutes() <=9? "0"+retrieveTimestamp.getMinutes():retrieveTimestamp.getMinutes())
+                            }</Text>
                 </View>
 
                 <View style={styles.retrieveContainer}>
@@ -556,8 +558,7 @@ const Shop1Menu = ({navigation}) => {
                     <Text style={{alignSelf:'center'}}>{receiveTimestamp === undefined ? null : receiveTimestamp.getMonth()+1 + '/' + 
                                 receiveTimestamp.getDate() + '/' + 
                                 receiveTimestamp.getFullYear() + ' at ' + 
-                                receiveTimestamp.getHours() + ':' + 
-                                receiveTimestamp.getMinutes()}</Text>
+                                receiveTimestamp.getHours() + ':' + (receiveTimestamp.getMinutes() <=9? "0"+receiveTimestamp.getMinutes():receiveTimestamp.getMinutes())}</Text>
                 </View>
                 <View style={styles.mainContainer}>
                     <Text style={styles.categoryTitle}>Services</Text>
@@ -585,7 +586,7 @@ const Shop1Menu = ({navigation}) => {
                     </ScrollView>
                     <Text style={styles.categoryTitle}>Detergents</Text>
                     <ScrollView horizontal={true}>
-                        <View style={styles.categoryContainer}>
+                        <View style={styles.categoryContainer2}>
                             {/* items ng mga detergent */}
                             
                             {detergentsItems.map((item, key) => {
@@ -605,7 +606,7 @@ const Shop1Menu = ({navigation}) => {
                     </ScrollView>
                     <Text style={styles.categoryTitle}>Fabric Conditioner</Text>
                     <ScrollView horizontal={true}>
-                        <View style={styles.categoryContainer}>
+                        <View style={styles.categoryContainer2}>
                             {/* items ng mga services */}
                             
                             {fabconItems.map((item, key) => {
@@ -617,7 +618,7 @@ const Shop1Menu = ({navigation}) => {
                                     onSelectEvent={onSelectFabcon}
                                     isSelected={item.selected}
                                     id={item.id}
-                                    key={item.id}
+                                    key={key}
                                     disable={false}
                                 />
                             })}
@@ -929,6 +930,9 @@ const styles = StyleSheet.create({
    categoryContainer:{
         flexDirection:'row',
    },
+   categoryContainer2:{
+        flexDirection:'row-reverse',
+    },
 
    billModal:{
         flex:1,

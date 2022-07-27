@@ -83,6 +83,18 @@ import { ScrollView } from 'react-native-gesture-handler';
                   <Text key={`t8${order.id}`}  style={{color: 'white', fontSize: 15, textAlign: 'center', marginTop: 8}}>
                       {`PHP ${order.totalCost}, ${order.modeOfPayment.toUpperCase()}, ${order.receiveMethod}`}
                   </Text>
+
+                  <View style={styles.orderDetailsContainer}>
+                    <Text style={styles.orderDetails}>Fabcon: 
+                      {order.fabcon === "I will provide my own ml"? <Text> Self-provided</Text> : order.fabcon + ' x' + order.fabconVolume + "pack/s"} 
+                    </Text>
+                    <Text style={styles.orderDetails}>Detergent: 
+                      {order.detergent === "I will provide my own g"? <Text> Self-provided</Text> : order.detergent + ' x' + order.detergentVolume + "pack/s"} 
+                    </Text>
+                    <Text style={styles.orderDetails}>
+                      Customer Address: {order.address === null? null : order.address}
+                    </Text>
+                  </View>
                 </View>
               )
           })}
@@ -145,6 +157,15 @@ const styles = StyleSheet.create({
   dateText:{
     marginLeft:20,
     color:'white'
+  },
+  orderDetailsContainer:{
+    marginTop:10,
+    marginLeft:5
+  },
+  orderDetails:{
+    fontSize:16,
+    color:'white',
+    marginVertical:5
   }
 })
 

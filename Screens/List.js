@@ -115,7 +115,7 @@ import { useIsFocused } from '@react-navigation/native';
         onPress={()=>deleteSchedule(ind)}    
       >
           <AntDesign name="delete" size={30} color="white"/>
-          <Text style={{color: 'white', marginLeft: 8}}> Delete Schedule </Text>
+          <Text style={{color: 'white', marginLeft: 8}}> Cancel Order </Text>
       </TouchableOpacity>
     }
 
@@ -178,6 +178,17 @@ import { useIsFocused } from '@react-navigation/native';
               }</Text>
           </View>
           
+          <View style={styles.orderDetailsContainer}>
+            <Text style={styles.orderDetails}>Fabric Conditioner: 
+              {order.fabcon === "I will provide my own ml"? <Text> Self-provided</Text> : order.fabcon + ' x' + order.fabconVolume + "pack/s"} 
+            </Text>
+            <Text style={styles.orderDetails}>Detergent: 
+              {order.detergent === "I will provide my own g"? <Text> Self-provided</Text> : order.detergent + ' x' + order.detergentVolume + "pack/s"} 
+            </Text>
+            <Text style={styles.orderDetails}>
+              Customer Address: {order.address === null? null : order.address}
+            </Text>
+          </View>
         <RenderDeleteButton status={order.status} ind={index}/>
       </View>
     }
@@ -196,6 +207,7 @@ import { useIsFocused } from '@react-navigation/native';
                 <RenderSchedule order={order} index={index}/>
               )
           })}
+
       </View>
 
       
@@ -295,6 +307,14 @@ const styles = StyleSheet.create({
   dateText:{
     marginLeft:20,
     color:'white'
+  },
+  orderDetailsContainer:{
+    marginTop:10,
+    marginLeft:5,
+    marginBottom:10
+  },
+  orderDetails:{
+    fontSize:14
   }
 })
 
