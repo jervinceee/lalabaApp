@@ -69,9 +69,9 @@ const Verify = ({navigation}) => {
         })
     }
 
-    const sendPhoneVerification = async() =>{
-        setPhoneModal(!phoneModal)
-    }
+    // const sendPhoneVerification = async() =>{
+    //     setPhoneModal(!phoneModal)
+    // }
 
     const RenderInfoModal =({})=>{
         if(emailModal){
@@ -119,19 +119,18 @@ const Verify = ({navigation}) => {
                     style={styles.confirmButton}
                     onPress={() => sendVerification()}
                     >
-                    
                     <AntDesign name="mail" size={30} color="white" style={{marginRight: 15}}/>
                     <Text style={styles.textStyle}>Email</Text>
                 </TouchableOpacity>
                 
-                <TouchableOpacity
+                {/* <TouchableOpacity
                     style={styles.confirmButton}
                     onPress={() => sendPhoneVerification()}
                     >
 
                     <AntDesign name="message1" size={30} color="white" style={{marginRight: 15}}/>
                     <Text style={styles.textStyle}>Phone Number</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
                 <TouchableOpacity 
                 style={{marginTop: '10%', alignSelf: 'center'}}
