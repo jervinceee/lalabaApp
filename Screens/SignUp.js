@@ -32,6 +32,8 @@ const SignUp = ({navigation}) => {
     const [errorMsg, setErrorMsg] = React.useState("sdadad");
     const [errorModal, setErrorModal] = React.useState(false);
     const [successModal, setSuccessModal] = React.useState(false);
+    const [phoneNum, setPhoneNum] = React.useState("");
+    const [phoneError, setPhoneError] = React.useState("initial");
 
     // const register = async () => {
     //     try{
@@ -43,6 +45,7 @@ const SignUp = ({navigation}) => {
 
     const submitHandler = async () => {
         const emailregex = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/; 
+        const phoneregex = /^(09|\+639)\d{9}$/; 
 
         if(name===""){
             setNameError("Please fill out this field")
@@ -56,6 +59,12 @@ const SignUp = ({navigation}) => {
             setEmailError("Please enter a valid email");
         }else{
             setEmailError("");
+        }
+
+        if(!phoneregex.test(phoneNum)){
+            setPhoneError("Invalid Phone Number Format.")
+        }else{
+            setPhoneError("")
         }
 
         if(password===""){
@@ -83,8 +92,9 @@ const SignUp = ({navigation}) => {
                     age:null,
                     email:email,
                     isAdmin: false,
+                    isVerify: false,
                     address:"",
-                    phoneNum:"",
+                    phoneNum: phoneNum,
                 });
                 
             }).catch((err)=>{
@@ -129,6 +139,16 @@ const SignUp = ({navigation}) => {
 
                 <Text style={emailError==="" || emailError==="initial"?{display:'none'}:styles.error}>{emailError}</Text>
 
+                <TextInput 
+                    style={styles.emailInput}
+                    placeholder="Phone Number"
+                    keyboardType='numeric'
+                    placeholderTextColor={"#BDBDBD"}
+                    onChangeText={(val)=>{setPhoneNum(val)}}
+                />
+
+                <Text style={phoneError==="" || phoneError==="initial"?{display:'none'}:styles.error}>{phoneError}</Text>
+
                 <View style={styles.passwordView}>
                     <TextInput 
                         style={styles.passwordInput}
@@ -162,7 +182,7 @@ const SignUp = ({navigation}) => {
 
                 <Text style={checkError==="" || checkError==="initial"?{display:'none'}:styles.error}>{checkError}</Text>
                 
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=>{navigation.navigate('Forgot')}}>
                         <Text style={styles.forgotPass}>Forgot your password?</Text>
                 </TouchableOpacity>
 

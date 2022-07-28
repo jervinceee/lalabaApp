@@ -12,9 +12,11 @@ import {
 } from 'react-native';
 import { auth, db } from '../core/config';
 import { MaterialIcons } from '@expo/vector-icons';
-import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
-import { collection, getDocs } from 'firebase/firestore';
+import { onAuthStateChanged, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+// import { AntDesign } from '@expo/vector-icons';
+
 
 const Login = ({navigation}) => {
 
@@ -27,7 +29,7 @@ const Login = ({navigation}) => {
     const [errorModal, setErrorModal] = React.useState(false);
     const [users, setUsers] = React.useState([]);
     const usersCollectionRef= collection(db, 'users');
-
+ 
     React.useEffect(()=>{
         const getUsers = async() =>{
             const data = await getDocs(usersCollectionRef);
@@ -57,6 +59,29 @@ const Login = ({navigation}) => {
         // return unsubscribe();
     }, [])
 
+    // const googleSignIn = async () =>{
+        
+    //     const provider = new GoogleAuthProvider();
+    //     await signInWithPopup(auth, provider)
+    //     .then((result) => {
+    //         // This gives you a Google Access Token. You can use it to access the Google API.
+    //         const credential = GoogleAuthProvider.credentialFromResult(result);
+    //         const token = credential.accessToken;
+    //         // The signed-in user info.
+    //         const user = result.user;
+    //         // ...
+    //     }).catch((error) => {
+    //         // Handle Errors here.
+    //         const errorCode = error.code;
+    //         const errorMessage = error.message;
+    //         // The email of the user's account used.
+    //         const email = error.customData.email;
+    //         // The AuthCredential type that was used.
+    //         const credential = GoogleAuthProvider.credentialFromError(error);
+    //         // ...
+    //     });
+    // }
+
     const submitHandler = async () => {
         // console.log(email, password);
         const emailregex = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/; 
@@ -78,17 +103,29 @@ const Login = ({navigation}) => {
         }
         
         if(passwordError === "" && emailError === ""){
+
             await signInWithEmailAndPassword(auth, email, password).then((credentials)=>{
                 const user = credentials.user;
-                // console.log("Logged in with", user.uid);
                 
                 users.map(async userMap =>{
                     if(user.uid === userMap.id && userMap.isAdmin === false){
-                        //console.log(userMap.id);
+
+                        let isVerified = false
+                        const myDoc = await doc(db, "users", user.uid)
+                        await getDoc(myDoc).then((snapshot)=>{
+                            if(snapshot.exists){
+                                isVerified = snapshot.data().isVerify
+                            }else{
+                                console.log("NO DOC FOUND!!")
+                            }
+                        })
+                        
                         await AsyncStorage.setItem('useraddress', userMap.address);
                         await AsyncStorage.setItem('usernumber', userMap.phoneNum);
                         await AsyncStorage.setItem('username', userMap.userName);
-                        navigation.navigate('HomeFlow');
+
+                        if(isVerified) navigation.navigate('HomeFlow');
+                        else navigation.navigate('Verify');
                     }
                     else if (user.uid === userMap.id && userMap.isAdmin === true){
                         //console.log(userMap.id);
@@ -160,6 +197,16 @@ const Login = ({navigation}) => {
                 >
                         <Text style={styles.loginBtn}>Log In</Text>
                 </TouchableOpacity>
+
+                {/* <Text style={{color: "#adadad", marginVertical: '6%', alignSelf: 'center'}}>
+                    OR
+                </Text> */}
+
+                {/* <TouchableOpacity onPress={ () => googleSignIn()} style={{backgroundColor: '#D64937', alignSelf: 'center', marginBottom: '7%', padding: 20, flexDirection: 'row', alignItems:'center',}} >
+                
+                    <AntDesign name="google" size={30} color="white"/>
+                    <Text style={{color: 'white', marginLeft: 10,  fontSize: 20, fontWeight: 'bold',}}> Sign in with google</Text>
+                </TouchableOpacity> */}
 
                 <View style={styles.toRegi}>
                     <Text>Don't have an account?</Text>
@@ -268,12 +315,13 @@ const styles = StyleSheet.create({
         textAlignVertical:'center',
         color:'white',
         fontSize:18,
-        marginTop:'5%'
+        marginTop:'5%',
+        marginBottom:'5%'
     },
     toRegi:{
         display:'flex',
         flexDirection:'row',
-        marginTop:'5%',
+        // marginTop:'5%',
         alignSelf:'center',
     },
     toRegiBtn:{
