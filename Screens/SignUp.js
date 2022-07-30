@@ -182,10 +182,6 @@ const SignUp = ({navigation}) => {
 
                 <Text style={checkError==="" || checkError==="initial"?{display:'none'}:styles.error}>{checkError}</Text>
                 
-                <TouchableOpacity onPress={()=>{navigation.navigate('Forgot')}}>
-                        <Text style={styles.forgotPass}>Forgot your password?</Text>
-                </TouchableOpacity>
-
                 <TouchableOpacity
                     onPress={submitHandler}
                 >
