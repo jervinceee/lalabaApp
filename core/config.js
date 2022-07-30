@@ -10,7 +10,7 @@ const firebaseConfig = {
   storageBucket: "lalabaapp.appspot.com",
   messagingSenderId: "652003400772",
   appId: "1:652003400772:web:d7d2c71de9e07d93e77011"
-};x
+};
 
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);

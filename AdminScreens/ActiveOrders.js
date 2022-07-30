@@ -166,7 +166,7 @@ const ActiveOrders = ({navigation}) => {
                                         order.modeOfPayment === 'gcash'?
                                         imageList.filter(urlFilter => urlFilter.includes(order.proofPayment.slice(15))).map((url)=>{
                                             
-                                            return <Image source={{uri: url}} style={{height:320,width:180, alignSelf:'center', borderRadius:5}}/>
+                                            return <Image key={`${order.modeOfPayment + url}`} source={{uri: url}} style={{height:320,width:180, alignSelf:'center', borderRadius:5}}/>
                                         })
                                         //<Text>{order.proofPayment}</Text>
                                         
