@@ -395,6 +395,8 @@ const Shop1Menu = ({navigation}) => {
 
     //AsyncStorage.clear();
     let item = [];
+    let temp = null;
+
     let snapshot = await getDocs(servicesCollection)
     snapshot.forEach((doc) => {
         let data = doc.data();
@@ -413,12 +415,22 @@ const Shop1Menu = ({navigation}) => {
     snapshot.forEach((doc) => {
         let data = doc.data();
         
-        item2.push(
+        if(data.name == "Laundry shop choice"){
+            temp = 
             { 
                 id: doc.id, selected: false, name: data.name, weight: data.weight, price: data.price, path: images.icons[data.path]
             }
-        );
+        }
+        else{
+            item2.push(
+                { 
+                    id: doc.id, selected: false, name: data.name, weight: data.weight, price: data.price, path: images.icons[data.path]
+                }
+            );
+        }
     });
+
+    item2.push(temp)
 
     setDetergentsItems(item2);
     
@@ -427,13 +439,22 @@ const Shop1Menu = ({navigation}) => {
     snapshot.forEach((doc) => {
         let data = doc.data();
         
-        item3.push(
+        if(data.name == "Laundry shop choice"){
+            temp = 
             { 
                 id: doc.id, selected: false, name: data.name, weight: data.weight, price: data.price, path: images.icons[data.path]
             }
-        );
+        }
+        else{
+            item3.push(
+                { 
+                    id: doc.id, selected: false, name: data.name, weight: data.weight, price: data.price, path: images.icons[data.path]
+                }
+            );
+        }
     });
 
+    item3.push(temp)
     setFabconItems(item3);
 
     getDoc(user).then((snapshot)=>{

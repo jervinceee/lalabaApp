@@ -208,6 +208,10 @@ const Login = ({navigation}) => {
                     <Text style={{color: 'white', marginLeft: 10,  fontSize: 20, fontWeight: 'bold',}}> Sign in with google</Text>
                 </TouchableOpacity> */}
 
+                <TouchableOpacity onPress={()=>{navigation.navigate('Forgot')}}>
+                        <Text style={styles.forgotPass}>Forgot your password?</Text>
+                </TouchableOpacity>
+
                 <View style={styles.toRegi}>
                     <Text>Don't have an account?</Text>
                     <TouchableOpacity onPress={()=> {navigation.navigate('SignUp')}}>
@@ -303,7 +307,8 @@ const styles = StyleSheet.create({
         alignSelf:'center',
         color:'#0896B5',
         fontSize:24,
-        marginTop:'2%'
+        marginTop:'2%',
+        marginBottom: '3%'
     },
     loginBtn:{
         backgroundColor:'#0896B5',
